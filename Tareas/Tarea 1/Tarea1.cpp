@@ -1,3 +1,12 @@
+/*
+Tarea 1 estructuras de datos 
+profesora: Cerdas Quesada Ivannia
+asistente del curso: Madrigal Murillo Celina
+estudiantes:
+    -Abarca Fernando
+    -Cabrera Samir
+*/
+
 #include <iostream>
 using namespace std;
 
@@ -39,9 +48,10 @@ class Tarea{
      ~Tarea(); // Declaración del destructor
      bool ListaVacia() {return primero == NULL;}; //decide si la lista esta vacia
      void InsertarInicio(int num); //agrega el numero a la lista
-     int Particion(int numero); //divide el digito en numeros individuales
      void Mostrar(); //muestra los numeros de la lista
-
+     void Ej1(int numero); //divide el digito en numeros individuales
+     void Ej2(int numero);
+     
    private:
     pnodo primero;
 
@@ -58,7 +68,7 @@ Tarea::~Tarea() {
     primero = NULL;
 }
 
-int Tarea::Particion(int numero){ //sacar un numero por cada digito 
+void Tarea::Ej1(int numero){ //sacar un numero por cada digito 
     int pares = 0; //variable que muestra la cantidad de pares que se encuentren
     if (numero ==0){
         cout<<"el numero es cero"<<::endl;
@@ -78,6 +88,9 @@ int Tarea::Particion(int numero){ //sacar un numero por cada digito
             numero = numero / 10; 
         }
     }
+    cout<<""<<::endl;
+    cout<<"resultado del primer ejercicio: "<<::endl;
+    cout<<"mostar lista: "<<::endl;
     Mostrar();
     cout << "cantidad de pares: " << pares << ::endl;
 }
@@ -120,11 +133,40 @@ void Tarea::Mostrar()
    }
 }
 
+void Tarea::Ej2(int numero){ //sacar el promedio de un numero, despues de particionarlo
+    float promedio = 0.0; //creacion de una variable para el promedio
+    int contador = 0; //contador que ayuda en la formula del promedio
+    int suma = 0; //almacenamiento para la suma del numero antes del promedio
+
+    if (numero == 0){
+        cout<< "el numero es cero, promedio = 0" << :: endl;
+    }
+    else{
+        while(numero != 0){
+            //sacar el digito del numero individualmente
+            //almacenarlo en suma
+            //confirmar que el numero es cero
+            //calcular el promedio 
+            int temporal = numero % 10; //se extrae el digito de manera temporal
+            suma += temporal;
+            contador ++;
+            numero = numero /10;
+        }
+    }
+
+    promedio = static_cast<float>(suma) / contador;
+    cout<<""<<::endl;
+    cout<<"resultado del segundo ejercicio: "<<::endl;
+    cout <<"el promedio es de: " << promedio << ::endl;
+
+}
+
 int main(){
 
     Tarea mitarea; 
 
-    mitarea.Particion(2346);
+    mitarea.Ej1(2346);
+    mitarea.Ej2(123456);
 
     cin.get();
     return 0;
