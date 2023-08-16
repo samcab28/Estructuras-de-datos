@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <cmath>
 using namespace std;
 
 class nodo { // Constructores
@@ -54,6 +55,8 @@ class lista {
     void Ej4();
     void Ej5(int numero); 
     void Ej6(int numero);
+    void Ej7(int num1, int num2);
+    void Ej8(int numero);
     int* ConvertirAArray(int* array, int maxSize) {
         int index = 0;
         nodo* aux = primero;
@@ -344,6 +347,86 @@ void lista::Ej6(int numero){
         cout<<"conteo de pares: "<<pares<<" y multiplicacion de impares: "<<impares<<::endl;
     }
 }
+void lista::Ej7(int num1, int num2){
+   cout<<::endl;
+   cout<<"ejercicio 7:"<<::endl;
+   lista lista1;
+   lista lista2;
+   lista lista3;
+
+   if (num2 == 0){
+      cout<<"error, la lista uno esta vacia"<<::endl;
+   }
+   else{
+      while(num2 != 0){
+         int temporal = num2 % 10;
+         lista2.InsertarInicio(temporal);
+         num2 = num2 /10;
+      }
+   }
+
+   if (num1 == 0){
+      cout<<"error, la lista uno esta vacia"<<::endl;
+   }
+   else{
+      while(num1 != 0){
+         int temporal = num1 % 10;
+         lista1.InsertarInicio(temporal);
+         num1 = num1 /10;
+      }
+   }
+
+   cout<<"lista 1:"<<::endl;
+   lista1.Mostrar();
+   cout<<"lista 2:"<<::endl;
+   lista2.Mostrar();
+
+   int mayor = lista1.largoLista();
+
+   while(lista2.largoLista()-1 != lista1.largoLista()){
+      lista2.InsertarFinal(0);
+   }
+
+   int resultado[mayor];
+   int array1[mayor];
+   int array2[mayor];
+
+   for(int i = 0; i <=mayor; ++i){
+      resultado[i] = lista1.ConvertirAArray(array1,mayor)[i] + lista2.ConvertirAArray(array2,mayor)[i];
+   }
+   cout<<"suma de listas: "<<::endl;
+   for (int i = 0; i <mayor; ++i) {
+      lista3.InsertarFinal(resultado[i]);
+   }
+   lista3.Mostrar();
+
+}
+void lista::Ej8(int numero){
+   cout<<::endl;
+   lista lista3;
+   cout<<"ejercicio 8:"<<::endl;
+
+    if(numero == 0){
+        cout<<"el numero es cero"<<::endl;
+    }
+    else{
+        while(numero != 0){
+            int temporal = numero % 10;
+            if (temporal % 2 == 0){
+                temporal = pow(temporal,3);
+            }
+            else{
+                temporal = pow(temporal,2);
+            }
+            lista3.InsertarInicio(temporal);
+            numero = numero / 10;
+        }
+        cout<<"lista: "<<::endl;
+        lista3.Mostrar();
+        //cout<<"conteo de pares: "<<pares<<" y multiplicacion de impares: "<<impares<<::endl;
+}
+}
+
 void lista::InsertarInicio(int v)//6
 {
    if (ListaVacia())
@@ -565,6 +648,8 @@ int main()
    L1.Ej4();
    L1.Ej5(2309);
    L1.Ej6(123456789);
+   L1.Ej7(675757567,567897);
+   L1.Ej8(12345678);
 
    cin.get();//es pausa
    return 0;
