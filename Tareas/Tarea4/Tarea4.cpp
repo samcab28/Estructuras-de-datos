@@ -6,9 +6,7 @@ estudiantes:
     -Abarca Fernando
     -Cabrera Samir
 */
-#include <iostream>
-#include <string>
-#include <limits>
+#include <iostream> 
 using namespace std;
 
 class nodo { // Constructores
@@ -59,10 +57,10 @@ class lista {
     int largoLista();// retorno un valor numerico
     bool ValidacionEj2(int numero);
     void Ej2(int numero);
-    bool esEntero(double numero) {
-    return std::abs(numero - static_cast<int>(numero)) < 1e-9;  // Pequeña tolerancia para manejar errores de precisión
-}
-    
+    void Ej1(int num1, int num2);
+    int contador(int numero);
+    int Fcontador(int numero);
+    int FindNum(int numero);
    private:
     pnodo primero;
    
@@ -80,32 +78,115 @@ lista::~lista()
    primero= NULL;
 }
 
+
+int lista::contador(int numero){
+   int contador = 0; 
+
+   while (numero != 0){
+      contador ++;
+      numero = numero /10;
+   }
+   return contador; 
+}
+
+int lista::Fcontador(int numero){
+   if (numero <= 6){
+      return numero;
+   }
+   else{
+      int nuevo; 
+
+      if (numero % 6 == 0){
+         nuevo = numero / 6; 
+         return nuevo;
+      }
+      else{
+         nuevo = numero % 6;
+         return nuevo;
+      }
+
+      return nuevo;
+   }
+}
+void lista::Ej1(int num1, int num2){
+   cout<<""<<::endl;
+   cout<<"ejercicio 1"<<::endl;
+   lista lista1;
+   lista lista2;
+
+   if (num1 < 0){
+      num1 = num1 * -1;
+   }
+
+   if (num2 < 0){
+      num2 = num2 * -1;
+   }
+
+   if(contador(num1)==6 && contador(num2)==6){
+      while(num1 != 0){
+         int temp1, temp2; 
+
+         temp1 = num1 % 10;
+         temp2 = num2 % 10;
+
+         lista1.InsertarInicio(temp1);
+         lista2.InsertarInicio(temp2);
+
+         num1 = num1 / 10; 
+         num2 = num2 / 10;
+      }
+      cout<<"lista uno: "<<::endl;
+      lista1.Mostrar();
+      cout<<"lista dos: "<<::endl;
+      lista2.Mostrar();
+
+      int contador = 1; 
+
+      nodo * aux ;
+      aux = lista2 primero;
+      while(contador <= 20){
+         if (contador % 2 != 0){
+            lista1.borrarPosicion(Fcontador(contador + 1));
+            lista1.borrarPosicion(Fcontador(contador + 2));
+            aux = aux -> siguiente;
+            aux = aux -> siguiente;
+            lista1.InsertarPos(aux -> valor, Fcontador(contador + 1));
+            aux = aux -> siguiente;
+            lista1.InsertarPos(aux -> valor, Fcontador(contador + 2));
+            lista1.Mostrar();
+            cout<<contador<<endl;
+            contador = contador + 3; 
+         }
+         else{
+            contador ++; 
+         }
+      }
+      
+   }
+   else{
+      cout<<"error, los numeros no son de seis digitos"<<::endl; 
+   }
+
+
+
+
+}
 bool lista::ValidacionEj2(int numero){
    if (numero%2 == 0){
       cout<<"Error, el numero es PAR"<<::endl;
    }
    else{
-      if(esEntero(numero)){
-         if (numero >= 0){
-            Ej2(numero);
-         }
-         else{
-            cout<<"error, el numero NO es positivo"<<::endl;
-         }
+      if (numero >= 0){
+         Ej2(numero);
       }
       else{
-         cout<<"Error, el numero NO es un numero entero"<<::endl;
+         cout<<"error, el numero NO es positivo"<<::endl;
       }
    }
 }
 
 void lista::Ej2(int numero){
-/*
-1. encontrar el centro, numero y posicion 
-2. insertarlo en una lista 
-3. guardar numero que este en el centro en una variable
-4. hacer un while para cada posicion extraer posicion y con variable de centro
-*/
+   cout<<""<<::endl;
    cout<<"ejercicio 2"<<::endl;
    nodo * aux; 
    int contador = 0;
@@ -386,8 +467,22 @@ int main()
  
    cout<< "***************************************************************************************"<<endl;
 
-   //L1.Ej2(123);
-   L1.ValidacionEj2(1234567);
+   //L1.ValidacionEj2(1234567);
+   /*L1.InsertarInicio(6);
+   L1.InsertarInicio(5);
+   L1.InsertarInicio(4);
+   L1.InsertarInicio(3);
+   L1.InsertarInicio(2);
+   L1.InsertarInicio(1);
+   L1.Mostrar();
+
+   L1.borrarPosicion(2);
+   L1.borrarPosicion(3);
+   L1.InsertarPos(13,2);
+   L1.InsertarPos(14,3);
+   L1.Mostrar();*/
+
+   L1.Ej1(-123459,678901);
    cin.get();
    return 0;
 }
