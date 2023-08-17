@@ -61,6 +61,7 @@ class lista {
     int contador(int numero);
     int Fcontador(int numero);
     int FindNum(int numero);
+    void mezclar(lista * l2);
    private:
     pnodo primero;
    
@@ -78,6 +79,35 @@ lista::~lista()
    primero= NULL;
 }
 
+void lista::mezclar(lista * l2) {
+  /*
+   * Agregué esta validación ya que es posible que el método se utilice por sí solo
+   * en listas con valores más grandes (y que por ende no usaron insMix()), pero el método
+   * sólo funciona en listas con un largo que sea múltiplo de 6 y de igual tamaño en ambas
+   */ 
+  int largoL = largoLista();
+  int largoL2 = l2->largoLista();
+  
+  if (largoL == largoL2 && largoL % 6 == 0) {
+    nodo * auxActual = primero;
+    nodo * auxSig = primero->siguiente;
+    nodo * auxL2Actual = l2->primero;
+    nodo * auxL2Salto = l2->primero->siguiente->siguiente;
+    while (auxL2Salto != NULL) {
+      // proceso
+      auxActual->siguiente = auxL2Salto;
+      auxL2Actual->siguiente->siguiente = auxSig;
+      // redireccionamiento
+      auxActual = auxSig->siguiente;
+      auxSig = auxActual->siguiente;
+      auxL2Actual = auxL2Salto;
+      auxL2Salto = auxL2Salto->siguiente->siguiente;
+    }
+    auxL2Salto = l2->primero;
+    auxActual->siguiente = auxL2Salto;
+    auxL2Actual->siguiente->siguiente = auxSig;
+  }
+}
 
 int lista::contador(int numero){
    int contador = 0; 
@@ -140,35 +170,18 @@ void lista::Ej1(int num1, int num2){
       cout<<"lista dos: "<<::endl;
       lista2.Mostrar();
 
-      int contador = 1; 
+      lista1.mezclar(&lista2);
 
-      nodo * aux ;
-      aux = lista2 primero;
-      while(contador <= 20){
-         if (contador % 2 != 0){
-            lista1.borrarPosicion(Fcontador(contador + 1));
-            lista1.borrarPosicion(Fcontador(contador + 2));
-            aux = aux -> siguiente;
-            aux = aux -> siguiente;
-            lista1.InsertarPos(aux -> valor, Fcontador(contador + 1));
-            aux = aux -> siguiente;
-            lista1.InsertarPos(aux -> valor, Fcontador(contador + 2));
-            lista1.Mostrar();
-            cout<<contador<<endl;
-            contador = contador + 3; 
-         }
-         else{
-            contador ++; 
-         }
-      }
+      cout<<"Resultado: "<<endl;
+      cout<<"Lista 1:"<<endl;
+      lista1.Mostrar();
+      cout<<"Lista 2:"<<endl;
+      lista2.Mostrar();
       
    }
    else{
       cout<<"error, los numeros no son de seis digitos"<<::endl; 
    }
-
-
-
 
 }
 bool lista::ValidacionEj2(int numero){
@@ -462,27 +475,9 @@ void lista::Mostrar()
 int main()
 {
    lista L1;//instancia null
-   
-    
- 
    cout<< "***************************************************************************************"<<endl;
-
-   //L1.ValidacionEj2(1234567);
-   /*L1.InsertarInicio(6);
-   L1.InsertarInicio(5);
-   L1.InsertarInicio(4);
-   L1.InsertarInicio(3);
-   L1.InsertarInicio(2);
-   L1.InsertarInicio(1);
-   L1.Mostrar();
-
-   L1.borrarPosicion(2);
-   L1.borrarPosicion(3);
-   L1.InsertarPos(13,2);
-   L1.InsertarPos(14,3);
-   L1.Mostrar();*/
-
    L1.Ej1(-123459,678901);
+   L1.ValidacionEj2(1234567);
    cin.get();
    return 0;
 }
