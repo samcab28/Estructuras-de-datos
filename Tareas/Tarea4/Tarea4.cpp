@@ -80,11 +80,7 @@ lista::~lista()
 }
 
 void lista::mezclar(lista * l2) {
-  /*
-   * Agregué esta validación ya que es posible que el método se utilice por sí solo
-   * en listas con valores más grandes (y que por ende no usaron insMix()), pero el método
-   * sólo funciona en listas con un largo que sea múltiplo de 6 y de igual tamaño en ambas
-   */ 
+
   int largoL = largoLista();
   int largoL2 = l2->largoLista();
   
@@ -94,10 +90,8 @@ void lista::mezclar(lista * l2) {
     nodo * auxL2Actual = l2->primero;
     nodo * auxL2Salto = l2->primero->siguiente->siguiente;
     while (auxL2Salto != NULL) {
-      // proceso
       auxActual->siguiente = auxL2Salto;
       auxL2Actual->siguiente->siguiente = auxSig;
-      // redireccionamiento
       auxActual = auxSig->siguiente;
       auxSig = auxActual->siguiente;
       auxL2Actual = auxL2Salto;
