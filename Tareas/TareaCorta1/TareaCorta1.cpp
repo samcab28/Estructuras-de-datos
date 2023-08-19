@@ -1,33 +1,37 @@
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <sstream>
+
+using namespace std;
 
 int main() {
-    // Nombre del archivo a leer
-    std::string nombreArchivo = "//Archivos//Arch1.txt";
+	
+	string linea;
+	
+	// Ejemplo 1: Usando eof
+	
+	ifstream archivo("\Tareas\TareaCorta1\Archivos\Arch1.txt");
+	
+	while (!archivo.eof()) {
+		getline(archivo, linea);
+		cout << linea << endl;
+	}
+	
+	archivo.close();
+	
+	cout << endl << endl;
+	
+	// Ejemplo 2: Usando getline
+	
+	ifstream archivo2("\Tareas\TareaCorta1\Archivos\Arch1.txt");
+	
+	int cont = 0;
+	
+	while (getline(archivo2, linea)) {
+		cout << linea << endl;
+	}
+	
+	archivo2.close();
 
-    // Abrir el archivo en modo lectura
-    std::ifstream archivo(nombreArchivo);
 
-    // Verificar si el archivo se abrió correctamente
-    if (!archivo.is_open()) {
-        std::cerr << "No se pudo abrir el archivo." << std::endl;
-        return 1; // Terminar el programa con código de error
-    }
-
-    // Leer y construir la palabra
-    std::string palabra;
-    std::string linea;
-    while (std::getline(archivo, linea)) {
-        palabra += linea;
-    }
-
-    // Cerrar el archivo
-    archivo.close();
-
-    // Imprimir la palabra formada
-    std::cout << "Palabra formada: " << palabra << std::endl;
-
-    return 0; // Terminar el programa exitosamente
+	return 0;
 }
