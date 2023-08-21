@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <cctype>
+
 using namespace std;
 
 class nodo {
@@ -23,8 +24,9 @@ public:
 
 class lista {
 private:
-    nodo* primero;
-
+    
+	nodo* primero;
+	
 public:
     lista() {
         primero = NULL;
@@ -39,12 +41,14 @@ public:
     void InsertarFinal(char v);
     void InsertarPos(char v, int pos);
     void Mostrar();
-    void LeerArchivos1();
-    void LeerArchivos2();
-    void LeerArchivos3();
-    void LeerArchivos4();
-    void LeerArchivos5();
+    string LeerArchivos1();
+    string LeerArchivos2();
+    string LeerArchivos3();
+    string LeerArchivos4();
+    string LeerArchivos5();
     int largoLista();
+    
+    
 };
 
 lista::~lista() {
@@ -56,7 +60,7 @@ lista::~lista() {
     }
 }
 
-void lista::LeerArchivos1()
+string lista::LeerArchivos1()
 {
 	lista l1;
 	cout<<""<<endl;
@@ -78,7 +82,6 @@ void lista::LeerArchivos1()
 
     archivo.close();
 
-    std::cout << "Contenido del archivo numero 1: " << contenidoArchivo << std::endl;
 	
 	while(!contenidoArchivo.empty()){
 		char temporal = contenidoArchivo[0];
@@ -87,9 +90,11 @@ void lista::LeerArchivos1()
 	}
 	
 	l1.Mostrar();
+	
+	return contenidoArchivo;
 }
 
-void lista::LeerArchivos2()
+string lista::LeerArchivos2()
 {
 	lista l2;
 	cout<<""<<endl;
@@ -111,7 +116,6 @@ void lista::LeerArchivos2()
 
     archivo.close();
 
-    std::cout << "Contenido del archivo numero 2: " << contenidoArchivo << std::endl;
 	
 	while(!contenidoArchivo.empty()){
 		char temporal = contenidoArchivo[0];
@@ -120,10 +124,11 @@ void lista::LeerArchivos2()
 	}
 	
 	l2.Mostrar();
+	return contenidoArchivo;
 }
 
 
-void lista::LeerArchivos3()
+string lista::LeerArchivos3()
 {
 	lista l3;
 	cout<<""<<endl;
@@ -145,7 +150,6 @@ void lista::LeerArchivos3()
 
     archivo.close();
 
-    std::cout << "Contenido del archivo numero 3: " << contenidoArchivo << std::endl;
 	
 	while(!contenidoArchivo.empty()){
 		char temporal = contenidoArchivo[0];
@@ -154,9 +158,10 @@ void lista::LeerArchivos3()
 	}
 	
 	l3.Mostrar();
+	return contenidoArchivo;
 }
 
-void lista::LeerArchivos4()
+string lista::LeerArchivos4()
 {
 	lista l4;
 	cout<<""<<endl;
@@ -178,7 +183,6 @@ void lista::LeerArchivos4()
 
     archivo.close();
 
-    std::cout << "Contenido del archivo numero 4: " << contenidoArchivo << std::endl;
 	
 	while(!contenidoArchivo.empty()){
 		char temporal = contenidoArchivo[0];
@@ -187,9 +191,10 @@ void lista::LeerArchivos4()
 	}
 	
 	l4.Mostrar();
+	return contenidoArchivo;
 }
 
-void lista::LeerArchivos5()
+string lista::LeerArchivos5()
 {
 	lista l5;
 	cout<<""<<endl;
@@ -211,7 +216,6 @@ void lista::LeerArchivos5()
 
     archivo.close();
 
-    std::cout << "Contenido del archivo numero 5: " << contenidoArchivo << std::endl;
 	
 	while(!contenidoArchivo.empty()){
 		char temporal = contenidoArchivo[0];
@@ -220,7 +224,11 @@ void lista::LeerArchivos5()
 	}
 	
 	l5.Mostrar();
+	return contenidoArchivo;
 }
+
+
+
 
 void lista::InsertarInicio(char v) {
     nodo* nuevo = new nodo(v);
@@ -276,17 +284,101 @@ int lista::largoLista() {
     return cont;
 }
 
+class cola 
+{
+   private:
+   int frente;
+   int fondo;
+   std::string Cola[5];
 
+public:
+       cola(){
+       frente = 0;
+       fondo = -1;
+       for(int i = 0; i < 5; i++){
+         Cola[i] = "";    
+           }
+       }
+       
+      bool ColaVacia(){ return fondo < frente; }        
+	  void insertar(const std::string &v);
+	  void eliminar();
+	  void imprimir();
+	  void consulta(int pos);
+	  void UsoMostrar();
+};
+
+void cola::consulta(int pos)
+{
+	cout<<"consulta de posicion de cola: "<<pos<<endl;
+	cout<<Cola[pos]<<endl;
+}
+
+void cola::insertar(const std::string &v)
+{
+    if(fondo < 5 - 1){
+        fondo++;
+        Cola[fondo] = v; 
+    }
+    else{
+        std::cout << "La cola esta llena" << std::endl;  
+    }
+}   
+
+void cola::eliminar()
+{
+    if(!ColaVacia()){
+        frente++;
+    }
+    else{
+        std::cout << "La cola esta vacia" << std::endl;  
+    }
+}  
+
+void cola::imprimir()
+{
+    for(int i = frente; i <= fondo; i++){ // Corregido el bucle para incluir el fondo
+        std::cout << Cola[i] << "->" << std::endl;    
+    }
+}
+
+void cola::UsoMostrar()
+{
+	lista ObjetoMostrar;
+	
+	ObjetoMostrar.Mostrar();
+}
 
 int main() {
-   lista Lista1;//instancia null
+   lista L;//instancia null
+   cola c;
    
    cout<< "***************************************************************************************"<<endl;
-	Lista1.LeerArchivos1();
-	Lista1.LeerArchivos2();
-	Lista1.LeerArchivos3();
-	Lista1.LeerArchivos4();
-	Lista1.LeerArchivos5();
+
+	string lista1;
+	string lista2;
+	string lista3;
+	string lista4;
+	string lista5;
+	
+	lista1 = L.LeerArchivos1();
+	lista2 = L.LeerArchivos2();
+	lista3 = L.LeerArchivos3();
+	lista4 = L.LeerArchivos4();
+	lista5 = L.LeerArchivos5();
+	
+	cout<<endl;
+	cout <<"inicio de cola:"<<endl; // Print the contents of the processed file
+	c.insertar(lista1);
+	c.insertar(lista2);
+	c.insertar(lista3);
+	c.insertar(lista4);
+	c.insertar(lista5);
+	
+	c.imprimir();
+	c.consulta(0);
+	c.consulta(1);
+	c.UsoMostrar();
 	
     return 0;
 }
