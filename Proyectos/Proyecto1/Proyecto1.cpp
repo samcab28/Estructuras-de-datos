@@ -1,5 +1,4 @@
 #include <iostream>
-#include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
@@ -7,43 +6,40 @@
 
 using namespace std;
 
-
-
 class nodo {
-   public:
+public:
     nodo(string v)
     {
-       valor = v;
-       siguiente = NULL;
-       anterior =NULL;
+        valor = v;
+        siguiente = NULL;
+        anterior = NULL;
     }
 
-nodo(string v, nodo * signodo)
+    nodo(string v, nodo* signodo)
     {
-       valor = v;
-       siguiente = signodo;
+        valor = v;
+        siguiente = signodo;
     }
 
-   private:
+private:
     string valor;
-    nodo *siguiente;
-    nodo *anterior;
-    
-        
-   friend class listaD;
+    nodo* siguiente;
+    nodo* anterior;
+
+    friend class PyC;
 };
 
-typedef nodo *pnodo;
+typedef nodo* pnodo;
 
-class listaD {
-   public:
-    listaD() { primero =  NULL; }
-    ~listaD();
-    
+class PyC {
+public:
+    PyC() { primero = NULL; }
+    ~PyC();
+
     void InsertarInicio(string v);
     void InsertarFinal(string v);
-    void InsertarPos (string v, int pos);
-    bool ListaVacia() { return primero == NULL; } 
+    void InsertarPos(string v, int pos);
+    bool ListaVacia() { return primero == NULL; }
     void BorrarFinal();
     void BorrarInicio();
     void BorrarPosicion(int pos);
@@ -54,15 +50,49 @@ class listaD {
     void AgregarPais();
     void ConsultarPaisPorCodigo();
     void BorrarPaisPorCodigo(int codigo);
-   private:
+
+private:
     pnodo primero;
-  
 };
 
-
-void listaD::BorrarPaisPorCodigo(int codigo) {
+void PyC::ConsultarPaisPorCodigo() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista esta vacia." << endl;
+        return;
+    }
+
+    cout << "Ingrese el codigo del pais a consultar: ";
+    int codigo;
+    cin >> codigo;
+
+    pnodo aux = primero;
+    bool encontrado = false;
+
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+            if (codigoEnLista == codigo) {
+                encontrado = true;
+                string nombre = aux->valor.substr(pos + 1);
+                cout << "Codigo: " << codigoEnLista << endl;
+                cout << "Nombre: " << nombre << endl;
+                break;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontro un pais con el codigo " << codigo << " en la lista." << endl;
+    }
+}
+
+void PyC::BorrarPaisPorCodigo(int codigo) {
+    if (ListaVacia()) {
+        cout << "La lista esta vacia." << endl;
         return;
     }
 
@@ -79,14 +109,16 @@ void listaD::BorrarPaisPorCodigo(int codigo) {
                 encontrado = true;
                 if (aux == primero) {
                     BorrarInicio();
-                } else if (aux->siguiente == NULL) {
+                }
+                else if (aux->siguiente == NULL) {
                     BorrarFinal();
-                } else {
+                }
+                else {
                     aux->anterior->siguiente = aux->siguiente;
                     aux->siguiente->anterior = aux->anterior;
                     delete aux;
                 }
-                cout << "País con código " << codigo << " borrado exitosamente." << endl;
+                cout << "Pais con codigo " << codigo << " borrado exitosamente." << endl;
                 break;
             }
         }
@@ -94,70 +126,53 @@ void listaD::BorrarPaisPorCodigo(int codigo) {
     }
 
     if (!encontrado) {
-        cout << "No se encontró un país con el código " << codigo << " en la lista." << endl;
+        cout << "No se encontro un pais con el codigo " << codigo << " en la lista." << endl;
     }
 }
 
-
-void listaD::ConsultarPaisPorCodigo()
+void PyC::AgregarPais()
 {
-            cout << "Ingrese el código del país que desea consultar: ";
-            int codigo;
-            cin >> codigo;
-
-            pnodo aux = primero; // Get the first node of the list
-            int posicion = 1;
-            bool encontrado = false;
-
-            while (aux) {
-                size_t pos = aux->valor.find(';');
-                if (pos != string::npos) {
-                    int codigoEnLista;
-                    istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
-
-                    if (codigoEnLista == codigo) {
-                        encontrado = true;
-                        cout << "Código de país: " << codigoEnLista << endl;
-                        cout << "Nombre de país: " << aux->valor.substr(pos + 1) << endl;
-                        cout << "Posición en la lista: " << posicion << endl;
-                        break;
-                    }
-                }
-                aux = aux->siguiente;
-                posicion++;
-    }
-
-    if (!encontrado) {
-        cout << "País no encontrado para el código " << codigo << endl;
-    }
-}
-
-void listaD::AgregarPais()
-{
-    cout << "Ingrese el código del país (parte entera): ";
+    cout << "Ingrese el codigo del pais (parte entera): ";
     int codigo;
     cin >> codigo;
-    cin.ignore();  // Limpia el buffer del salto de línea
+    cin.ignore();  // Limpia el buffer del salto de linea
 
-    cout << "Ingrese el nombre del país: ";
+    cout << "Ingrese el nombre del pais: ";
     string nombre;
     getline(cin, nombre);
 
-    // Usar ostringstream para convertir el entero a cadena
-    ostringstream ss;
-    ss << codigo;
-    string codigoStr = ss.str();
+    // Verificar si el codigo ya existe en la lista
+    bool codigoExistente = false;
+    pnodo aux = primero;
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
 
-    string pais = codigoStr + ";" + nombre;
-    InsertarFinal(pais);
-    cout << "País agregado exitosamente." << endl;
+            if (codigoEnLista == codigo) {
+                codigoExistente = true;
+                cout << "Error: Ya existe un pais con el codigo " << codigo << "." << endl;
+                break;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!codigoExistente) {
+        // Usar ostringstream para convertir el entero a cadena
+        ostringstream ss;
+        ss << codigo;
+        string codigoStr = ss.str();
+
+        string pais = codigoStr + ";" + nombre;
+        InsertarFinal(pais);
+        cout << "Pais agregado exitosamente." << endl;
+    }
 }
-    
-void listaD::CargarDesdeArchivo()
+
+void PyC::CargarDesdeArchivo()
 {
-	
-	
-	
     ifstream archivo("Paises.txt");
     if (!archivo.is_open()) {
         cout << "No se pudo abrir el archivo." << endl;
@@ -170,7 +185,28 @@ void listaD::CargarDesdeArchivo()
         if (pos != string::npos) {
             string codigo = linea.substr(0, pos);
             string nombre = linea.substr(pos + 1);
-            InsertarFinal(codigo + ";" + nombre);
+            
+            bool existe = false;
+            pnodo aux = primero;
+            
+            while (aux) {
+                size_t posAux = aux->valor.find(';');
+                if (posAux != string::npos) {
+                    string codigoEnLista = aux->valor.substr(0, posAux);
+                    
+                    if (codigoEnLista == codigo) {
+                        existe = true;
+                        cout << "Pais con codigo " << codigo << " ya existe en la lista." << endl;
+                        break;
+                    }
+                }
+                aux = aux->siguiente;
+            }
+            
+            if (!existe) {
+                InsertarFinal(codigo + ";" + nombre);
+                cout << "Pais con codigo " << codigo << " agregado exitosamente." << endl;
+            }
         }
     }
 
@@ -178,10 +214,10 @@ void listaD::CargarDesdeArchivo()
 }
 
 
-void listaD::Paises()
+void PyC::Paises()
 {
 	
-	listaD paises;
+	PyC paises;
 	
 	//leer el archivo de paises en una lista doble
 	
@@ -242,7 +278,7 @@ void listaD::Paises()
 }
 
 
-listaD::~listaD()
+PyC::~PyC()
 {
    pnodo aux;
    
@@ -254,7 +290,7 @@ listaD::~listaD()
    primero=NULL;
 }
 
-int listaD::largoLista(){
+int PyC::largoLista(){
     int cont=0;
 
     pnodo aux;
@@ -271,7 +307,7 @@ int listaD::largoLista(){
     
 }
 
-void listaD::InsertarInicio(string v)
+void PyC::InsertarInicio(string v)
 {
    if (ListaVacia())
    {
@@ -285,13 +321,8 @@ void listaD::InsertarInicio(string v)
      primero->siguiente->anterior=primero;
    }
 }
-//Otra forma ultimas dos lineas
-// pnodo nuevo=new nodo(v);
-//nuevo->siguiente=primero;
-//primero->anterior=nuevo;
-//primero=nuevo;
  
-void listaD::InsertarFinal(string v)
+void PyC::InsertarFinal(string v)
 {
    if (ListaVacia())
    {
@@ -307,13 +338,8 @@ void listaD::InsertarFinal(string v)
         aux->siguiente->anterior=aux;       
       }    
 }
-//Otra forma cambia las ultimas dos instrucciones
-//pnodo nuevo= new nodo(v);
-//nuevo->anterior=aux;
-//aux->siguiente=nuevo;
 
-
-void listaD::InsertarPos(string v,int pos)
+void PyC::InsertarPos(string v,int pos)
 {
    if (ListaVacia())
     {
@@ -341,7 +367,7 @@ void listaD::InsertarPos(string v,int pos)
         }
 }
       
-void listaD::BorrarFinal()
+void PyC::BorrarFinal()
 {
     if (ListaVacia()){
      cout << "No hay elementos en la lista:" << endl;
@@ -370,7 +396,7 @@ void listaD::BorrarFinal()
         }
 }
 
-void listaD::BorrarInicio()
+void PyC::BorrarInicio()
 {
     if (ListaVacia()){
      cout << "No hay elementos en la lista:" << endl;
@@ -392,9 +418,7 @@ void listaD::BorrarInicio()
         }
 }
 
-
-
-void listaD:: BorrarPosicion(int pos)
+void PyC:: BorrarPosicion(int pos)
 {
      if(ListaVacia())
      {
@@ -434,7 +458,7 @@ void listaD:: BorrarPosicion(int pos)
 }
  
 
-void listaD::Mostrar()
+void PyC::Mostrar()
 {
    nodo *aux;
    
@@ -449,7 +473,7 @@ void listaD::Mostrar()
 
 int main()
 {
-   listaD Lista;
+   PyC Lista;
    
 	Lista.Paises();
 	//Lista.CargarDesdeArchivo();
