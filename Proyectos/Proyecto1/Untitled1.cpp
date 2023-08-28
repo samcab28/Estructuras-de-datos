@@ -7,34 +7,34 @@
 
 using namespace std;
 
-class nodoCIU {
+class nodoPRO {
 public:
-    nodoCIU(const string &v)
+    nodoPRO(const string &v)
     {
         valor = v;
         siguiente = NULL;
         anterior = NULL;
     }
 
-    nodoCIU(const string &v, nodoCIU *signodoCIU)
+    nodoPRO(const string &v, nodoPRO *signodoPRO)
     {
         valor = v;
-        siguiente = signodoCIU;
+        siguiente = signodoPRO;
     }
 
 private:
     string valor;
-    nodoCIU *siguiente;
-    nodoCIU *anterior;
+    nodoPRO *siguiente;
+    nodoPRO *anterior;
 
-    friend class Ciudad;
+    friend class producto;
 };
-typedef nodoCIU *pnodoCIU;
+typedef nodoPRO *pnodoPRO;
 
-class Ciudad {
+class producto {
 public:
-    Ciudad() { primero = NULL; }
-    ~Ciudad();
+    producto() { primero = NULL; }
+    ~producto();
 
     void InsertarInicio(string v);
     void InsertarFinal(string v);
@@ -42,37 +42,37 @@ public:
     bool ListaVacia() { return primero == NULL; }
     void Imprimir();
     void Borrar(string v);
-    void MostrarCIU();
+    void MostrarPRO();
     void BorrarFinal();
     void BorrarInicio();
     void BorrarPosicion(int pos);
     int largoLista();
-    void CargarDesdeArchivoCIU();
-    void CiudadsCIU();
-    void ComprobacionCIU();
-    void BorrarPorCodigosCIU();
+    void CargarDesdeArchivoPRO();
+    void productosPRO();
+    void ComprobacionPRO();
+    void BorrarPorCodigosPRO();
 private:
-    pnodoCIU primero;
+    pnodoPRO primero;
 };
 
 
-void Ciudad::CiudadsCIU()
+void producto::productosPRO()
 {
 	
 	
 	//leer el archivo de paises en una lista doble
 	
-	CargarDesdeArchivoCIU();
+	CargarDesdeArchivoPRO();
 
 	bool ejecucion = true;
-	cout<<"bienvenido a Ciudades"<<endl;
+	cout<<"bienvenido a productos"<<endl;
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"para consultar Ciudades digite 1: "<<endl;
-		cout<<"para ver todos los Ciudades digite 2: "<<endl;
-		cout<<"para agregar un Ciudad digite 3:"<<endl;
-		cout<<"para borrar un Ciudad digite 4: "<<endl;
+		cout<<"para consultar productos digite 1: "<<endl;
+		cout<<"para ver todos los productos digite 2: "<<endl;
+		cout<<"para agregar un producto digite 3:"<<endl;
+		cout<<"para borrar un producto digite 4: "<<endl;
 		cout<<"para salir digite 5: "<<endl;
 		int x;
 		
@@ -83,32 +83,32 @@ void Ciudad::CiudadsCIU()
 		{
 			case 1:
 				cout<<""<<endl;
-				cout<<"opcion 1, consultar un Ciudad"<<endl;
-				cout<<"Ciudads disponibles: "<<endl;
-				MostrarCIU();
-				ComprobacionCIU();
+				cout<<"opcion 1, consultar un producto"<<endl;
+				cout<<"productos disponibles: "<<endl;
+				MostrarPRO();
+				ComprobacionPRO();
 				break;
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2, ver todos los Ciudads"<<endl;
-				cout<<"se mostraran todos los Ciudads a continuacion: "<<endl;
-				MostrarCIU();
+				cout<<"opcion 2, ver todos los productos"<<endl;
+				cout<<"se mostraran todos los productos a continuacion: "<<endl;
+				MostrarPRO();
 				break;		
 			case 3:
 				cout<<""<<endl;
-				cout<<"opcion 3, agregar un Ciudad"<<endl;
+				cout<<"opcion 3, agregar un producto"<<endl;
 
 				break;			
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, borrar un Ciudad"<<endl;
-				cout<<"Ciudads disponibles: "<<endl;
-				MostrarCIU();
-				BorrarPorCodigosCIU();
+				cout<<"opcion 4, borrar un producto"<<endl;
+				cout<<"productos disponibles: "<<endl;
+				MostrarPRO();
+				BorrarPorCodigosPRO();
 				break;	
 			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 5, salir a menu principal"<<endl;
+				cout<<"opcion 5, salir a producto principal"<<endl;
 				ejecucion = false;	
 				break;
 			default:
@@ -121,31 +121,43 @@ void Ciudad::CiudadsCIU()
 }
 
 
-void Ciudad::BorrarPorCodigosCIU() {
+void producto::BorrarPorCodigosPRO() {
     if (ListaVacia()) {
         cout << "La lista está vacía." << endl;
         return;
     }
     
-    int codigo1, codigo2;
+    int codigo1, codigo2, codigo3,codigo4, codigo5;
     cout << "Ingrese el primer codigo: " << endl;
     cin >> codigo1;
 
     cout << "Ingrese el segundo codigo: " << endl;
     cin >> codigo2;
 
-
+    cout << "Ingrese el tercer codigo: " << endl;
+    cin >> codigo3;
     
-    std::stringstream ss1, ss2;
+    cout << "Ingrese el cuarto codigo: " << endl;
+    cin >> codigo4;
+    
+    cout << "Ingrese el quinto codigo: " << endl;
+    cin >> codigo5;
+
+    std::stringstream ss1, ss2, ss3,ss4,ss5;
     ss1 << codigo1;
     ss2 << codigo2;
+    ss3 << codigo3;
+    ss4 << codigo4;
+    ss4 << codigo5;
 
     string num1 = ss1.str();
     string num2 = ss2.str();
- 
+    string num3 = ss3.str();
+    string num4 = ss4.str();
+    string num5 = ss5.str();
 
-    string codigosBuscados = num1 + ";" + num2;
-    pnodoCIU aux = primero;
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+    pnodoPRO aux = primero;
     bool encontrado = false;
 
     while (aux) {
@@ -157,14 +169,14 @@ void Ciudad::BorrarPorCodigosCIU() {
             } else if (aux->siguiente == primero) {
                 BorrarFinal();
             } else {
-                pnodoCIU temp = aux;
+                pnodoPRO temp = aux;
                 aux->anterior->siguiente = aux->siguiente;
                 aux->siguiente->anterior = aux->anterior;
                 aux = aux->siguiente;
                 delete temp;
             }
 
-            cout << "nodoCIU con los códigos " << codigosBuscados << " borrado exitosamente." << endl;
+            cout << "nodoPRO con los códigos " << codigosBuscados << " borrado exitosamente." << endl;
             break;
         }
         aux = aux->siguiente;
@@ -176,39 +188,51 @@ void Ciudad::BorrarPorCodigosCIU() {
 }
 
 
-void Ciudad::ComprobacionCIU() {
+void producto::ComprobacionPRO() {
     if (ListaVacia()) {
         cout << "La lista está vacía." << endl;
         return;
     }
 
-    int codigo1, codigo2;
-    cout << "Ingrese primer codigo: " << endl;
+    int codigo1, codigo2, codigo3,codigo4,codigo5;
+    cout << "Ingrese el primer codigo: " << endl;
     cin >> codigo1;
 
     cout << "Ingrese el segundo codigo: " << endl;
     cin >> codigo2;
 
+    cout << "Ingrese el tercer codigo: " << endl;
+    cin >> codigo3;
+    
+    cout << "Ingrese el cuarto codigo: " << endl;
+    cin >> codigo4;
+    
+    cout << "Ingrese el quinto codigo: " << endl;
+    cin >> codigo5;
 
-    std::stringstream ss1, ss2, ss3;
+    std::stringstream ss1, ss2, ss3,ss4,ss5;
     ss1 << codigo1;
     ss2 << codigo2;
-
+    ss3 << codigo3;
+    ss4 << codigo4;
+    ss5 << codigo5;
 
     string num1 = ss1.str();
     string num2 = ss2.str();
- 
+    string num3 = ss3.str();
+    string num4 = ss4.str();
+    string num5 = ss5.str();
 
-    string codigosBuscados = num1 + ";" + num2;
-    pnodoCIU aux = primero;
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+    pnodoPRO aux = primero;
     bool encontrado = false;
 
     while (aux) {
-        // Buscar el patrón de códigos (123;456;789) en el valor del nodoCIU
+        // Buscar el patrón de códigos (123;456;789) en el valor del nodoPRO
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
 
-            // Extraer el nombre del nodoCIU (parte después del último punto y coma)
+            // Extraer el nombre del nodoPRO (parte después del último punto y coma)
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
             string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
 
@@ -225,31 +249,36 @@ void Ciudad::ComprobacionCIU() {
 }
 
 
-void Ciudad::CargarDesdeArchivoCIU() {
-    set<string> numero2_set;  
+void producto::CargarDesdeArchivoPRO() {
+    set<string> numero4_set;  
 
-    ifstream archivo("Ciudades.txt");
+    ifstream archivo("Productos.txt");
     if (archivo.is_open())
     {
         string linea;
         while (getline(archivo, linea))
         {
             istringstream iss(linea);
-            string numero1, numero2, nombre;
+            string numero1, numero2, numero3,numero4,numero5, nombre,numero6,numero7;
             getline(iss, numero1, ';');
             getline(iss, numero2, ';');
+            getline(iss, numero3, ';');
+            getline(iss, numero4, ';');
+            getline(iss, numero5, ';');
             getline(iss, nombre);
+            getline(iss, numero6, ';');
+            getline(iss, numero7, ';');
 
-            // Verificar si NUMERO3 es diferente de los anteriores
-            if (numero2_set.find(numero2) == numero2_set.end())
+            // Verificar si NUPRORO3 es diferente de los anteriores
+            if (numero4_set.find(numero4) == numero4_set.end())
             {
-                numero2_set.insert(numero2);  // Agregar a conjunto de NUMERO3
-                string nuevo_valor = numero1 + ";" + numero2 +  ";" + nombre;
+                numero4_set.insert(numero4);  // Agregar a conjunto de NUPRORO3
+                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4+ ";"+ numero5+ ";" + nombre +";" + numero6 + ";" + numero7;
                 InsertarFinal(nuevo_valor);
             }
             else
             {
-                cout << "Advertencia: NUMERO2 debe ser diferente a los otros NUMERO2 anteriores." << endl;
+                cout << "Advertencia: NUPRORO3 debe ser diferente a los otros NUPRORO3 anteriores." << endl;
             }
         }
         archivo.close();
@@ -260,10 +289,10 @@ void Ciudad::CargarDesdeArchivoCIU() {
     }
 }
                 
-Ciudad::~Ciudad()
+producto::~producto()
 {
-   pnodoCIU aux;
-   pnodoCIU temp;
+   pnodoPRO aux;
+   pnodoPRO temp;
    
    while(primero) {
       temp = primero;
@@ -279,11 +308,11 @@ Ciudad::~Ciudad()
    primero= NULL;
 }
                            //  aux
-int Ciudad::largoLista() //3-4-5    cont=0 1 2 3
+int producto::largoLista() //3-4-5    cont=0 1 2 3
 {
     int cont=0;
 
-    pnodoCIU aux = primero->siguiente;
+    pnodoPRO aux = primero->siguiente;
     if(ListaVacia())
     {
         return cont;
@@ -300,18 +329,18 @@ int Ciudad::largoLista() //3-4-5    cont=0 1 2 3
     
 }
 
-void Ciudad::InsertarInicio(string v)
+void producto::InsertarInicio(string v)
 {
   
    if (ListaVacia())
    {
-     primero = new nodoCIU(v);
+     primero = new nodoPRO(v);
      primero->anterior=primero;
      primero->siguiente=primero;
    }  
    else
    {
-     pnodoCIU nuevo=new nodoCIU (v);//1
+     pnodoPRO nuevo=new nodoPRO (v);//1
      nuevo->siguiente=primero;//2
      nuevo->anterior= primero->anterior;//3
      primero->anterior->siguiente=nuevo;//4
@@ -320,17 +349,17 @@ void Ciudad::InsertarInicio(string v)
    }
 }
  
-void Ciudad::InsertarFinal(string v)
+void producto::InsertarFinal(string v)
 {
    if (ListaVacia())
      {
-     primero = new nodoCIU(v);
+     primero = new nodoPRO(v);
      primero->anterior=primero;
      primero->siguiente=primero;
    }  
    else
    { 
-     pnodoCIU nuevo = new nodoCIU(v);//1
+     pnodoPRO nuevo = new nodoPRO(v);//1
      nuevo->anterior = primero->anterior;//2
      /*nuevo->siguiente=primero->anterior->siguiente;opcion para intruccion 3*/
 	 nuevo->siguiente=primero;// coloca alguna de la dos 3
@@ -340,14 +369,15 @@ void Ciudad::InsertarFinal(string v)
 }
 
 
-void Ciudad::InsertarPos(string v,int pos)
+void producto::InsertarPos(string v,int pos)
 {
    if (ListaVacia())
    {
-     primero = new nodoCIU(v);
+     primero = new nodoPRO(v);
      primero->anterior=primero;
      primero->siguiente=primero;
    } 
+   else
    {
       if(pos <=1)
         InsertarInicio(v);    
@@ -357,14 +387,14 @@ void Ciudad::InsertarPos(string v,int pos)
           InsertarFinal(v);
         else
         {     
-             pnodoCIU aux= primero;
+             pnodoPRO aux= primero;
              int i =2;
              while((i != pos )&&(aux->siguiente!= primero))
              {
                    i++;
                    aux=aux->siguiente;
              }
-             pnodoCIU nuevo= new nodoCIU(v);//1
+             pnodoPRO nuevo= new nodoPRO(v);//1
              nuevo->siguiente=aux->siguiente;//2
              aux->siguiente=nuevo;//3
              aux->siguiente->anterior=aux;//4 o puede nuevo->anterio=aux
@@ -374,7 +404,7 @@ void Ciudad::InsertarPos(string v,int pos)
    }
 }   
 
-void Ciudad::BorrarFinal()
+void producto::BorrarFinal()
 {
     if (ListaVacia())
       cout << "No hay elementos en la lista:" << endl;
@@ -382,16 +412,16 @@ void Ciudad::BorrarFinal()
     {
       if (primero->siguiente == primero)
       {
-        pnodoCIU temp= primero;
+        pnodoPRO temp= primero;
         primero= NULL;
         delete temp;
       }
       else 
       {
-         pnodoCIU aux = primero; //1
+         pnodoPRO aux = primero; //1
          while (aux->siguiente->siguiente != primero)
               aux = aux->siguiente;
-         pnodoCIU temp = aux->siguiente;//2
+         pnodoPRO temp = aux->siguiente;//2
          aux->siguiente= primero;//3
          primero->anterior=aux;//4
          delete temp;//5
@@ -399,7 +429,7 @@ void Ciudad::BorrarFinal()
     }
 }
 
-void Ciudad::BorrarInicio()
+void producto::BorrarInicio()
 {
     if (ListaVacia())
       cout << "No hay elementos en la lista:" << endl;
@@ -407,14 +437,14 @@ void Ciudad::BorrarInicio()
     {
      if (primero->siguiente == primero)
      {
-        pnodoCIU temp= primero;
+        pnodoPRO temp= primero;
         primero= NULL;
         delete temp;
      }
      else
      {
-        pnodoCIU aux = primero->anterior;//1
-        pnodoCIU temp= primero;//2
+        pnodoPRO aux = primero->anterior;//1
+        pnodoPRO temp= primero;//2
         aux->siguiente=primero->siguiente;//3
         primero=primero->siguiente; //4
         primero->anterior=aux;//5
@@ -423,7 +453,7 @@ void Ciudad::BorrarInicio()
     }
 }
 
-void Ciudad:: BorrarPosicion(int pos)
+void producto:: BorrarPosicion(int pos)
 {
     
   if(ListaVacia())
@@ -447,13 +477,13 @@ void Ciudad:: BorrarPosicion(int pos)
     else
     {
        int cont=2;
-       pnodoCIU aux=  primero;
+       pnodoPRO aux=  primero;
        while(cont<pos)
        {
          aux=aux->siguiente;
          cont++;
        }
-       pnodoCIU temp = aux->siguiente;
+       pnodoPRO temp = aux->siguiente;
        aux->siguiente=aux->siguiente->siguiente;
        aux->siguiente->anterior=aux;
        delete temp;
@@ -462,9 +492,9 @@ void Ciudad:: BorrarPosicion(int pos)
   }
 }
 
-void Ciudad::MostrarCIU()
+void producto::MostrarPRO()
 {
-   pnodoCIU aux=primero;
+   pnodoPRO aux=primero;
    while(aux->siguiente!=primero)
      {
                                 
@@ -472,14 +502,21 @@ void Ciudad::MostrarCIU()
       aux = aux->siguiente;
      }
      cout<<aux->valor<<"->";
+     //EXTRA
      cout<<endl;
-
+    /* cout<< "primero";
+     cout<<endl;
+     cout<<aux->siguiente->valor<<"->";
+     cout<<endl;
+     cout<< "ultimo";
+     cout<<endl;
+     cout<<primero->anterior->valor<<"->";*/
 } 
 
 
 int main(){
-	Ciudad lista;
-	lista.CiudadsCIU();
+	producto listaproducto;
+	listaproducto.productosPRO();
 	return 0;
 }
 
