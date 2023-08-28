@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <cctype>
+#include <set>
 
 using namespace std;
 
@@ -945,11 +946,984 @@ void Clientes::MostrarCl()
 		cout << endl;
    }
 }
+
+
+class nodoRE {
+public:
+    nodoRE(const string &v)
+    {
+        valor = v;
+        siguiente = NULL;
+        anterior = NULL;
+    }
+
+    nodoRE(const string &v, nodoRE *signodoRE)
+    {
+        valor = v;
+        siguiente = signodoRE;
+    }
+
+private:
+    string valor;
+    nodoRE *siguiente;
+    nodoRE *anterior;
+
+    friend class Restaurante;
+};
+typedef nodoRE *pnodoRE;
+
+class Restaurante {
+public:
+    Restaurante() { primero = NULL; }
+    ~Restaurante();
+
+    void InsertarInicio(string v);
+    void InsertarFinal(string v);
+    void InsertarPos(string v, int pos);
+    bool ListaVacia() { return primero == NULL; }
+    void Imprimir();
+    void Borrar(string v);
+    void MostrarRE();
+    void BorrarFinal();
+    void BorrarInicio();
+    void BorrarPosicion(int pos);
+    int largoLista();
+    void CargarDesdeArchivoRE();
+    void restaurantesRE();
+    void ComprobacionRE();
+    void BorrarPorCodigosRE();
+private:
+    pnodoRE primero;
+};
+
+
+void Restaurante::restaurantesRE()
+{
+	
+	
+	//leer el archivo de paises en una lista doble
+	
+	CargarDesdeArchivoRE();
+
+	bool ejecucion = true;
+	cout<<"bienvenido a restaurantes"<<endl;
+	
+	while(ejecucion){
+		cout<<""<<endl;
+		cout<<"para consultar restaurantes digite 1: "<<endl;
+		cout<<"para ver todos los restaurantes digite 2: "<<endl;
+		cout<<"para agregar un restaurante digite 3:"<<endl;
+		cout<<"para borrar un restaurante digite 4: "<<endl;
+		cout<<"para salir digite 5: "<<endl;
+		int x;
+		
+		cin >> x;
+		
+		
+		switch(x)
+		{
+			case 1:
+				cout<<""<<endl;
+				cout<<"opcion 1, consultar un restaurante"<<endl;
+				cout<<"restaurantes disponibles: "<<endl;
+				MostrarRE();
+				ComprobacionRE();
+				break;
+			case 2:
+				cout<<""<<endl;
+				cout<<"opcion 2, ver todos los restaurantes"<<endl;
+				cout<<"se mostraran todos los restaurantes a continuacion: "<<endl;
+				MostrarRE();
+				break;		
+			case 3:
+				cout<<""<<endl;
+				cout<<"opcion 3, agregar un restaurante"<<endl;
+
+				break;			
+			case 4: 
+				cout<<""<<endl;
+				cout<<"opcion 4, borrar un restaurante"<<endl;
+				cout<<"restaurantes disponibles: "<<endl;
+				MostrarRE();
+				BorrarPorCodigosRE();
+				break;	
+			case 5: 
+				cout<<""<<endl;
+				cout<<"opcion 5, salir a menu principal"<<endl;
+				ejecucion = false;	
+				break;
+			default:
+				cout<<""<<endl;
+				cout<<"error opcion incorrecta"<<endl;
+				break;			
+		}
+	}
+
+}
+
+
+void Restaurante::BorrarPorCodigosRE() {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return;
+    }
+    
+    int codigo1, codigo2, codigo3;
+    cout << "Ingrese el primer codigo: " << endl;
+    cin >> codigo1;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo2;
+
+    cout << "Ingrese el tercer codigo: " << endl;
+    cin >> codigo3;
+    
+    std::stringstream ss1, ss2, ss3;
+    ss1 << codigo1;
+    ss2 << codigo2;
+    ss3 << codigo3;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+    string num3 = ss3.str();
+
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3;
+    pnodoRE aux = primero;
+    bool encontrado = false;
+
+    while (aux) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+
+            if (aux == primero) {
+                BorrarInicio();
+            } else if (aux->siguiente == primero) {
+                BorrarFinal();
+            } else {
+                pnodoRE temp = aux;
+                aux->anterior->siguiente = aux->siguiente;
+                aux->siguiente->anterior = aux->anterior;
+                aux = aux->siguiente;
+                delete temp;
+            }
+
+            cout << "nodoRE con los códigos " << codigosBuscados << " borrado exitosamente." << endl;
+            break;
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los códigos en la lista." << endl;
+    }
+}
+
+
+void Restaurante::ComprobacionRE() {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return;
+    }
+
+    int codigo1, codigo2, codigo3;
+    cout << "Ingrese el primer codigo: " << endl;
+    cin >> codigo1;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo2;
+
+    cout << "Ingrese el tercer codigo: " << endl;
+    cin >> codigo3;
+
+    std::stringstream ss1, ss2, ss3;
+    ss1 << codigo1;
+    ss2 << codigo2;
+    ss3 << codigo3;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+    string num3 = ss3.str();
+
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3;
+    pnodoRE aux = primero;
+    bool encontrado = false;
+
+    while (aux) {
+        // Buscar el patrón de códigos (123;456;789) en el valor del nodoRE
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+
+            // Extraer el nombre del nodoRE (parte después del último punto y coma)
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+
+            cout << "Códigos encontrados en la lista: " << codigosBuscados << endl;
+            cout << "Nombre asociado: " << nombre << endl;
+            break;
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los códigos en la lista." << endl;
+    }
+}
+
+
+void Restaurante::CargarDesdeArchivoRE() {
+    set<string> numero3_set;  
+
+    ifstream archivo("Restaurantes.txt");
+    if (archivo.is_open())
+    {
+        string linea;
+        while (getline(archivo, linea))
+        {
+            istringstream iss(linea);
+            string numero1, numero2, numero3, nombre;
+            getline(iss, numero1, ';');
+            getline(iss, numero2, ';');
+            getline(iss, numero3, ';');
+            getline(iss, nombre);
+
+            // Verificar si NUMERO3 es diferente de los anteriores
+            if (numero3_set.find(numero3) == numero3_set.end())
+            {
+                numero3_set.insert(numero3);  // Agregar a conjunto de NUMERO3
+                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + nombre;
+                InsertarFinal(nuevo_valor);
+            }
+            else
+            {
+                cout << "Advertencia: NUMERO3 debe ser diferente a los otros NUMERO3 anteriores." << endl;
+            }
+        }
+        archivo.close();
+    }
+    else
+    {
+        cout << "No se pudo abrir el archivo." << endl;
+    }
+}
+                
+Restaurante::~Restaurante()
+{
+   pnodoRE aux;
+   pnodoRE temp;
+   
+   while(primero) {
+      temp = primero;
+      aux=primero;
+      primero = primero->siguiente;
+      while (aux->siguiente!=primero)
+           aux= aux->siguiente;
+      aux->siguiente=primero;
+      
+      delete temp;
+      primero=NULL;
+   }
+   primero= NULL;
+}
+                           //  aux
+int Restaurante::largoLista() //3-4-5    cont=0 1 2 3
+{
+    int cont=0;
+
+    pnodoRE aux = primero->siguiente;
+    if(ListaVacia())
+    {
+        return cont;
+    }
+    else
+    {   cont=cont+1;
+        while(aux!=primero)
+        {
+          aux=aux->siguiente;
+          cont++;
+        }
+    return cont;
+    }
+    
+}
+
+void Restaurante::InsertarInicio(string v)
+{
+  
+   if (ListaVacia())
+   {
+     primero = new nodoRE(v);
+     primero->anterior=primero;
+     primero->siguiente=primero;
+   }  
+   else
+   {
+     pnodoRE nuevo=new nodoRE (v);//1
+     nuevo->siguiente=primero;//2
+     nuevo->anterior= primero->anterior;//3
+     primero->anterior->siguiente=nuevo;//4
+     nuevo->siguiente->anterior=nuevo;//5
+     primero= nuevo;//6
+   }
+}
+ 
+void Restaurante::InsertarFinal(string v)
+{
+   if (ListaVacia())
+     {
+     primero = new nodoRE(v);
+     primero->anterior=primero;
+     primero->siguiente=primero;
+   }  
+   else
+   { 
+     pnodoRE nuevo = new nodoRE(v);//1
+     nuevo->anterior = primero->anterior;//2
+     /*nuevo->siguiente=primero->anterior->siguiente;opcion para intruccion 3*/
+	 nuevo->siguiente=primero;// coloca alguna de la dos 3
+     primero->anterior->siguiente=nuevo;//4
+     primero->anterior=nuevo;//5
+    }    
+}
+
+
+void Restaurante::InsertarPos(string v,int pos)
+{
+   if (ListaVacia())
+   {
+     primero = new nodoRE(v);
+     primero->anterior=primero;
+     primero->siguiente=primero;
+   } 
+   else
+   {
+      if(pos <=1)
+        InsertarInicio(v);    
+       else
+       {
+        if (pos==largoLista())
+          InsertarFinal(v);
+        else
+        {     
+             pnodoRE aux= primero;
+             int i =2;
+             while((i != pos )&&(aux->siguiente!= primero))
+             {
+                   i++;
+                   aux=aux->siguiente;
+             }
+             pnodoRE nuevo= new nodoRE(v);//1
+             nuevo->siguiente=aux->siguiente;//2
+             aux->siguiente=nuevo;//3
+             aux->siguiente->anterior=aux;//4 o puede nuevo->anterio=aux
+             nuevo->siguiente->anterior=nuevo;  //5                         
+        }
+       }
+   }
+}   
+
+void Restaurante::BorrarFinal()
+{
+    if (ListaVacia())
+      cout << "No hay elementos en la lista:" << endl;
+    else
+    {
+      if (primero->siguiente == primero)
+      {
+        pnodoRE temp= primero;
+        primero= NULL;
+        delete temp;
+      }
+      else 
+      {
+         pnodoRE aux = primero; //1
+         while (aux->siguiente->siguiente != primero)
+              aux = aux->siguiente;
+         pnodoRE temp = aux->siguiente;//2
+         aux->siguiente= primero;//3
+         primero->anterior=aux;//4
+         delete temp;//5
+      }
+    }
+}
+
+void Restaurante::BorrarInicio()
+{
+    if (ListaVacia())
+      cout << "No hay elementos en la lista:" << endl;
+    else
+    {
+     if (primero->siguiente == primero)
+     {
+        pnodoRE temp= primero;
+        primero= NULL;
+        delete temp;
+     }
+     else
+     {
+        pnodoRE aux = primero->anterior;//1
+        pnodoRE temp= primero;//2
+        aux->siguiente=primero->siguiente;//3
+        primero=primero->siguiente; //4
+        primero->anterior=aux;//5
+        delete temp;//6
+      }
+    }
+}
+
+void Restaurante:: BorrarPosicion(int pos)
+{
+    
+  if(ListaVacia())
+    cout << "Lista vacia" <<endl;
+  else
+  {
+   if((pos==1))
+      
+   {
+   	BorrarInicio();
+   	
+   }
+        
+   else
+   {
+    if(pos>largoLista()||(pos<=0))
+    {
+       cout << "Error en posicion" << endl;
+	}
+        
+    else
+    {
+       int cont=2;
+       pnodoRE aux=  primero;
+       while(cont<pos)
+       {
+         aux=aux->siguiente;
+         cont++;
+       }
+       pnodoRE temp = aux->siguiente;
+       aux->siguiente=aux->siguiente->siguiente;
+       aux->siguiente->anterior=aux;
+       delete temp;
+     }
+    }
+  }
+}
+
+void Restaurante::MostrarRE()
+{
+   pnodoRE aux=primero;
+   while(aux->siguiente!=primero)
+     {
+                                
+      cout << aux->valor << "-> ";
+      aux = aux->siguiente;
+     }
+     cout<<aux->valor<<"->";
+     cout<<endl;
+
+} 
+
+
+class nodoME {
+public:
+    nodoME(const string &v)
+    {
+        valor = v;
+        siguiente = NULL;
+        anterior = NULL;
+    }
+
+    nodoME(const string &v, nodoME *signodoME)
+    {
+        valor = v;
+        siguiente = signodoME;
+    }
+
+private:
+    string valor;
+    nodoME *siguiente;
+    nodoME *anterior;
+
+    friend class Menu;
+};
+typedef nodoME *pnodoME;
+
+class Menu {
+public:
+    Menu() { primero = NULL; }
+    ~Menu();
+
+    void InsertarInicio(string v);
+    void InsertarFinal(string v);
+    void InsertarPos(string v, int pos);
+    bool ListaVacia() { return primero == NULL; }
+    void Imprimir();
+    void Borrar(string v);
+    void MostrarME();
+    void BorrarFinal();
+    void BorrarInicio();
+    void BorrarPosicion(int pos);
+    int largoLista();
+    void CargarDesdeArchivoME();
+    void MenusME();
+    void ComprobacionME();
+    void BorrarPorCodigosME();
+private:
+    pnodoME primero;
+};
+
+
+void Menu::MenusME()
+{
+	
+	
+	//leer el archivo de paises en una lista doble
+	
+	CargarDesdeArchivoME();
+
+	bool ejecucion = true;
+	cout<<"bienvenido a Menus"<<endl;
+	
+	while(ejecucion){
+		cout<<""<<endl;
+		cout<<"para consultar Menus digite 1: "<<endl;
+		cout<<"para ver todos los Menus digite 2: "<<endl;
+		cout<<"para agregar un Menu digite 3:"<<endl;
+		cout<<"para borrar un Menu digite 4: "<<endl;
+		cout<<"para salir digite 5: "<<endl;
+		int x;
+		
+		cin >> x;
+		
+		
+		switch(x)
+		{
+			case 1:
+				cout<<""<<endl;
+				cout<<"opcion 1, consultar un Menu"<<endl;
+				cout<<"Menus disponibles: "<<endl;
+				MostrarME();
+				ComprobacionME();
+				break;
+			case 2:
+				cout<<""<<endl;
+				cout<<"opcion 2, ver todos los Menus"<<endl;
+				cout<<"se mostraran todos los Menus a continuacion: "<<endl;
+				MostrarME();
+				break;		
+			case 3:
+				cout<<""<<endl;
+				cout<<"opcion 3, agregar un Menu"<<endl;
+
+				break;			
+			case 4: 
+				cout<<""<<endl;
+				cout<<"opcion 4, borrar un Menu"<<endl;
+				cout<<"Menus disponibles: "<<endl;
+				MostrarME();
+				BorrarPorCodigosME();
+				break;	
+			case 5: 
+				cout<<""<<endl;
+				cout<<"opcion 5, salir a menu principal"<<endl;
+				ejecucion = false;	
+				break;
+			default:
+				cout<<""<<endl;
+				cout<<"error opcion incorrecta"<<endl;
+				break;			
+		}
+	}
+
+}
+
+
+void Menu::BorrarPorCodigosME() {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return;
+    }
+    
+    int codigo1, codigo2, codigo3,codigo4;
+    cout << "Ingrese el primer codigo: " << endl;
+    cin >> codigo1;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo2;
+
+    cout << "Ingrese el tercer codigo: " << endl;
+    cin >> codigo3;
+    
+    cout << "Ingrese el cuarto codigo: " << endl;
+    cin >> codigo4;
+
+    std::stringstream ss1, ss2, ss3,ss4;
+    ss1 << codigo1;
+    ss2 << codigo2;
+    ss3 << codigo3;
+    ss4 << codigo4;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+    string num3 = ss3.str();
+    string num4 = ss4.str();
+
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4;
+    pnodoME aux = primero;
+    bool encontrado = false;
+
+    while (aux) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+
+            if (aux == primero) {
+                BorrarInicio();
+            } else if (aux->siguiente == primero) {
+                BorrarFinal();
+            } else {
+                pnodoME temp = aux;
+                aux->anterior->siguiente = aux->siguiente;
+                aux->siguiente->anterior = aux->anterior;
+                aux = aux->siguiente;
+                delete temp;
+            }
+
+            cout << "nodoME con los códigos " << codigosBuscados << " borrado exitosamente." << endl;
+            break;
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los códigos en la lista." << endl;
+    }
+}
+
+
+void Menu::ComprobacionME() {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return;
+    }
+
+    int codigo1, codigo2, codigo3,codigo4;
+    cout << "Ingrese el primer codigo: " << endl;
+    cin >> codigo1;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo2;
+
+    cout << "Ingrese el tercer codigo: " << endl;
+    cin >> codigo3;
+    
+    cout << "Ingrese el cuarto codigo: " << endl;
+    cin >> codigo4;
+
+    std::stringstream ss1, ss2, ss3,ss4;
+    ss1 << codigo1;
+    ss2 << codigo2;
+    ss3 << codigo3;
+    ss4 << codigo4;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+    string num3 = ss3.str();
+    string num4 = ss4.str();
+
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4;
+    pnodoME aux = primero;
+    bool encontrado = false;
+
+    while (aux) {
+        // Buscar el patrón de códigos (123;456;789) en el valor del nodoME
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+
+            // Extraer el nombre del nodoME (parte después del último punto y coma)
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+
+            cout << "Códigos encontrados en la lista: " << codigosBuscados << endl;
+            cout << "Nombre asociado: " << nombre << endl;
+            break;
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los códigos en la lista." << endl;
+    }
+}
+
+
+void Menu::CargarDesdeArchivoME() {
+    set<string> numero4_set;  
+
+    ifstream archivo("Menu.txt");
+    if (archivo.is_open())
+    {
+        string linea;
+        while (getline(archivo, linea))
+        {
+            istringstream iss(linea);
+            string numero1, numero2, numero3,numero4, nombre;
+            getline(iss, numero1, ';');
+            getline(iss, numero2, ';');
+            getline(iss, numero3, ';');
+            getline(iss, numero4, ';');
+            getline(iss, nombre);
+
+            // Verificar si NUMERO3 es diferente de los anteriores
+            if (numero4_set.find(numero4) == numero4_set.end())
+            {
+                numero4_set.insert(numero4);  // Agregar a conjunto de NUMERO3
+                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4+ ";" + nombre;
+                InsertarFinal(nuevo_valor);
+            }
+            else
+            {
+                cout << "Advertencia: NUMERO3 debe ser diferente a los otros NUMERO3 anteriores." << endl;
+            }
+        }
+        archivo.close();
+    }
+    else
+    {
+        cout << "No se pudo abrir el archivo." << endl;
+    }
+}
+                
+Menu::~Menu()
+{
+   pnodoME aux;
+   pnodoME temp;
+   
+   while(primero) {
+      temp = primero;
+      aux=primero;
+      primero = primero->siguiente;
+      while (aux->siguiente!=primero)
+           aux= aux->siguiente;
+      aux->siguiente=primero;
+      
+      delete temp;
+      primero=NULL;
+   }
+   primero= NULL;
+}
+                           //  aux
+int Menu::largoLista() //3-4-5    cont=0 1 2 3
+{
+    int cont=0;
+
+    pnodoME aux = primero->siguiente;
+    if(ListaVacia())
+    {
+        return cont;
+    }
+    else
+    {   cont=cont+1;
+        while(aux!=primero)
+        {
+          aux=aux->siguiente;
+          cont++;
+        }
+    return cont;
+    }
+    
+}
+
+void Menu::InsertarInicio(string v)
+{
+  
+   if (ListaVacia())
+   {
+     primero = new nodoME(v);
+     primero->anterior=primero;
+     primero->siguiente=primero;
+   }  
+   else
+   {
+     pnodoME nuevo=new nodoME (v);//1
+     nuevo->siguiente=primero;//2
+     nuevo->anterior= primero->anterior;//3
+     primero->anterior->siguiente=nuevo;//4
+     nuevo->siguiente->anterior=nuevo;//5
+     primero= nuevo;//6
+   }
+}
+ 
+void Menu::InsertarFinal(string v)
+{
+   if (ListaVacia())
+     {
+     primero = new nodoME(v);
+     primero->anterior=primero;
+     primero->siguiente=primero;
+   }  
+   else
+   { 
+     pnodoME nuevo = new nodoME(v);//1
+     nuevo->anterior = primero->anterior;//2
+     /*nuevo->siguiente=primero->anterior->siguiente;opcion para intruccion 3*/
+	 nuevo->siguiente=primero;// coloca alguna de la dos 3
+     primero->anterior->siguiente=nuevo;//4
+     primero->anterior=nuevo;//5
+    }    
+}
+
+
+void Menu::InsertarPos(string v,int pos)
+{
+   if (ListaVacia())
+   {
+     primero = new nodoME(v);
+     primero->anterior=primero;
+     primero->siguiente=primero;
+   } 
+   else
+   {
+      if(pos <=1)
+        InsertarInicio(v);    
+       else
+       {
+        if (pos==largoLista())
+          InsertarFinal(v);
+        else
+        {     
+             pnodoME aux= primero;
+             int i =2;
+             while((i != pos )&&(aux->siguiente!= primero))
+             {
+                   i++;
+                   aux=aux->siguiente;
+             }
+             pnodoME nuevo= new nodoME(v);//1
+             nuevo->siguiente=aux->siguiente;//2
+             aux->siguiente=nuevo;//3
+             aux->siguiente->anterior=aux;//4 o puede nuevo->anterio=aux
+             nuevo->siguiente->anterior=nuevo;  //5                         
+        }
+       }
+   }
+}   
+
+void Menu::BorrarFinal()
+{
+    if (ListaVacia())
+      cout << "No hay elementos en la lista:" << endl;
+    else
+    {
+      if (primero->siguiente == primero)
+      {
+        pnodoME temp= primero;
+        primero= NULL;
+        delete temp;
+      }
+      else 
+      {
+         pnodoME aux = primero; //1
+         while (aux->siguiente->siguiente != primero)
+              aux = aux->siguiente;
+         pnodoME temp = aux->siguiente;//2
+         aux->siguiente= primero;//3
+         primero->anterior=aux;//4
+         delete temp;//5
+      }
+    }
+}
+
+void Menu::BorrarInicio()
+{
+    if (ListaVacia())
+      cout << "No hay elementos en la lista:" << endl;
+    else
+    {
+     if (primero->siguiente == primero)
+     {
+        pnodoME temp= primero;
+        primero= NULL;
+        delete temp;
+     }
+     else
+     {
+        pnodoME aux = primero->anterior;//1
+        pnodoME temp= primero;//2
+        aux->siguiente=primero->siguiente;//3
+        primero=primero->siguiente; //4
+        primero->anterior=aux;//5
+        delete temp;//6
+      }
+    }
+}
+
+void Menu:: BorrarPosicion(int pos)
+{
+    
+  if(ListaVacia())
+    cout << "Lista vacia" <<endl;
+  else
+  {
+   if((pos==1))
+      
+   {
+   	BorrarInicio();
+   	
+   }
+        
+   else
+   {
+    if(pos>largoLista()||(pos<=0))
+    {
+       cout << "Error en posicion" << endl;
+	}
+        
+    else
+    {
+       int cont=2;
+       pnodoME aux=  primero;
+       while(cont<pos)
+       {
+         aux=aux->siguiente;
+         cont++;
+       }
+       pnodoME temp = aux->siguiente;
+       aux->siguiente=aux->siguiente->siguiente;
+       aux->siguiente->anterior=aux;
+       delete temp;
+     }
+    }
+  }
+}
+
+void Menu::MostrarME()
+{
+   pnodoME aux=primero;
+   while(aux->siguiente!=primero)
+     {
+                                
+      cout << aux->valor << "-> ";
+      aux = aux->siguiente;
+     }
+     cout<<aux->valor<<"->";
+     //EXTRA
+     cout<<endl;
+    /* cout<< "primero";
+     cout<<endl;
+     cout<<aux->siguiente->valor<<"->";
+     cout<<endl;
+     cout<< "ultimo";
+     cout<<endl;
+     cout<<primero->anterior->valor<<"->";*/
+}   
+
 	
 int main()
 {
    	PyC ListaPyC;
    	Clientes L1;
+   	Restaurante lista;
+   	Menu listaMenu;
    	//Clientes ListaClientes;
    	
 	bool ejecucion = true;
@@ -979,11 +1953,13 @@ int main()
 			case 2:
 				cout<<""<<endl;
 				cout<<"opcion 2 restaurantes"<<endl;
+				lista.restaurantesRE();
 				break;
 				
 			case 3:
 				cout<<""<<endl;
 				cout<<"opcion 3 menu"<<endl;
+				listaMenu.MenusME();
 				break;	
 				
 			case 4:
