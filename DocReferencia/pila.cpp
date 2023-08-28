@@ -1,84 +1,80 @@
 #include <iostream>
+#include <string>
+#include <stack>
+#include <vector>
 using namespace std;
 
-class pila 
-{
-   private:
-   int Tope;
-   int Pila [5];
-  
-
+class pila {
+private:
+    stack<string> Pila;
 
 public:
-      
-       pila(){
-       Tope = -1; // se inicia en menos ya que la lista se inicia en cero, para estar vacia 
-       for(int i =0;i<5;i++){ //segun la cantidad de elementos que se quiera crear 
-         Pila[i]=0;    
-           }
-       }
-       
-      bool pilaVacia(){return Tope < 0;}        
-      void push(int v); 
-      void pop ();
-      void imprimir();
+    bool pilaVacia() { return Pila.empty(); }
+    void push(string v);
+    void imprimir();
+    void compararOperadoresCiclo();
 };
 
-void pila:: push (int v)
-{
-         if(Tope <(5-1))// en caso de querer agregar modificar este cinco 
-         {
-            Tope++;
-            Pila[Tope]= v; 
-           
-         }
-         else
-             cout<<"La pila esta llena";  
-}   
-
-void pila:: pop ()
-{
-         if(!pilaVacia()){
-            Tope--;
-         }
-         else{
-         cout<<"La pila esta vacia";  
-         }
-}  
-
-void pila:: imprimir()
-{
-     for(int i = Tope;i>=0;i--)
-     {
-        cout<<Pila[i]<<"->";        
-           }
+void pila::push(string v) {
+    Pila.push(v);
 }
- 
- int main()
-{
+
+void pila::imprimir() {
+    stack<string> temp = Pila;
+
+    while (!temp.empty()) {
+        cout << temp.top() << " ";
+        temp.pop();
+    }
+
+    cout << endl;
+}
+
+void pila::compararOperadoresCiclo() {
+    stack<string> nuevaPila;
+
+    while (!Pila.empty()) {
+        string operadorActual = Pila.top();
+        Pila.pop();
+
+        if (!nuevaPila.empty() && (operadorActual == "+" || operadorActual == "-")) {
+            while (!nuevaPila.empty() && (nuevaPila.top() == "*" || nuevaPila.top() == "/" || nuevaPila.top() == "^")) {
+                Pila.push(nuevaPila.top());
+                nuevaPila.pop();
+            }
+        }
+
+        nuevaPila.push(operadorActual);
+    }
+
+    while (!nuevaPila.empty()) {
+        Pila.push(nuevaPila.top());
+        nuevaPila.pop();
+    }
+}
+
+int main() {
     pila pila;
-    pila.push(2);
-    pila.push(3);
-    pila.push(4);
-    pila.push(5);
-    pila.push(10);
-    pila.push(777);
-    cout<<" "<<endl;
- //   pila.push(10);
-   pila.imprimir();
-    cout<<" "<<endl;  
-    cout<<" "<<endl; 
-    cout<<" "<<endl; 
-    pila.pop();
-   pila.imprimir();
-    cout<<" "<<endl;  
-    cout<<" "<<endl; 
-    cout<<" "<<endl; 
-   pila.push(34);
+    pila.push("(");
+    pila.push("^");
+    pila.push("-");
+    pila.push("+");
+    pila.push("/");
+    pila.push("*");
+    pila.push("(");
+    pila.push("-");
+    pila.push(")");
+    pila.push(")");
+
+    cout << "Pila original: ";
     pila.imprimir();
-   
-   cin.get();
-   return 0;   
-      
+
+    pila.compararOperadoresCiclo();
+
+    cout << "Resultado después de la comparación: ";
+    pila.imprimir();
+
+    cin.get();
+    return 0;
 }
 

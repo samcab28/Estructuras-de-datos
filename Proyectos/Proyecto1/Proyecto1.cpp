@@ -50,17 +50,115 @@ class listaD {
     void Mostrar();
     int largoLista();
     void Paises();
-    void CargarDesdeArchivo(const string &nombreArchivo);
-    
+    void CargarDesdeArchivo();
+    void AgregarPais();
+    void ConsultarPaisPorCodigo();
+    void BorrarPaisPorCodigo(int codigo);
    private:
     pnodo primero;
   
 };
 
-    
-void listaD::CargarDesdeArchivo(const string &nombreArchivo)
+
+void listaD::BorrarPaisPorCodigo(int codigo) {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return;
+    }
+
+    pnodo aux = primero;
+    bool encontrado = false;
+
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+            if (codigoEnLista == codigo) {
+                encontrado = true;
+                if (aux == primero) {
+                    BorrarInicio();
+                } else if (aux->siguiente == NULL) {
+                    BorrarFinal();
+                } else {
+                    aux->anterior->siguiente = aux->siguiente;
+                    aux->siguiente->anterior = aux->anterior;
+                    delete aux;
+                }
+                cout << "País con código " << codigo << " borrado exitosamente." << endl;
+                break;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontró un país con el código " << codigo << " en la lista." << endl;
+    }
+}
+
+
+void listaD::ConsultarPaisPorCodigo()
 {
-    ifstream archivo(nombreArchivo);
+            cout << "Ingrese el código del país que desea consultar: ";
+            int codigo;
+            cin >> codigo;
+
+            pnodo aux = primero; // Get the first node of the list
+            int posicion = 1;
+            bool encontrado = false;
+
+            while (aux) {
+                size_t pos = aux->valor.find(';');
+                if (pos != string::npos) {
+                    int codigoEnLista;
+                    istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+                    if (codigoEnLista == codigo) {
+                        encontrado = true;
+                        cout << "Código de país: " << codigoEnLista << endl;
+                        cout << "Nombre de país: " << aux->valor.substr(pos + 1) << endl;
+                        cout << "Posición en la lista: " << posicion << endl;
+                        break;
+                    }
+                }
+                aux = aux->siguiente;
+                posicion++;
+    }
+
+    if (!encontrado) {
+        cout << "País no encontrado para el código " << codigo << endl;
+    }
+}
+
+void listaD::AgregarPais()
+{
+    cout << "Ingrese el código del país (parte entera): ";
+    int codigo;
+    cin >> codigo;
+    cin.ignore();  // Limpia el buffer del salto de línea
+
+    cout << "Ingrese el nombre del país: ";
+    string nombre;
+    getline(cin, nombre);
+
+    // Usar ostringstream para convertir el entero a cadena
+    ostringstream ss;
+    ss << codigo;
+    string codigoStr = ss.str();
+
+    string pais = codigoStr + ";" + nombre;
+    InsertarFinal(pais);
+    cout << "País agregado exitosamente." << endl;
+}
+    
+void listaD::CargarDesdeArchivo()
+{
+	
+	
+	
+    ifstream archivo("Paises.txt");
     if (!archivo.is_open()) {
         cout << "No se pudo abrir el archivo." << endl;
         return;
@@ -78,6 +176,8 @@ void listaD::CargarDesdeArchivo(const string &nombreArchivo)
 
     archivo.close();
 }
+
+
 void listaD::Paises()
 {
 	
@@ -85,52 +185,60 @@ void listaD::Paises()
 	
 	//leer el archivo de paises en una lista doble
 	
-	/*
-	//menu opcional
+	paises.CargarDesdeArchivo();
+
+	bool ejecucion = true;
 	cout<<"bienvenido a paises"<<endl;
-	cout<<"para consultar pais digite 1, para ver todos los paises digite 2"<<endl;
-	cout<<"para agregar un pais digite 3 y para borrar un pais digite 4"<<endl;
-	int x;
 	
-	cin >> x;
-	
-	
-	switch(x)
-	{
-		case 1: 
-			cout<<"opcion 1"<<endl;
-			cout<<"en caso de consultar pais por digito, digite 1 y por nombre 2"<<endl;
-			int x2;
-			cin >> x2;
-			
-			switch(x2){
-				case 1:
-					cout<<"consulta de pais por digito, ingrese el digito"<<endl;
-					int NumPais;
-					cin >> NumPais; 
-					cout<<"se consultara el pais de digito: "<<NumPais<<endl;
-					break;
-				case 2:
-					cout<<"consulta de pais por nombre, ingrese el nombre del pais"<<endl;
-					string NombrePais;
-					cin >> NombrePais;
-					cout<<"se consultara el pais de nombre: "<<NombrePais<<endl;
-					break;
-			}
-			break;
-		case 2:
-			cout<<"opcion 2"<<endl;
-			break;		
-		case 3:
-			cout<<"opcion 3"<<endl;
-			break;			
-		case 4: 
-			cout<<"opcion 4"<<endl;
-			break;		
-		default:
-			cout<<"error opcion incorrecta"<<endl;
-			break;			
-	}*/
+	while(ejecucion){
+		cout<<""<<endl;
+		cout<<"para consultar pais digite 1: "<<endl;
+		cout<<"para ver todos los paises digite 2: "<<endl;
+		cout<<"para agregar un pais digite 3:"<<endl;
+		cout<<"para borrar un pais digite 4: "<<endl;
+		int x;
+		
+		cin >> x;
+		
+		
+		switch(x)
+		{
+			case 1:
+				cout<<""<<endl;
+				cout<<"opcion 1, consultar un pais"<<endl;
+				cout<<"paises disponibles: "<<endl;
+				paises.Mostrar();
+				paises.ConsultarPaisPorCodigo();
+				break;
+			case 2:
+				cout<<""<<endl;
+				cout<<"opcion 2, ver todos los paises"<<endl;
+				cout<<"se mostraran todos los paises a continuacion: "<<endl;
+				paises.Mostrar();
+				break;		
+			case 3:
+				cout<<""<<endl;
+				cout<<"opcion 3, agregar un pais"<<endl;
+				paises.AgregarPais();
+				paises.Mostrar();
+				break;			
+			case 4: 
+				cout<<""<<endl;
+				cout<<"opcion 4, borrar un pais"<<endl;
+				cout<<"paises disponibles: "<<endl;
+				paises.Mostrar();
+				cout<<"registrar codigo: "<<endl;
+				int codigo;
+				cin >> codigo;
+				paises.BorrarPaisPorCodigo(codigo);
+				break;		
+			default:
+				cout<<""<<endl;
+				cout<<"error opcion incorrecta"<<endl;
+				break;			
+		}
+	}
+
 }
 
 
@@ -343,10 +451,9 @@ int main()
 {
    listaD Lista;
    
-    Lista.InsertarInicio("a");
-    Lista.Mostrar();
 	Lista.Paises();
-	Lista.CargarDesdeArchivo("paises.txt");
+	//Lista.CargarDesdeArchivo();
+	//Lista.Mostrar();
   
    cin.get();
    return 0;
