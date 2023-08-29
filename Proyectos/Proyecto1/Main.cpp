@@ -51,10 +51,48 @@ public:
     void AgregarPais();
     void ConsultarPaisPorCodigo();
     void BorrarPaisPorCodigo(int codigo);
+    void ModificarNombre();
 
 private:
     pnodo primero;
 };
+
+
+void PyC::ModificarNombre() {
+    int code;
+    cout << "Digite el codigo a modificar" << endl;
+    cin >> code;
+
+    string newName;
+    cout << "Digite el nuevo nombre" << endl;
+    cin.ignore();  // Clear the newline character from the buffer
+    getline(cin, newName);
+
+    pnodo aux = primero;
+
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+            if (codigoEnLista == code) {
+			    std::stringstream sscode;
+			    sscode << code;
+			
+			    string num1 = sscode.str();          	
+            	
+                aux->valor = num1 + ";" + newName;
+                cout << "Nombre del pais modificado exitosamente." << endl;
+                return;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    cout << "No se encontró un país con el código proporcionado." << endl;
+}
+
 
 void PyC::ConsultarPaisPorCodigo() {
     if (ListaVacia()) {
@@ -234,7 +272,9 @@ void PyC::Paises()
 		cout<<"para ver todos los paises digite 2: "<<endl;
 		cout<<"para agregar un pais digite 3:"<<endl;
 		cout<<"para borrar un pais digite 4: "<<endl;
-		cout<<"para salir digite 5: "<<endl;
+		cout<<"para modificar nombre digite 5: "<<endl;
+		cout<<"para salir digite 6: "<<endl;
+		
 		int x;
 		
 		cin >> x;
@@ -273,8 +313,16 @@ void PyC::Paises()
 				break;		
 			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 5, salir a menu principal"<<endl;
-				ejecucion = false;
+				cout<<"opcion 5 modoficar nombre"<<endl;
+				cout<<"paises disponibles: "<<endl;
+				Mostrar();
+				ModificarNombre();
+				break;
+			case 6:
+				cout<<""<<endl;
+				cout<<"opcion 6, salir a menu principal"<<endl;
+				ejecucion = false;	
+				break;			
 			default:
 				cout<<""<<endl;
 				cout<<"error opcion incorrecta"<<endl;
@@ -594,7 +642,7 @@ void Ciudad::CiudadsCIU()
 
 void Ciudad::BorrarPorCodigosCIU() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
     
@@ -635,21 +683,21 @@ void Ciudad::BorrarPorCodigosCIU() {
                 delete temp;
             }
 
-            cout << "nodoCIU con los códigos " << codigosBuscados << " borrado exitosamente." << endl;
+            cout << "nodoCIU con los c?digos " << codigosBuscados << " borrado exitosamente." << endl;
             break;
         }
         aux = aux->siguiente;
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los códigos en la lista." << endl;
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
 }
 
 
 void Ciudad::ComprobacionCIU() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
 
@@ -675,15 +723,15 @@ void Ciudad::ComprobacionCIU() {
     bool encontrado = false;
 
     while (aux) {
-        // Buscar el patrón de códigos (123;456;789) en el valor del nodoCIU
+        // Buscar el patr?n de c?digos (123;456;789) en el valor del nodoCIU
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
 
-            // Extraer el nombre del nodoCIU (parte después del último punto y coma)
+            // Extraer el nombre del nodoCIU (parte despu?s del ?ltimo punto y coma)
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
             string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
 
-            cout << "Códigos encontrados en la lista: " << codigosBuscados << endl;
+            cout << "C?digos encontrados en la lista: " << codigosBuscados << endl;
             cout << "Nombre asociado: " << nombre << endl;
             break;
         }
@@ -691,7 +739,7 @@ void Ciudad::ComprobacionCIU() {
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los códigos en la lista." << endl;
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
 }
 
@@ -1114,7 +1162,7 @@ void Clientes::BorrarPorCodigoCl(){
 	cin >> codigo;
 	
     if (ListaVacia()) {
-        cout << "La lista está vacia." << endl;
+        cout << "La lista est? vacia." << endl;
         return;
     }
 
@@ -1552,7 +1600,7 @@ void Restaurante::restaurantesRE()
 
 void Restaurante::BorrarPorCodigosRE() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
     
@@ -1595,21 +1643,21 @@ void Restaurante::BorrarPorCodigosRE() {
                 delete temp;
             }
 
-            cout << "nodoRE con los códigos " << codigosBuscados << " borrado exitosamente." << endl;
+            cout << "nodoRE con los c?digos " << codigosBuscados << " borrado exitosamente." << endl;
             break;
         }
         aux = aux->siguiente;
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los códigos en la lista." << endl;
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
 }
 
 
 void Restaurante::ComprobacionRE() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
 
@@ -1637,15 +1685,15 @@ void Restaurante::ComprobacionRE() {
     bool encontrado = false;
 
     while (aux) {
-        // Buscar el patrón de códigos (123;456;789) en el valor del nodoRE
+        // Buscar el patr?n de c?digos (123;456;789) en el valor del nodoRE
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
 
-            // Extraer el nombre del nodoRE (parte después del último punto y coma)
+            // Extraer el nombre del nodoRE (parte despu?s del ?ltimo punto y coma)
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
             string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
 
-            cout << "Códigos encontrados en la lista: " << codigosBuscados << endl;
+            cout << "C?digos encontrados en la lista: " << codigosBuscados << endl;
             cout << "Nombre asociado: " << nombre << endl;
             break;
         }
@@ -1653,7 +1701,7 @@ void Restaurante::ComprobacionRE() {
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los códigos en la lista." << endl;
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
 }
 
@@ -2037,7 +2085,7 @@ void Menu::MenusME()
 
 void Menu::BorrarPorCodigosME() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
     
@@ -2085,21 +2133,21 @@ void Menu::BorrarPorCodigosME() {
                 delete temp;
             }
 
-            cout << "nodoME con los códigos " << codigosBuscados << " borrado exitosamente." << endl;
+            cout << "nodoME con los c?digos " << codigosBuscados << " borrado exitosamente." << endl;
             break;
         }
         aux = aux->siguiente;
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los códigos en la lista." << endl;
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
 }
 
 
 void Menu::ComprobacionME() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
 
@@ -2132,15 +2180,15 @@ void Menu::ComprobacionME() {
     bool encontrado = false;
 
     while (aux) {
-        // Buscar el patrón de códigos (123;456;789) en el valor del nodoME
+        // Buscar el patr?n de c?digos (123;456;789) en el valor del nodoME
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
 
-            // Extraer el nombre del nodoME (parte después del último punto y coma)
+            // Extraer el nombre del nodoME (parte despu?s del ?ltimo punto y coma)
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
             string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
 
-            cout << "Códigos encontrados en la lista: " << codigosBuscados << endl;
+            cout << "C?digos encontrados en la lista: " << codigosBuscados << endl;
             cout << "Nombre asociado: " << nombre << endl;
             break;
         }
@@ -2148,7 +2196,7 @@ void Menu::ComprobacionME() {
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los códigos en la lista." << endl;
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
 }
 
@@ -2536,7 +2584,7 @@ void producto::productosPRO()
 
 void producto::BorrarPorCodigosPRO() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
     
@@ -2589,21 +2637,21 @@ void producto::BorrarPorCodigosPRO() {
                 delete temp;
             }
 
-            cout << "nodoPRO con los códigos " << codigosBuscados << " borrado exitosamente." << endl;
+            cout << "nodoPRO con los c?digos " << codigosBuscados << " borrado exitosamente." << endl;
             break;
         }
         aux = aux->siguiente;
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los códigos en la lista." << endl;
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
 }
 
 
 void producto::ComprobacionPRO() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
 
@@ -2641,15 +2689,15 @@ void producto::ComprobacionPRO() {
     bool encontrado = false;
 
     while (aux) {
-        // Buscar el patrón de códigos (123;456;789) en el valor del nodoPRO
+        // Buscar el patr?n de c?digos (123;456;789) en el valor del nodoPRO
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
 
-            // Extraer el nombre del nodoPRO (parte después del último punto y coma)
+            // Extraer el nombre del nodoPRO (parte despu?s del ?ltimo punto y coma)
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
             string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
 
-            cout << "Códigos encontrados en la lista: " << codigosBuscados << endl;
+            cout << "C?digos encontrados en la lista: " << codigosBuscados << endl;
             cout << "Nombre asociado: " << nombre << endl;
             break;
         }
@@ -2657,7 +2705,7 @@ void producto::ComprobacionPRO() {
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los códigos en la lista." << endl;
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
 }
 
