@@ -28,7 +28,7 @@ private:
     nodo* anterior;
 
     friend class PyC;
-    friend class Ciudad;
+    //friend class Ciudad;
 };
 
 typedef nodo* pnodo;
@@ -57,7 +57,7 @@ public:
 
 private:
     pnodo primero;
-    friend class Ciudad;
+    //friend class Ciudad;
 };
 
 
@@ -528,6 +528,7 @@ void PyC::Mostrar()
    cout << endl;
 }
 
+
 bool PyC::Existe(int codigo){
     if (ListaVacia()) {
         cout << "La lista esta vacia." << endl;
@@ -634,7 +635,7 @@ public:
     void AgregarCIU(PyC ListaPyC);
 private:
     pnodoCIU primero;
-    friend class PyC;
+    //friend class PyC;
 };
 
 
@@ -655,17 +656,12 @@ void Ciudad::AgregarCIU(PyC ListaPyC){
 	    ss1 << NumPais;
 	    string num1 = ss1.str();
 	    
-		string NuevoValor = num1+ NombreNuevo;
+		string NuevoValor = num1+ ";" + NombreNuevo;
 		InsertarFinal(NuevoValor);
 	}
 	else{
 		cout<<"el pais no existe, No se agrega"<<endl;
 	}
-	
-
-
-
-	
 }
 
 void Ciudad::CiudadsCIU(PyC ListaPyC)
@@ -1619,15 +1615,16 @@ public:
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoRE();
-    void restaurantesRE();
+    void restaurantesRE(Ciudad listaCIUDAD);
     void ComprobacionRE();
     void BorrarPorCodigosRE();
+    //void agregar restaurantes(Ciudad listaCIUDAD);
 private:
     pnodoRE primero;
 };
 
 
-void Restaurante::restaurantesRE()
+void Restaurante::restaurantesRE(Ciudad listaCIUDAD)
 {
 	
 	
@@ -3116,7 +3113,7 @@ int main()
 			case 3:
 				cout<<""<<endl;
 				cout<<"opcion 3 restaurantes"<<endl;
-				lista.restaurantesRE();
+				lista.restaurantesRE(listaCIUDAD);
 				break;
 				
 			case 4:
