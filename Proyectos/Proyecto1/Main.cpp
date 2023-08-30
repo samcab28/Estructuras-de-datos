@@ -28,6 +28,7 @@ private:
     nodo* anterior;
 
     friend class PyC;
+    friend class Ciudad;
 };
 
 typedef nodo* pnodo;
@@ -52,9 +53,11 @@ public:
     void ConsultarPaisPorCodigo();
     void BorrarPaisPorCodigo(int codigo);
     void ModificarNombre();
+    bool Existe(int codigo);
 
 private:
     pnodo primero;
+    friend class Ciudad;
 };
 
 
@@ -525,6 +528,64 @@ void PyC::Mostrar()
    cout << endl;
 }
 
+bool PyC::Existe(int codigo){
+    if (ListaVacia()) {
+        cout << "La lista esta vacia." << endl;
+        return false;
+    }
+
+    pnodo aux = primero;
+    bool encontrado = false;
+
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+            if (codigoEnLista == codigo) {
+                encontrado = true;
+                if (aux == primero) {
+                    return true;
+                }
+                else if (aux->siguiente == NULL) {
+                    return true;
+                }
+                else {
+                    aux->anterior->siguiente = aux->siguiente;
+                    aux->siguiente->anterior = aux->anterior;
+                    delete aux;
+                }
+                //cout << "Pais con codigo " << codigo << " borrado exitosamente." << endl;
+                break;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontro un pais con el codigo " << codigo << " en la lista." << endl;
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class nodoCIU {
 public:
@@ -567,15 +628,47 @@ public:
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoCIU();
-    void CiudadsCIU();
+    void CiudadsCIU(PyC ListaPyC);
     void ComprobacionCIU();
     void BorrarPorCodigosCIU();
+    void AgregarCIU(PyC ListaPyC);
 private:
     pnodoCIU primero;
+    friend class PyC;
 };
 
 
-void Ciudad::CiudadsCIU()
+void Ciudad::AgregarCIU(PyC ListaPyC){
+	int NumPais;
+	cout<<"agregar ciudades"<<endl;
+	cout<<"A continuacion se muestran los paises disponibles: "<<endl;		
+	ListaPyC.Mostrar();
+	cout<<"para agregar ciudades, se debe de verificar la existencia del pais, digite el numero de pais"<<endl;
+	cin>>NumPais;
+	if(ListaPyC.Existe(NumPais) == true){
+		cout<<"el pais si existe, se procede a agregar"<<endl;
+		string NombreNuevo;
+		cout<<"digite el nombre de la ciudad"<<endl;
+		cin >> NombreNuevo;
+		
+	    std::stringstream ss1;
+	    ss1 << NumPais;
+	    string num1 = ss1.str();
+	    
+		string NuevoValor = num1+ NombreNuevo;
+		InsertarFinal(NuevoValor);
+	}
+	else{
+		cout<<"el pais no existe, No se agrega"<<endl;
+	}
+	
+
+
+
+	
+}
+
+void Ciudad::CiudadsCIU(PyC ListaPyC)
 {
 	
 	
@@ -616,6 +709,7 @@ void Ciudad::CiudadsCIU()
 			case 3:
 				cout<<""<<endl;
 				cout<<"opcion 3, agregar un Ciudad"<<endl;
+				AgregarCIU(ListaPyC);
 
 				break;			
 			case 4: 
@@ -3016,7 +3110,7 @@ int main()
 			case 2:
 				cout<<""<<endl;
 				cout<<"opcion 2 ciudades"<<endl;
-				listaCIUDAD.CiudadsCIU();
+				listaCIUDAD.CiudadsCIU(ListaPyC);
 				break;
 				
 			case 3:
