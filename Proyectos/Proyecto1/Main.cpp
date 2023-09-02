@@ -28,7 +28,6 @@ private:
     nodo* anterior;
 
     friend class PyC;
-    //friend class Ciudad;
 };
 
 typedef nodo* pnodo;
@@ -38,13 +37,10 @@ public:
     PyC() { primero = NULL; }
     ~PyC();
 
-    void InsertarInicio(string v);
     void InsertarFinal(string v);
-    void InsertarPos(string v, int pos);
     bool ListaVacia() { return primero == NULL; }
     void BorrarFinal();
     void BorrarInicio();
-    void BorrarPosicion(int pos);
     void Mostrar();
     int largoLista();
     void Paises();
@@ -57,7 +53,6 @@ public:
 
 private:
     pnodo primero;
-    //friend class Ciudad;
 };
 
 
@@ -247,7 +242,6 @@ void PyC::CargarDesdeArchivo()
             
             if (!existe) {
                 InsertarFinal(codigo + ";" + nombre);
-                cout << "Pais con codigo " << codigo << " agregado exitosamente." << endl;
             }
         }
     }
@@ -258,25 +252,18 @@ void PyC::CargarDesdeArchivo()
 
 void PyC::Paises()
 {
-	
-	
-	
-	//leer el archivo de paises en una lista doble
-	
-	CargarDesdeArchivo();
-
 	bool ejecucion = true;
 	cout<<""<<endl;
 	cout<<"bienvenido a paises"<<endl;
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"para consultar pais digite 1: "<<endl;
-		cout<<"para ver todos los paises digite 2: "<<endl;
-		cout<<"para agregar un pais digite 3:"<<endl;
-		cout<<"para borrar un pais digite 4: "<<endl;
-		cout<<"para modificar nombre digite 5: "<<endl;
-		cout<<"para salir digite 6: "<<endl;
+		cout<<"consultar pais digite 1: "<<endl;
+		cout<<"ver paises digite 2: "<<endl;
+		cout<<"agregar un pais digite 3:"<<endl;
+		cout<<"borrar un pais digite 4: "<<endl;
+		cout<<"modificar nombre digite 5: "<<endl;
+		cout<<"salir digite 6: "<<endl;
 		
 		int x;
 		
@@ -365,21 +352,6 @@ int PyC::largoLista(){
     
 }
 
-void PyC::InsertarInicio(string v)
-{
-   if (ListaVacia())
-   {
-   
-     primero = new nodo(v);
-     primero->anterior=NULL;     
-   }
-   else
-   {
-     primero=new nodo (v,primero);
-     primero->siguiente->anterior=primero;
-   }
-}
- 
 void PyC::InsertarFinal(string v)
 {
    if (ListaVacia())
@@ -397,34 +369,7 @@ void PyC::InsertarFinal(string v)
       }    
 }
 
-void PyC::InsertarPos(string v,int pos)
-{
-   if (ListaVacia())
-    {
-   
-     primero = new nodo(v);
-     primero->anterior=NULL;     
-   }
-   else{
-        if(pos <=1)
-          InsertarInicio(v);    
-        else
-        {
-             pnodo aux= primero;
-             int i =2;
-             while((i != pos )&&(aux->siguiente!= NULL)){
-                   i++;
-                   aux=aux->siguiente;
-             }
-             pnodo nuevo= new nodo(v);
-             nuevo->siguiente=aux->siguiente;
-			 nuevo->anterior=aux;
-			   nuevo->siguiente->anterior=nuevo;
-			   aux->siguiente=nuevo;                      
-        }
-        }
-}
-      
+     
 void PyC::BorrarFinal()
 {
     if (ListaVacia()){
@@ -475,46 +420,6 @@ void PyC::BorrarInicio()
             }
         }
 }
-
-void PyC:: BorrarPosicion(int pos)
-{
-     if(ListaVacia())
-     {
-              cout << "Lista vacia" <<endl;
-     }
-     else
-     {
-        if((pos>largoLista())||(pos<0))//no validas
-        {
-        cout << "Error en posicion" << endl;
-        }
-        else
-        {
-        if(pos==1)
-           BorrarInicio();
-        else
-        {
-          if (pos == largoLista())   
-             BorrarFinal();
-          else
-          {   
-            int cont=2;
-            pnodo aux=  primero;
-            while(cont<pos)
-            {
-             aux=aux->siguiente;
-             cont++;
-            }
-            pnodo temp=aux->siguiente;
-            aux->siguiente=aux->siguiente->siguiente;
-            aux->siguiente->anterior=aux;
-            delete temp;
-          }//else
-        }//else
-      }//else
-    }//else
-}
- 
 
 void PyC::Mostrar()
 {
@@ -666,12 +571,6 @@ void Ciudad::AgregarCIU(PyC ListaPyC){
 
 void Ciudad::CiudadsCIU(PyC ListaPyC)
 {
-	
-	
-	//leer el archivo de paises en una lista doble
-	
-	CargarDesdeArchivoCIU();
-
 	bool ejecucion = true;
 	cout<<"bienvenido a Ciudades"<<endl;
 	
@@ -1142,12 +1041,6 @@ private:
 
 void Clientes::clientesCl()
 {
-	
-	
-	//leer el archivo de paises en una lista doble
-	
-	CargarDesdeArchivoCl();
-
 	bool ejecucion = true;
 	cout<<"bienvenido a Clientes"<<endl;
 	
@@ -1615,7 +1508,7 @@ public:
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoRE();
-    void restaurantesRE(Ciudad listaCIUDAD);
+    void restaurantesRE(Ciudad ListaCiudad);
     void ComprobacionRE();
     void BorrarPorCodigosRE();
     //void agregar restaurantes(Ciudad listaCIUDAD);
@@ -1626,12 +1519,6 @@ private:
 
 void Restaurante::restaurantesRE(Ciudad listaCIUDAD)
 {
-	
-	
-	//leer el archivo de paises en una lista doble
-	
-	CargarDesdeArchivoRE();
-
 	bool ejecucion = true;
 	cout<<"bienvenido a restaurantes"<<endl;
 	
@@ -2111,12 +1998,6 @@ private:
 
 void Menu::MenusME()
 {
-	
-	
-	//leer el archivo de paises en una lista doble
-	
-	CargarDesdeArchivoME();
-
 	bool ejecucion = true;
 	cout<<"bienvenido a Menus"<<endl;
 	
@@ -2610,12 +2491,6 @@ private:
 
 void producto::productosPRO()
 {
-	
-	
-	//leer el archivo de paises en una lista doble
-	
-	CargarDesdeArchivoPRO();
-
 	bool ejecucion = true;
 	cout<<"bienvenido a productos"<<endl;
 	
@@ -3054,15 +2929,7 @@ void producto::MostrarPRO()
       aux = aux->siguiente;
      }
      cout<<aux->valor<<"->";
-     //EXTRA
      cout<<endl;
-    /* cout<< "primero";
-     cout<<endl;
-     cout<<aux->siguiente->valor<<"->";
-     cout<<endl;
-     cout<< "ultimo";
-     cout<<endl;
-     cout<<primero->anterior->valor<<"->";*/
 }
 
 
@@ -3072,26 +2939,46 @@ void producto::MostrarPRO()
 	
 int main()
 {
+	//definicion de todas las listas
+	//lectura de archivos
    	PyC ListaPyC;
-   	Clientes L1;
-   	Restaurante lista;
-   	Menu listaMenu;
-   	Ciudad listaCIUDAD;
-   	producto listaproducto;
+   	ListaPyC.CargarDesdeArchivo();
+   	
+   	
+   	Ciudad ListaCiudad;
+   	ListaCiudad.CargarDesdeArchivoCIU();
+   	
+   	
+   	Restaurante ListaRestaurante;
+   	ListaRestaurante.CargarDesdeArchivoRE();
+   	
+   	
+   	Menu ListaMenu;
+   	ListaMenu.CargarDesdeArchivoME();
+   	
+   	
+   	producto ListaProducto;
+   	ListaProducto.CargarDesdeArchivoPRO();
+   	
+   	
+   	Clientes ListaClientes;
+   	ListaClientes.CargarDesdeArchivoCl();
+   	
+   	
    	
 	bool ejecucion = true;
 	
 	while(ejecucion)
 	{
 		int MenuPrincipal;
-		
+		cout<<""<<endl;
 		cout<<"Bienvenido"<<endl;
-		cout<<"para temas relacionados con Pais, digite 1"<<endl;
-		cout<<"para temas relacionados con ciudad, digite 2"<<endl;
-		cout<<"para temas relacionados con restaurantes, digite 3"<<endl;
-		cout<<"para temas relacionados con menu, digite 4"<<endl;
-		cout<<"para temas relacionados con productos, digite 5"<<endl;
-		cout<<"para temas relacionados con clientes, digite 6"<<endl;
+		cout<<"para Pais, digite 1"<<endl;
+		cout<<"para ciudad, digite 2"<<endl;
+		cout<<"para restaurantes, digite 3"<<endl;
+		cout<<"para menu, digite 4"<<endl;
+		cout<<"para productos, digite 5"<<endl;
+		cout<<"para clientes, digite 6"<<endl;
 		cout<<"para salir, digite 7"<<endl;
 		
 		cin >> MenuPrincipal;
@@ -3107,31 +2994,31 @@ int main()
 			case 2:
 				cout<<""<<endl;
 				cout<<"opcion 2 ciudades"<<endl;
-				listaCIUDAD.CiudadsCIU(ListaPyC);
+				ListaCiudad.CiudadsCIU(ListaPyC);
 				break;
 				
 			case 3:
 				cout<<""<<endl;
 				cout<<"opcion 3 restaurantes"<<endl;
-				lista.restaurantesRE(listaCIUDAD);
+				ListaRestaurante.restaurantesRE(ListaCiudad);
 				break;
 				
 			case 4:
 				cout<<""<<endl;
 				cout<<"opcion 4 menu"<<endl;
-				listaMenu.MenusME();
+				ListaMenu.MenusME();
 				break;
 					
 			case 5:
 				cout<<""<<endl;
 				cout<<"opcion 5 productos"<<endl;
-				listaproducto.productosPRO();
+				ListaProducto.productosPRO();
 				break;
 				
 			case 6:
 				cout<<""<<endl;
 				cout<<"opcion 6 clientes"<<endl;
-				L1.clientesCl();
+				ListaClientes.clientesCl();
 				break;
 			case 7:
 				cout<<""<<endl;
