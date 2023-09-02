@@ -55,7 +55,6 @@ private:
     pnodo primero;
 };
 
-
 void PyC::ModificarNombre() {
     int code;
     cout << "Digite el codigo a modificar" << endl;
@@ -90,7 +89,6 @@ void PyC::ModificarNombre() {
 
     cout << "No se encontró un país con el código proporcionado." << endl;
 }
-
 
 void PyC::ConsultarPaisPorCodigo() {
     if (ListaVacia()) {
@@ -249,7 +247,6 @@ void PyC::CargarDesdeArchivo()
     archivo.close();
 }
 
-
 void PyC::Paises()
 {
 	bool ejecucion = true;
@@ -322,7 +319,6 @@ void PyC::Paises()
 
 }
 
-
 PyC::~PyC()
 {
    pnodo aux;
@@ -368,8 +364,7 @@ void PyC::InsertarFinal(string v)
         aux->siguiente->anterior=aux;       
       }    
 }
-
-     
+   
 void PyC::BorrarFinal()
 {
     if (ListaVacia()){
@@ -433,7 +428,6 @@ void PyC::Mostrar()
    cout << endl;
 }
 
-
 bool PyC::Existe(int codigo){
     if (ListaVacia()) {
         cout << "La lista esta vacia." << endl;
@@ -474,7 +468,6 @@ bool PyC::Existe(int codigo){
         return false;
     }
 }
-
 
 
 
@@ -540,7 +533,6 @@ public:
     void AgregarCIU(PyC ListaPyC);
 private:
     pnodoCIU primero;
-    //friend class PyC;
 };
 
 
@@ -576,11 +568,12 @@ void Ciudad::CiudadsCIU(PyC ListaPyC)
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"para consultar Ciudades digite 1: "<<endl;
-		cout<<"para ver todos los Ciudades digite 2: "<<endl;
-		cout<<"para agregar un Ciudad digite 3:"<<endl;
-		cout<<"para borrar un Ciudad digite 4: "<<endl;
-		cout<<"para salir digite 5: "<<endl;
+		cout<<"consultar Ciudades digite 1: "<<endl;
+		cout<<"ver Ciudades digite 2: "<<endl;
+		cout<<"agregar un Ciudad digite 3:"<<endl;
+		cout<<"borrar un Ciudad digite 4: "<<endl;
+		
+		cout<<"salir digite 5: "<<endl;
 		int x;
 		
 		cin >> x;
@@ -1019,25 +1012,55 @@ public:
     Clientes() { primero = NULL; }
     ~Clientes();
 
-    void InsertarInicio(string v);
     void InsertarFinal(string v);
-    void InsertarPos(string v, int pos);
     bool ListaVacia() { return primero == NULL; }
     void MostrarCl();
-    void BorrarFinal();
-    void BorrarInicio();
-    void borrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoCl();
     void ConsultarClientePorCodigoCl();
     void BorrarPorCodigoCl();
     void clientesCl();
     void AgregarClienteCl();
+    void ModificarNombreCL();
 
 private:
     pnodoCl primero;
 };
 
+void Clientes::ModificarNombreCL() {
+    int code;
+    cout << "Digite el codigo a modificar" << endl;
+    cin >> code;
+
+    string newName;
+    cout << "Digite el nuevo nombre" << endl;
+    cin.ignore();  // Clear the newline character from the buffer
+    getline(cin, newName);
+
+    pnodoCl aux = primero;
+
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+            if (codigoEnLista == code) {
+			    std::stringstream sscode;
+			    sscode << code;
+			
+			    string num1 = sscode.str();          	
+            	
+                aux->valor = num1 + ";" + newName;
+                cout << "Nombre del pais modificado exitosamente." << endl;
+                return;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    cout << "No se encontró un país con el código proporcionado." << endl;
+}
 
 void Clientes::clientesCl()
 {
@@ -1046,11 +1069,12 @@ void Clientes::clientesCl()
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"para consultar Clientes digite 1: "<<endl;
-		cout<<"para ver todos los clientes digite 2: "<<endl;
-		cout<<"para agregar un cliente digite 3:"<<endl;
-		cout<<"para borrar un cliente digite 4: "<<endl;
-		cout<<"para salir digite 5: "<<endl;
+		cout<<"consultar Clientes digite 1: "<<endl;
+		cout<<"ver clientes digite 2: "<<endl;
+		cout<<"agregar un cliente digite 3:"<<endl;
+		cout<<"borrar un cliente digite 4: "<<endl;
+		cout<<"modificar un cliente digite 5"<<endl;
+		cout<<"para salir digite 6: "<<endl;
 		int x;
 		
 		cin >> x;
@@ -1087,8 +1111,13 @@ void Clientes::clientesCl()
 				break;	
 			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 5, salir a menu principal"<<endl;
-				ejecucion = false;	
+				cout<<"opcion 5, modificar un cliente"<<endl;
+				ModificarNombreCL();
+				break;
+			case 6: 
+				cout<<""<<endl;
+				cout<<"opcion 6, salir a menu principal"<<endl;
+				ejecucion = false;			
 			default:
 				cout<<""<<endl;
 				cout<<"error opcion incorrecta"<<endl;
@@ -1140,12 +1169,12 @@ void Clientes::AgregarClienteCl()
 }
 
 void Clientes::BorrarPorCodigoCl(){
-	int codigo;
+	long long codigo;
 	cout<<"digite el codigo a borrar: "<<endl;
 	cin >> codigo;
 	
     if (ListaVacia()) {
-        cout << "La lista est? vacia." << endl;
+        cout << "La lista esta vacia." << endl;
         return;
     }
 
@@ -1291,23 +1320,6 @@ int Clientes::largoLista(){
     
 }
 
-void Clientes::InsertarInicio(string v)//6
-{
-   if (ListaVacia())
-   {
-   
-     primero = new nodoCl(v);//6
-     
-   }
-   else
-   {
-    pnodoCl nuevo=new nodoCl(v);//1
-    nuevo->siguiente=primero;//2
-    primero=nuevo;
-
-   }
-}
- 
 void Clientes::InsertarFinal(string v)//76
 {
    if (ListaVacia())
@@ -1328,115 +1340,7 @@ void Clientes::InsertarFinal(string v)//76
         aux->siguiente=nuevo;
       }    
 }
-
-void Clientes::InsertarPos(string v,int pos)
-{
-   if (ListaVacia())
-     primero = new nodoCl(v);
-   else{
-        if(pos <=1)
-		{
-        	//OPcion1
-          pnodoCl nuevo = new nodoCl(v);
-          nuevo->siguiente= primero;
-          primero= nuevo;     
-          //OPcion 2
-          //InsertarInicio(v);
-        }      
-        else{
-             nodoCl *aux= primero;
-             int i =2;
-             while((i != pos )&&(aux->siguiente!= NULL)){
-                   i++;
-                   aux=aux->siguiente;
-             }
-             pnodoCl nuevo= new nodoCl(v);
-             nuevo->siguiente=aux->siguiente;
-             aux->siguiente=nuevo;
-             
-        }
-        }
-}
-      
-void Clientes::BorrarFinal()
-{
-    if (ListaVacia()){
-     cout << "No hay elementos en la lista:" << endl;
-    
-   }else{
-        
-        if (primero->siguiente == NULL) 
-		{   pnodoCl temp=primero;
-		    primero= NULL;
-		    delete temp;;
-            }
-			 else {
-
-                pnodoCl aux = primero;
-                while (aux->siguiente->siguiente != NULL) {
-                    aux = aux->siguiente;
-
-                }
-                
-              pnodoCl temp = aux->siguiente;
-              aux->siguiente= NULL;
-
-                
-                delete temp;
-            }
-        }
-}
-
-void Clientes::BorrarInicio()
-{
-    if (ListaVacia()){
-     cout << "No hay elementos en la lista:" << endl;
-    
-   }else{
-        if (primero->siguiente == NULL) 
-		{   pnodoCl temp=primero;
-		    primero= NULL;
-		    delete temp;
-        } 
-		else 
-		{
-
-                pnodoCl aux = primero;
-                primero=primero->siguiente;                
-                delete aux;
-        }
-        }
-}
-
-void Clientes:: borrarPosicion(int pos){
-     if(ListaVacia()){
-              cout << "Lista vacia" <<endl;
-    }else{
-         if((pos>largoLista())||(pos<0)){
-        cout << "Error en posicion" << endl;
-        }else{
-        if(pos==1)
-		{
-        	pnodoCl temp=primero;
-        	primero=primero->siguiente;
-        	delete temp; //BorrarInicio();
-        }
-		else{
-          int cont=2;
-            pnodoCl aux=  primero;
-            while(cont<pos){
-             aux=aux->siguiente;
-             cont++;
-            }
-            pnodoCl temp=aux->siguiente;
-            aux->siguiente=aux->siguiente->siguiente;
-            delete temp;
-            }
-        }
-     }
-
-}
- 
+     
 void Clientes::MostrarCl()
 
 {
