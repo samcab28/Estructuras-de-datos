@@ -428,46 +428,35 @@ void PyC::Mostrar()
    cout << endl;
 }
 
-bool PyC::Existe(int codigo){
+bool PyC::Existe(int codigo) {
     if (ListaVacia()) {
-        cout << "La lista esta vacia." << endl;
+        cout << "La lista está vacía." << endl;
         return false;
     }
 
+    std::stringstream ss1;
+    ss1 << codigo;
+    string num1 = ss1.str();
+    string codigosBuscados = num1 + ";";
     pnodo aux = primero;
     bool encontrado = false;
 
-    while (aux) {
-        size_t pos = aux->valor.find(';');
-        if (pos != string::npos) {
-            int codigoEnLista;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
-
-            if (codigoEnLista == codigo) {
-                encontrado = true;
-                if (aux == primero) {
-                    return true;
-                }
-                else if (aux->siguiente == NULL) {
-                    return true;
-                }
-                else {
-                    aux->anterior->siguiente = aux->siguiente;
-                    aux->siguiente->anterior = aux->anterior;
-                    delete aux;
-                }
-                //cout << "Pais con codigo " << codigo << " borrado exitosamente." << endl;
-                break;
-            }
+    while (aux != NULL) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            cout << "hola" << endl;
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+            return true;
         }
         aux = aux->siguiente;
     }
 
     if (!encontrado) {
-        cout << "No se encontro un pais con el codigo " << codigo << " en la lista." << endl;
         return false;
     }
 }
+
 
 
 
@@ -531,10 +520,58 @@ public:
     void ComprobacionCIU();
     void BorrarPorCodigosCIU();
     void AgregarCIU(PyC ListaPyC);
+    void ModificarNombreCIU();
 private:
     pnodoCIU primero;
 };
 
+
+void Ciudad::ModificarNombreCIU() {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return;
+    }
+
+    int codigo1, codigo2;
+    cout << "Ingrese primer codigo: " << endl;
+    cin >> codigo1;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo2;
+
+    std::stringstream ss1, ss2;
+    ss1 << codigo1;
+    ss2 << codigo2;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+
+    string codigosBuscados = num1 + ";" + num2;
+    pnodoCIU aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+			cout<<"codigo encontrado"<<endl;
+			string newName;
+			cout<<"digite el nuevo nombre"<<endl;
+			cin >> newName;
+			
+			string modificar = codigosBuscados + ";" + newName;
+			aux -> valor = modificar;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (encontrado == false) {
+        cout << "No se encontraron los codigos en la lista." << endl;
+    }
+
+}
 
 void Ciudad::AgregarCIU(PyC ListaPyC){
 	int NumPais;
@@ -543,21 +580,28 @@ void Ciudad::AgregarCIU(PyC ListaPyC){
 	ListaPyC.Mostrar();
 	cout<<"para agregar ciudades, se debe de verificar la existencia del pais, digite el numero de pais"<<endl;
 	cin>>NumPais;
-	if(ListaPyC.Existe(NumPais) == true){
+	if(ListaPyC.Existe(NumPais)){
 		cout<<"el pais si existe, se procede a agregar"<<endl;
+		int codigoCiudad;
+		cout<<"digite el codigo de la ciudad"<<endl;
+		cin >> codigoCiudad;
+		
+	    std::stringstream ss1,ss2;
+	    ss1 << NumPais;
+	    ss2 << codigoCiudad;
+	    string num1 = ss1.str();
+	    string num2 = ss2.str();
+	    
 		string NombreNuevo;
 		cout<<"digite el nombre de la ciudad"<<endl;
 		cin >> NombreNuevo;
-		
-	    std::stringstream ss1;
-	    ss1 << NumPais;
-	    string num1 = ss1.str();
-	    
-		string NuevoValor = num1+ ";" + NombreNuevo;
+	
+		string NuevoValor = num1 + ";" + num2 + ";" + NombreNuevo;
 		InsertarFinal(NuevoValor);
-	}
-	else{
+	
+	}else{
 		cout<<"el pais no existe, No se agrega"<<endl;
+		CiudadsCIU(ListaPyC);
 	}
 }
 
@@ -572,8 +616,8 @@ void Ciudad::CiudadsCIU(PyC ListaPyC)
 		cout<<"ver Ciudades digite 2: "<<endl;
 		cout<<"agregar un Ciudad digite 3:"<<endl;
 		cout<<"borrar un Ciudad digite 4: "<<endl;
-		
-		cout<<"salir digite 5: "<<endl;
+		cout<<"modificar una ciudad digite 5"<<endl;
+		cout<<"salir digite 6: "<<endl;
 		int x;
 		
 		cin >> x;
@@ -609,9 +653,16 @@ void Ciudad::CiudadsCIU(PyC ListaPyC)
 				break;	
 			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 5, salir a menu principal"<<endl;
-				ejecucion = false;	
+				cout<<"opcion 5, modificar nombre ciudad"<<endl;
+				cout<<"ciudades disponibles"<<endl;
+				MostrarCIU();
+				ModificarNombreCIU();	
 				break;
+			case 6:
+				cout<<""<<endl;
+				cout<<"opcion 6, salir a menu principal"<<endl;
+				ejecucion = false;	
+				break;				
 			default:
 				cout<<""<<endl;
 				cout<<"error opcion incorrecta"<<endl;
@@ -621,10 +672,9 @@ void Ciudad::CiudadsCIU(PyC ListaPyC)
 
 }
 
-
 void Ciudad::BorrarPorCodigosCIU() {
     if (ListaVacia()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "La lista esta vac?a." << endl;
         return;
     }
     
@@ -648,8 +698,9 @@ void Ciudad::BorrarPorCodigosCIU() {
     string codigosBuscados = num1 + ";" + num2;
     pnodoCIU aux = primero;
     bool encontrado = false;
+    int i = 0;
 
-    while (aux) {
+    while (i <= largoLista()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
 
@@ -665,63 +716,60 @@ void Ciudad::BorrarPorCodigosCIU() {
                 delete temp;
             }
 
-            cout << "nodoCIU con los c?digos " << codigosBuscados << " borrado exitosamente." << endl;
+            cout << "nodoCIU con los codigos " << codigosBuscados << " borrado exitosamente." << endl;
             break;
         }
         aux = aux->siguiente;
+        i ++;
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los c?digos en la lista." << endl;
+        cout << "No se encontraron los codigos en la lista." << endl;
     }
 }
 
-
 void Ciudad::ComprobacionCIU() {
     if (ListaVacia()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "La lista está vacía." << endl;
         return;
     }
 
     int codigo1, codigo2;
-    cout << "Ingrese primer codigo: " << endl;
+    cout << "Ingrese primer código: " << endl;
     cin >> codigo1;
 
-    cout << "Ingrese el segundo codigo: " << endl;
+    cout << "Ingrese el segundo código: " << endl;
     cin >> codigo2;
 
-
-    std::stringstream ss1, ss2, ss3;
+    std::stringstream ss1, ss2;
     ss1 << codigo1;
     ss2 << codigo2;
 
-
     string num1 = ss1.str();
     string num2 = ss2.str();
- 
 
     string codigosBuscados = num1 + ";" + num2;
     pnodoCIU aux = primero;
     bool encontrado = false;
+    int i = 0;
 
-    while (aux) {
-        // Buscar el patr?n de c?digos (123;456;789) en el valor del nodoCIU
+    while (i <= largoLista()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
 
-            // Extraer el nombre del nodoCIU (parte despu?s del ?ltimo punto y coma)
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
             string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
 
-            cout << "C?digos encontrados en la lista: " << codigosBuscados << endl;
+            cout << "Codigos encontrados en la lista: " << codigosBuscados << endl;
             cout << "Nombre asociado: " << nombre << endl;
             break;
         }
         aux = aux->siguiente;
+        i ++;
     }
 
-    if (!encontrado) {
-        cout << "No se encontraron los c?digos en la lista." << endl;
+    if (encontrado == false) {
+        cout << "No se encontraron los codigos en la lista." << endl;
     }
 }
 
@@ -779,8 +827,8 @@ Ciudad::~Ciudad()
    }
    primero= NULL;
 }
-                           //  aux
-int Ciudad::largoLista() //3-4-5    cont=0 1 2 3
+                        
+int Ciudad::largoLista() 
 {
     int cont=0;
 
@@ -801,26 +849,6 @@ int Ciudad::largoLista() //3-4-5    cont=0 1 2 3
     
 }
 
-void Ciudad::InsertarInicio(string v)
-{
-  
-   if (ListaVacia())
-   {
-     primero = new nodoCIU(v);
-     primero->anterior=primero;
-     primero->siguiente=primero;
-   }  
-   else
-   {
-     pnodoCIU nuevo=new nodoCIU (v);//1
-     nuevo->siguiente=primero;//2
-     nuevo->anterior= primero->anterior;//3
-     primero->anterior->siguiente=nuevo;//4
-     nuevo->siguiente->anterior=nuevo;//5
-     primero= nuevo;//6
-   }
-}
- 
 void Ciudad::InsertarFinal(string v)
 {
    if (ListaVacia())
@@ -833,48 +861,12 @@ void Ciudad::InsertarFinal(string v)
    { 
      pnodoCIU nuevo = new nodoCIU(v);//1
      nuevo->anterior = primero->anterior;//2
-     /*nuevo->siguiente=primero->anterior->siguiente;opcion para intruccion 3*/
 	 nuevo->siguiente=primero;// coloca alguna de la dos 3
      primero->anterior->siguiente=nuevo;//4
      primero->anterior=nuevo;//5
     }    
 }
-
-
-void Ciudad::InsertarPos(string v,int pos)
-{
-   if (ListaVacia())
-   {
-     primero = new nodoCIU(v);
-     primero->anterior=primero;
-     primero->siguiente=primero;
-   } 
-   {
-      if(pos <=1)
-        InsertarInicio(v);    
-       else
-       {
-        if (pos==largoLista())
-          InsertarFinal(v);
-        else
-        {     
-             pnodoCIU aux= primero;
-             int i =2;
-             while((i != pos )&&(aux->siguiente!= primero))
-             {
-                   i++;
-                   aux=aux->siguiente;
-             }
-             pnodoCIU nuevo= new nodoCIU(v);//1
-             nuevo->siguiente=aux->siguiente;//2
-             aux->siguiente=nuevo;//3
-             aux->siguiente->anterior=aux;//4 o puede nuevo->anterio=aux
-             nuevo->siguiente->anterior=nuevo;  //5                         
-        }
-       }
-   }
-}   
-
+ 
 void Ciudad::BorrarFinal()
 {
     if (ListaVacia())
@@ -924,45 +916,6 @@ void Ciudad::BorrarInicio()
     }
 }
 
-void Ciudad:: BorrarPosicion(int pos)
-{
-    
-  if(ListaVacia())
-    cout << "Lista vacia" <<endl;
-  else
-  {
-   if((pos==1))
-      
-   {
-   	BorrarInicio();
-   	
-   }
-        
-   else
-   {
-    if(pos>largoLista()||(pos<=0))
-    {
-       cout << "Error en posicion" << endl;
-	}
-        
-    else
-    {
-       int cont=2;
-       pnodoCIU aux=  primero;
-       while(cont<pos)
-       {
-         aux=aux->siguiente;
-         cont++;
-       }
-       pnodoCIU temp = aux->siguiente;
-       aux->siguiente=aux->siguiente->siguiente;
-       aux->siguiente->anterior=aux;
-       delete temp;
-     }
-    }
-  }
-}
-
 void Ciudad::MostrarCIU()
 {
    pnodoCIU aux=primero;
@@ -974,7 +927,6 @@ void Ciudad::MostrarCIU()
      }
      cout<<aux->valor<<"->";
      cout<<endl;
-
 } 
 
 
@@ -1112,6 +1064,8 @@ void Clientes::clientesCl()
 			case 5: 
 				cout<<""<<endl;
 				cout<<"opcion 5, modificar un cliente"<<endl;
+				cout<<"nombres disponibles"<<endl;
+				MostrarCl();
 				ModificarNombreCL();
 				break;
 			case 6: 
