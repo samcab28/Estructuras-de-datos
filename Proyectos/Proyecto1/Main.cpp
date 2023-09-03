@@ -440,8 +440,9 @@ bool PyC::Existe(int codigo) {
     string codigosBuscados = num1 + ";";
     pnodo aux = primero;
     bool encontrado = false;
+    int i = 0;
 
-    while (aux != NULL) {
+    while (i <= largoLista()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -449,9 +450,10 @@ bool PyC::Existe(int codigo) {
             return true;
         }
         aux = aux->siguiente;
+        i ++;
     }
 
-    if (!encontrado) {
+    if (encontrado == false) {
         return false;
     }
 }
@@ -515,10 +517,10 @@ public:
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoCIU();
-    void CiudadsCIU(PyC ListaPyC);
+    void CiudadsCIU(PyC & ListaPyC);
     void ComprobacionCIU();
     void BorrarPorCodigosCIU();
-    void AgregarCIU(PyC ListaPyC);
+    void AgregarCIU(PyC & ListaPyC);
     void ModificarNombreCIU();
     bool ExisteCIU(string codigo);
 private:
@@ -573,7 +575,7 @@ void Ciudad::ModificarNombreCIU() {
 
 }
 
-void Ciudad::AgregarCIU(PyC ListaPyC){
+void Ciudad::AgregarCIU(PyC & ListaPyC){
 	int NumPais;
 	cout<<"agregar ciudades"<<endl;
 	cout<<"A continuacion se muestran los paises disponibles: "<<endl;		
@@ -606,7 +608,7 @@ void Ciudad::AgregarCIU(PyC ListaPyC){
 }
 
 
-void Ciudad::CiudadsCIU(PyC ListaPyC)
+void Ciudad::CiudadsCIU(PyC & ListaPyC)
 {
 	bool ejecucion = true;
 	cout<<"bienvenido a Ciudades"<<endl;
@@ -938,8 +940,9 @@ bool Ciudad::ExisteCIU(string codigo) {
     
     pnodoCIU aux = primero;
     bool encontrado = false;
+    int i = 0;
 
-    while (aux != NULL) {
+    while (i <= largoLista()) {
         if (aux->valor.find(codigo) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -947,9 +950,10 @@ bool Ciudad::ExisteCIU(string codigo) {
             return true;
         }
         aux = aux->siguiente;
+        i ++;
     }
 
-    if (!encontrado) {
+    if (encontrado == false) {
         return false;
     }
 }
@@ -1011,16 +1015,17 @@ public:
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoRE();
-    void restaurantesRE(Ciudad ListaCiudad);
+    void restaurantesRE(Ciudad & ListaCiudad);
     void ComprobacionRE();
     void BorrarPorCodigosRE();
     void ModificarNombreRE();
-    void agregarRE(Ciudad ListaCiudad);
+    void agregarRE(Ciudad & ListaCiudad);
+    bool ExisteRE(string codigo);
 private:
     pnodoRE primero;
 };
 
-void Restaurante::agregarRE(Ciudad ListaCiudad){
+void Restaurante::agregarRE(Ciudad & ListaCiudad){
 	cout<<"agregar ciudades"<<endl;
 	cout<<"A continuacion muestran paises y ciudades disponibles: "<<endl;		
 	ListaCiudad.MostrarCIU();
@@ -1054,7 +1059,7 @@ void Restaurante::agregarRE(Ciudad ListaCiudad){
 	    string num1a = ss1.str();
 		    
 		string NombreNuevo;
-		cout<<"digite el nombre de la ciudad"<<endl;
+		cout<<"digite el nombre del restaurante"<<endl;
 		cin >> NombreNuevo;
 	
 		string NuevoValor = codigosBuscados + ";" + num1a + ";" + NombreNuevo;
@@ -1118,7 +1123,7 @@ void Restaurante::ModificarNombreRE() {
 
 }
 
-void Restaurante::restaurantesRE(Ciudad listaCiudad2)
+void Restaurante::restaurantesRE(Ciudad & listaCiudad2)
 {
 	bool ejecucion = true;
 	cout<<"bienvenido a restaurantes"<<endl;
@@ -1449,7 +1454,32 @@ void Restaurante::MostrarRE()
 
 } 
 
+bool Restaurante::ExisteRE(string codigo) {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return false;
+    }
+    
+    pnodoRE aux = primero;
+    bool encontrado = false;
+    int i = 0;
 
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigo) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+            return true;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (!encontrado) {
+        return false;
+    }
+}
 
 
 
@@ -1500,13 +1530,65 @@ public:
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoME();
-    void MenusME();
+    void MenusME(Restaurante & ListaRestaurante);
     void ComprobacionME();
     void BorrarPorCodigosME();
     void ModificarNombreME();
+    void AgregarME(Restaurante & ListaRestaurante);
 private:
     pnodoME primero;
 };
+
+void Menu::AgregarME(Restaurante & ListaRestaurante){
+	cout<<"agregar ciudades"<<endl;
+	cout<<"A continuacion muestran paises y ciudades disponibles: "<<endl;		
+	ListaRestaurante.MostrarRE();
+	cout<<"para agregar Restaurantes, se debe de verificar la existencia del pais, ciudad y restaurante, agregar sus codigos"<<endl;
+    int codigo12, codigo22,codigo32;
+    cout << "Ingrese primer codigo: " << endl;
+    cin >> codigo12;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo22;
+    
+    cout<<"Ingrese el tercer codigo:"<<endl;
+    cin >> codigo32;
+
+    std::stringstream ss1, ss2,ss3;
+    ss1 << codigo12;
+    ss2 << codigo22;
+    ss3 << codigo32;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+    string num3 = ss3.str();
+
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3;
+    
+    
+	if(ListaRestaurante.ExisteRE(codigosBuscados)){
+		cout<<"el pais, ciudad y restaurante existen, se procede a agregar"<<endl;
+	    int codigo1a;
+	    cout << "Ingrese el codigo del nuevo menu: " << endl;
+	    cin >> codigo1a;
+
+	    std::stringstream ss1a;
+	    ss1a << codigo1a;
+
+	    string num1a = ss1.str();
+		    
+		string NombreNuevo;
+		cout<<"digite el nombre del menu"<<endl;
+		cin >> NombreNuevo;
+	
+		string NuevoValor = codigosBuscados + ";" + num1a + ";" + NombreNuevo;
+		InsertarFinal(NuevoValor);
+	
+	}else{
+		cout<<"no existe, No se agrega"<<endl;
+		MenusME(ListaRestaurante);
+	}
+}
 
 void Menu::ModificarNombreME() {
     if (ListaVacia()) {
@@ -1565,7 +1647,7 @@ void Menu::ModificarNombreME() {
 
 } 
 
-void Menu::MenusME()
+void Menu::MenusME(Restaurante & ListaRestaurante)
 {
 	bool ejecucion = true;
 	cout<<"bienvenido a Menus"<<endl;
@@ -1601,7 +1683,9 @@ void Menu::MenusME()
 			case 3:
 				cout<<""<<endl;
 				cout<<"opcion 3, agregar un Menu"<<endl;
-
+				cout<<"se muestran paises, ciudades y restaurantes disponibles"<<endl;
+				MostrarME();
+				AgregarME(ListaRestaurante);
 				break;			
 			case 4: 
 				cout<<""<<endl;
@@ -2378,7 +2462,7 @@ int main()
 			case 4:
 				cout<<""<<endl;
 				cout<<"opcion 4 menu"<<endl;
-				ListaMenu.MenusME();
+				ListaMenu.MenusME(ListaRestaurante);
 				break;
 					
 			case 5:
