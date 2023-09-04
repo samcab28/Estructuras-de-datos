@@ -1535,6 +1535,7 @@ public:
     void BorrarPorCodigosME();
     void ModificarNombreME();
     void AgregarME(Restaurante & ListaRestaurante);
+    bool ExisteME(string codigo);
 private:
     pnodoME primero;
 };
@@ -1992,9 +1993,617 @@ void Menu::MostrarME()
      cout<<aux->valor<<"->";
 }   
 
+bool Menu::ExisteME(string codigo) {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return false;
+    }
+    
+    pnodoME aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigo) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+            return true;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (!encontrado) {
+        return false;
+    }
+}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class nodoPRO {
+public:
+    nodoPRO(const string &v)
+    {
+        valor = v;
+        siguiente = NULL;
+        anterior = NULL;
+    }
+
+    nodoPRO(const string &v, nodoPRO *signodoPRO)
+    {
+        valor = v;
+        siguiente = signodoPRO;
+    }
+
+private:
+    string valor;
+    nodoPRO *siguiente;
+    nodoPRO *anterior;
+
+    friend class producto;
+};
+typedef nodoPRO *pnodoPRO;
+
+class producto {
+public:
+    producto() { primero = NULL; }
+    ~producto();
+
+    void InsertarInicio(string v);
+    void InsertarFinal(string v);
+    void InsertarPos(string v, int pos);
+    bool ListaVacia() { return primero == NULL; }
+    void Imprimir();
+    void Borrar(string v);
+    void MostrarPRO();
+    void BorrarFinal();
+    void BorrarInicio();
+    void BorrarPosicion(int pos);
+    int largoLista();
+    void CargarDesdeArchivoPRO();
+    void productosPRO(Menu & ListaMenu);
+    void ComprobacionPRO();
+    void BorrarPorCodigosPRO();
+    void AgregarPRO(Menu & ListaMenu);
+    void ModificarNombrePRO();
+private:
+    pnodoPRO primero;
+};
+
+void producto::ModificarNombrePRO() {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return;
+    }
+
+    int codigo1, codigo2,codigo3,codigo4,codigo5;
+    cout << "Ingrese primer codigo: " << endl;
+    cin >> codigo1;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo2;
+    
+    cout << "Ingrese el tercer codigo: " << endl;
+    cin >> codigo3;
+    
+    cout << "Ingrese el cuarto codigo: " << endl;
+    cin >> codigo4;
+    
+    cout<<"ingrese el quinto codigo: "<<endl;
+    cin >> codigo5;
+
+    std::stringstream ss1, ss2, ss3,ss4,ss5;
+    ss1 << codigo1;
+    ss2 << codigo2;
+    ss3 <<codigo3;
+    ss4 << codigo4;
+    ss5 << codigo5;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+    string num3 = ss3.str();
+    string num4 = ss4.str();
+    string num5 = ss5.str();
+
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+			cout<<"codigo encontrado"<<endl;
+			string newName;
+			cout<<"digite el nuevo nombre"<<endl;
+			cin >> newName;
+			
+			int calorias,precio;
+			cout<<"digite las nuevas calorias del producto"<<endl;
+			cin >> calorias;
+			
+			cout<<"digite el nuevo precio del producto"<<endl;
+			cin >> precio;
+			
+			std::stringstream ss2a,ss2b;
+			ss2a << calorias;
+			ss2b << precio;
+			string caloriaString =  ss2a.str();
+			string precioString = ss2b.str();
+			
+			string modificar = codigosBuscados + ";" + newName + ";" + caloriaString + ";" + precioString;
+			aux -> valor = modificar;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (encontrado == false) {
+        cout << "No se encontraron los codigos en la lista." << endl;
+    }
+
+}
+
+void producto::productosPRO(Menu & ListaMenu)
+{
+	bool ejecucion = true;
+	cout<<"bienvenido a productos"<<endl;
+	
+	while(ejecucion){
+		cout<<""<<endl;
+		cout<<"consultar productos digite 1: "<<endl;
+		cout<<"ver productos digite 2: "<<endl;
+		cout<<"agregar un producto digite 3:"<<endl;
+		cout<<"borrar un producto digite 4: "<<endl;
+		cout<<"modificar un producto digite 5"<<endl;
+		cout<<"para salir digite 6: "<<endl;
+		int x;
+		
+		cin >> x;
+		
+		
+		switch(x)
+		{
+			case 1:
+				cout<<""<<endl;
+				cout<<"opcion 1, consultar un producto"<<endl;
+				cout<<"productos disponibles: "<<endl;
+				MostrarPRO();
+				ComprobacionPRO();
+				break;
+			case 2:
+				cout<<""<<endl;
+				cout<<"opcion 2, ver todos los productos"<<endl;
+				cout<<"se mostraran todos los productos a continuacion: "<<endl;
+				MostrarPRO();
+				break;		
+			case 3:
+				cout<<""<<endl;
+				cout<<"opcion 3, agregar un producto"<<endl;
+				AgregarPRO(ListaMenu);
+				break;			
+			case 4: 
+				cout<<""<<endl;
+				cout<<"opcion 4, borrar un producto"<<endl;
+				cout<<"productos disponibles: "<<endl;
+				MostrarPRO();
+				BorrarPorCodigosPRO();
+				break;	
+			case 5: 
+				cout<<""<<endl;
+				cout<<"opcion 5, modificar nombre"<<endl;
+				cout<<"opciones de moficicacion disponibles"<<endl;
+				MostrarPRO();
+				ModificarNombrePRO();
+				break;
+			case 6: 
+				cout<<""<<endl;
+				cout<<"opcion 6, salir a producto principal"<<endl;
+				ejecucion = false;	
+				break;
+			default:
+				cout<<""<<endl;
+				cout<<"error opcion incorrecta"<<endl;
+				break;			
+		}
+	}
+
+}
+
+void producto::AgregarPRO(Menu & ListaMenu){
+	cout<<"agregar productos"<<endl;
+	cout<<"A continuacion muestran paises, ciudades, restaurantes y menus disponibles: "<<endl;		
+	ListaMenu.MostrarME();
+	cout<<"para agregar productos, se debe de verificar la existencia del pais, ciudad, restaurante y menu, agregar sus codigos"<<endl;
+    int codigo13, codigo23,codigo33,codigo43;
+    cout<<""<<endl;
+    cout << "Ingrese primer codigo: " << endl;
+    cin >> codigo13;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo23;
+    
+    cout<<"Ingrese el tercer codigo:"<<endl;
+    cin >> codigo33;
+    
+    cout<<"ingrese el cuarto codigo:"<<endl;
+    cin >> codigo43;
+
+    std::stringstream ss1, ss2,ss3,ss4;
+    ss1 << codigo13;
+    ss2 << codigo23;
+    ss3 << codigo33;
+    ss4 << codigo43;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+    string num3 = ss3.str();
+    string num4 = ss4.str();
+
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4;
+    
+    
+	if(ListaMenu.ExisteME(codigosBuscados)){
+		cout<<"el pais, ciudad, restaurante y menu existen, se procede a agregar"<<endl;
+	    int codigo1a;
+	    cout << "Ingrese el codigo del nuevo menu: " << endl;
+	    cin >> codigo1a;
+
+	    std::stringstream ss1a;
+	    ss1a << codigo1a;
+
+	    string num1a = ss1.str();
+		    
+		string NombreNuevo;
+		cout<<"digite el nombre del menu"<<endl;
+		cin >> NombreNuevo;
+		
+		int calorias,precio;
+		cout<<"digite las calorias del producto"<<endl;
+		cin >> calorias;
+		
+		cout<<"digite el precio del producto"<<endl;
+		cin >> precio;
+		
+		std::stringstream ss2a,ss2b;
+		ss2a << calorias;
+		ss2b << precio;
+		string caloriaString =  ss2a.str();
+		string precioString = ss2b.str();
+	
+		string NuevoValor = codigosBuscados + ";" + num1a + ";" + NombreNuevo + ";" + caloriaString + ";" + precioString;
+		InsertarFinal(NuevoValor);
+	
+	}else{
+		cout<<"no existe, No se agrega"<<endl;
+		productosPRO(ListaMenu);
+	}
+}
+
+void producto::BorrarPorCodigosPRO() {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return;
+    }
+
+    int codigo1, codigo2,codigo3,codigo4,codigo5;
+    cout << "Ingrese primer codigo: " << endl;
+    cin >> codigo1;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo2;
+    
+    cout << "Ingrese el tercer codigo: " << endl;
+    cin >> codigo3;
+    
+    cout << "Ingrese el cuarto codigo: " << endl;
+    cin >> codigo4;
+    
+    cout<<"ingrese el quinto codigo: "<<endl;
+    cin >> codigo5;
+
+    std::stringstream ss1, ss2, ss3,ss4,ss5;
+    ss1 << codigo1;
+    ss2 << codigo2;
+    ss3 <<codigo3;
+    ss4 << codigo4;
+    ss5 << codigo5;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+    string num3 = ss3.str();
+    string num4 = ss4.str();
+    string num5 = ss5.str();
+
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+			cout<<"codigo encontrado"<<endl;
+			
+			if (aux == primero) {
+                BorrarInicio();
+            } else if (aux->siguiente == primero) {
+                BorrarFinal();
+            } else {
+                pnodoPRO temp = aux;
+                aux->anterior->siguiente = aux->siguiente;
+                aux->siguiente->anterior = aux->anterior;
+                aux = aux->siguiente;
+                delete temp;
+            }
+            cout<<"borrado exitoso"<<endl;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (encontrado == false) {
+        cout << "No se encontraron los codigos en la lista." << endl;
+    }
+}
+
+
+void producto::ComprobacionPRO() {
+    if (ListaVacia()) {
+        cout << "La lista esta vacia." << endl;
+        return;
+    }
+
+    int codigo1, codigo2, codigo3,codigo4,codigo5;
+    cout << "Ingrese el primer codigo: " << endl;
+    cin >> codigo1;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo2;
+
+    cout << "Ingrese el tercer codigo: " << endl;
+    cin >> codigo3;
+    
+    cout << "Ingrese el cuarto codigo: " << endl;
+    cin >> codigo4;
+    
+    cout << "Ingrese el quinto codigo: " << endl;
+    cin >> codigo5;
+
+    std::stringstream ss1, ss2, ss3,ss4,ss5;
+    ss1 << codigo1;
+    ss2 << codigo2;
+    ss3 << codigo3;
+    ss4 << codigo4;
+    ss5 << codigo5;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+    string num3 = ss3.str();
+    string num4 = ss4.str();
+    string num5 = ss5.str();
+
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1 );
+			
+		    std::string cadena = aux -> valor ;
+		    std::istringstream stream(cadena);
+		    std::string dato;
+			int j = 0;
+		    while (std::getline(stream, dato, ';')) {
+		        if (!dato.empty()) {
+		        	
+		        	if(j == 5){
+		        		cout<<"pruducto: "<<dato<<endl;
+					}
+		        	if(j == 6){
+		        		cout<<"calorias: "<<dato<<endl;
+					}
+		        	if(j == 7){
+		        		cout<<"precio: "<<dato<<endl;
+					}
+		            j++;
+		        }
+		    }
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los c?digos en la lista." << endl;
+    }
+}
+
+
+void producto::CargarDesdeArchivoPRO() {
+    set<string> numero4_set;  
+
+    ifstream archivo("Productos.txt");
+    if (archivo.is_open())
+    {
+        string linea;
+        while (getline(archivo, linea))
+        {
+            istringstream iss(linea);
+            string numero1, numero2, numero3,numero4,numero5, nombre,numero6,numero7;
+            getline(iss, numero1, ';');
+            getline(iss, numero2, ';');
+            getline(iss, numero3, ';');
+            getline(iss, numero4, ';');
+            getline(iss, numero5, ';');
+            getline(iss, nombre);
+            getline(iss, numero6, ';');
+            getline(iss, numero7, ';');
+
+            // Verificar si NUPRORO3 es diferente de los anteriores
+            if (numero4_set.find(numero4) == numero4_set.end())
+            {
+                numero4_set.insert(numero4);  // Agregar a conjunto de NUPRORO3
+                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4+ ";"+ numero5+ ";" + nombre +";" + numero6 + ";" + numero7;
+                InsertarFinal(nuevo_valor);
+            }
+            else
+            {
+                cout << "Advertencia: NUPRORO3 debe ser diferente a los otros NUPRORO3 anteriores." << endl;
+            }
+        }
+        archivo.close();
+    }
+    else
+    {
+        cout << "No se pudo abrir el archivo." << endl;
+    }
+}
+                
+producto::~producto()
+{
+   pnodoPRO aux;
+   pnodoPRO temp;
+   
+   while(primero) {
+      temp = primero;
+      aux=primero;
+      primero = primero->siguiente;
+      while (aux->siguiente!=primero)
+           aux= aux->siguiente;
+      aux->siguiente=primero;
+      
+      delete temp;
+      primero=NULL;
+   }
+   primero= NULL;
+}
+                          
+int producto::largoLista() 
+{
+    int cont=0;
+
+    pnodoPRO aux = primero->siguiente;
+    if(ListaVacia())
+    {
+        return cont;
+    }
+    else
+    {   cont=cont+1;
+        while(aux!=primero)
+        {
+          aux=aux->siguiente;
+          cont++;
+        }
+    return cont;
+    }
+    
+}
+
+void producto::InsertarFinal(string v)
+{
+   if (ListaVacia())
+     {
+     primero = new nodoPRO(v);
+     primero->anterior=primero;
+     primero->siguiente=primero;
+   }  
+   else
+   { 
+     pnodoPRO nuevo = new nodoPRO(v);//1
+     nuevo->anterior = primero->anterior;//2
+	 nuevo->siguiente=primero;// coloca alguna de la dos 3
+     primero->anterior->siguiente=nuevo;//4
+     primero->anterior=nuevo;//5
+    }    
+}
+  
+void producto::BorrarFinal()
+{
+    if (ListaVacia())
+      cout << "No hay elementos en la lista:" << endl;
+    else
+    {
+      if (primero->siguiente == primero)
+      {
+        pnodoPRO temp= primero;
+        primero= NULL;
+        delete temp;
+      }
+      else 
+      {
+         pnodoPRO aux = primero; //1
+         while (aux->siguiente->siguiente != primero)
+              aux = aux->siguiente;
+         pnodoPRO temp = aux->siguiente;//2
+         aux->siguiente= primero;//3
+         primero->anterior=aux;//4
+         delete temp;//5
+      }
+    }
+}
+
+void producto::BorrarInicio()
+{
+    if (ListaVacia())
+      cout << "No hay elementos en la lista:" << endl;
+    else
+    {
+     if (primero->siguiente == primero)
+     {
+        pnodoPRO temp= primero;
+        primero= NULL;
+        delete temp;
+     }
+     else
+     {
+        pnodoPRO aux = primero->anterior;//1
+        pnodoPRO temp= primero;//2
+        aux->siguiente=primero->siguiente;//3
+        primero=primero->siguiente; //4
+        primero->anterior=aux;//5
+        delete temp;//6
+      }
+    }
+}
+
+void producto::MostrarPRO()
+{
+   pnodoPRO aux=primero;
+   while(aux->siguiente!=primero)
+     {
+                                
+      cout << aux->valor << "-> ";
+      aux = aux->siguiente;
+     }
+     cout<<aux->valor<<"->";
+     cout<<endl;
+}
 
 
 
@@ -2413,8 +3022,8 @@ int main()
    	ListaMenu.CargarDesdeArchivoME();
    	
    	
-   	//producto ListaProducto;
-   	//ListaProducto.CargarDesdeArchivoPRO();
+   	producto ListaProducto;
+   	ListaProducto.CargarDesdeArchivoPRO();
    	
    	
    	Clientes ListaClientes;
@@ -2468,7 +3077,7 @@ int main()
 			case 5:
 				cout<<""<<endl;
 				cout<<"opcion 5 productos"<<endl;
-				//333333ListaProducto.productosPRO();
+				ListaProducto.productosPRO(ListaMenu);
 				break;
 				
 			case 6:
