@@ -2083,6 +2083,7 @@ public:
     void BorrarPorCodigosPRO();
     void AgregarPRO(Menu & ListaMenu);
     void ModificarNombrePRO();
+    bool ExistePRO(string codigo);
 private:
     pnodoPRO primero;
 };
@@ -2605,7 +2606,32 @@ void producto::MostrarPRO()
      cout<<endl;
 }
 
+bool producto::ExistePRO(string codigo) {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return false;
+    }
+    
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
 
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigo) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+            return true;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (!encontrado) {
+        return false;
+    }
+}
 
 
 
@@ -2659,6 +2685,7 @@ public:
     void clientesCl();
     void AgregarClienteCl();
     void ModificarNombreCL();
+    bool ExisteCl(int codigo);
 
 private:
     pnodoCl primero;
@@ -2993,7 +3020,167 @@ void Clientes::MostrarCl()
    }
 }
 
+bool Clientes::ExisteCl(int codigo) {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return false;
+    }
 
+    std::stringstream ss1;
+    ss1 << codigo;
+    string num1 = ss1.str();
+    string codigosBuscados = num1 + ";";
+    pnodoCl aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+            return true;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (encontrado == false) {
+        return false;
+    }
+}
+
+
+
+class cola
+{
+private:
+    int frente;
+    int fondo;
+    string Cola[5]; // Cambiamos el tipo de datos a string
+
+public:
+    cola()
+    {
+        frente = 0;
+        fondo = -1;
+        for (int i = 0; i < 5; i++)
+        {
+            Cola[i] = ""; // Inicializamos el arreglo de strings con cadenas vacías
+        }
+    }
+
+    bool ColaVacia() { return fondo < frente; }
+    void insertar(string v);
+    void eliminar();
+    void imprimir();
+    void Agregar(producto & ListaProducto, Clientes &  ListaClientes );
+};
+
+void cola::insertar(string v)
+{
+    if (fondo <= 5 - 1)
+    {
+        fondo++;
+        Cola[fondo] = v;
+    }
+    else
+    {
+        cout << "La cola esta llena";
+    }
+}
+
+void cola::eliminar()
+{
+    if (!ColaVacia())
+    {
+        frente++;
+    }
+    else
+    {
+        cout << "La cola esta vacia";
+    }
+}
+
+void cola::imprimir()
+{
+    for (int i = frente; i <= fondo; i++)
+    {
+        cout << Cola[i] << " -> ";
+    }
+    cout << endl;
+}
+
+void cola::Agregar(producto & ListaProducto, Clientes &  ListaClientes){
+	if (fondo <= 5 - 1)
+    {
+		cout<<"opciones disponibles de cliente"<<endl;
+			ListaClientes.MostrarCl();
+			cout<<"digite el numero de cedula del cliente"<<endl;
+			int codigo2;
+			cin >> codigo2;
+			if(ListaClientes.ExisteCl(codigo2)==true){
+				cout<<"cliente encontrado de manera exitosa"<<endl;
+				cout<<"se muestran los productos disponibles"<<endl;
+				ListaProducto.MostrarPRO();
+				cout<<"proceda a digita el producto que quiere comer"<<endl;
+				
+			    std::stringstream ss10;
+			    ss10 << codigo2;
+			    string num10 = ss10.str();
+			    
+			    int codigo1, codigo2, codigo3,codigo4,codigo5;
+			    cout << "Ingrese el primer codigo: " << endl;
+			    cin >> codigo1;
+			
+			    cout << "Ingrese el segundo codigo: " << endl;
+			    cin >> codigo2;
+			
+			    cout << "Ingrese el tercer codigo: " << endl;
+			    cin >> codigo3;
+			    
+			    cout << "Ingrese el cuarto codigo: " << endl;
+			    cin >> codigo4;
+			    
+			    cout << "Ingrese el quinto codigo: " << endl;
+			    cin >> codigo5;
+			
+			    std::stringstream ss1, ss2, ss3,ss4,ss5;
+			    ss1 << codigo1;
+			    ss2 << codigo2;
+			    ss3 << codigo3;
+			    ss4 << codigo4;
+			    ss5 << codigo5;
+			
+			    string num1 = ss1.str();
+			    string num2 = ss2.str();
+			    string num3 = ss3.str();
+			    string num4 = ss4.str();
+			    string num5 = ss5.str();
+	
+				string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+				
+				if(ListaProducto.ExistePRO(codigosBuscados) == true){
+					cout<<"producto encontrado y agregado de manera exitosa al cliente "+ num10<<endl;
+					string entrada = num10 + ";" + codigosBuscados;
+					insertar(entrada);
+				}
+				else{
+					cout<<"producto no encontrado"<<endl;
+					
+				}
+				
+	
+			}
+			else{
+				cout<<"cliente no encontrado"<<endl;
+			}
+    }
+    else
+    {
+        cout << "La cola esta llena";
+    }
+}
 
 
 
@@ -3029,7 +3216,7 @@ int main()
    	Clientes ListaClientes;
    	ListaClientes.CargarDesdeArchivoCl();
    	
-   	
+	cola ColaCompras;
    	
 	bool ejecucion = true;
 	
@@ -3044,7 +3231,8 @@ int main()
 		cout<<"para menu, digite 4"<<endl;
 		cout<<"para productos, digite 5"<<endl;
 		cout<<"para clientes, digite 6"<<endl;
-		cout<<"para salir, digite 7"<<endl;
+		cout<<"para compras, digite 7"<<endl;
+		cout<<"para salir, digite 8"<<endl;
 		
 		cin >> MenuPrincipal;
 		
@@ -3086,6 +3274,12 @@ int main()
 				ListaClientes.clientesCl();
 				break;
 			case 7:
+				cout<<""<<endl;
+				cout<<"opcion 7 compras"<<endl;
+				ColaCompras.Agregar(ListaProducto,ListaClientes);
+				ColaCompras.imprimir();
+				break;
+			case 8: 
 				cout<<""<<endl;
 				cout<<"opcion 7 salir"<<endl;
 				exit(0);

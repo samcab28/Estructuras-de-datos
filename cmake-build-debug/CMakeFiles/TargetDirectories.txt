@@ -1,0 +1,3 @@
+C:/Users/scabr/OneDrive/Documentos/EstructurasRepositorio/Estructuras-de-datos/cmake-build-debug/CMakeFiles/Estructuras_de_datos.dir
+C:/Users/scabr/OneDrive/Documentos/EstructurasRepositorio/Estructuras-de-datos/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/scabr/OneDrive/Documentos/EstructurasRepositorio/Estructuras-de-datos/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,79 +1,83 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
-class cola 
+class cola
 {
-   private:
-   int frente;
-   int fondo;
-   int Cola [5];//definicion del arreglo
-
+private:
+    int frente;
+    int fondo;
+    string Cola[5]; // Cambiamos el tipo de datos a string
 
 public:
-       cola(){
-       frente = 0;
-       fondo = -1;
-       for(int i =0;i<5;i++){
-         Cola[i]=0;    
-           }
-       }
-       
-      bool ColaVacia(){return fondo < frente;}        
-	  void insertar(int v); 
-	  void eliminar ();
-	  void imprimir();//temporal para verificar la informacion
+    cola()
+    {
+        frente = 0;
+        fondo = -1;
+        for (int i = 0; i < 5; i++)
+        {
+            Cola[i] = ""; // Inicializamos el arreglo de strings con cadenas vacías
+        }
+    }
+
+    bool ColaVacia() { return fondo < frente; }
+    void insertar(string v);
+    void eliminar();
+    void imprimir();
 };
 
-void cola:: insertar (int v)
+void cola::insertar(string v)
 {
-         if(fondo <=5-1){
-             fondo++;
-             Cola[fondo]= v; 
-           
-         }
-         else{
-         cout<<"La cola esta llena";  
-         }
-}   
-
-void cola:: eliminar ()
-{
-         if(!ColaVacia()){
-            frente++;
-         }
-         else{
-         cout<<"La cola esta vacia";  
-         }
-}  
-
-void cola:: imprimir(){
-     for(int i = frente;i<fondo+1;i++){
-         cout<<Cola[i]<<"->"<<endl;    
-           }
+    if (fondo <= 5 - 1)
+    {
+        fondo++;
+        Cola[fondo] = v;
+    }
+    else
+    {
+        cout << "La cola esta llena";
+    }
 }
- 
- int main()
+
+void cola::eliminar()
 {
-    cola cola;
-    
-     cola.insertar(2);
-     cola.insertar(7);
-     cola.insertar(9);
-     cola.insertar(6);
-     cola.insertar(8);
-     cola.insertar(18);
-     cola.imprimir();
-     cout<<" "<<endl; 
-     cout<<" "<<endl; 
-     cout<<" "<<endl; 
-     cola.eliminar();
-     cola.imprimir();
-     cola.insertar(18);
-     cout<<" "<<endl;  
-    //ola.insertar(18);
-   
-   cin.get();
-   return 0;   
-      
+    if (!ColaVacia())
+    {
+        frente++;
+    }
+    else
+    {
+        cout << "La cola esta vacia";
+    }
+}
+
+void cola::imprimir()
+{
+    for (int i = frente; i <= fondo; i++)
+    {
+        cout << Cola[i] << " -> ";
+    }
+    cout << endl;
+}
+
+int main()
+{
+    cola miCola;
+
+    miCola.insertar("gato");
+    miCola.insertar("perro");
+    miCola.insertar("pájaro");
+    miCola.imprimir();
+
+    miCola.eliminar();
+    miCola.insertar("pájaro");
+    miCola.insertar("pájaro");
+    miCola.insertar("pájaro");
+    miCola.insertar("pájaro");
+    miCola.insertar("p\o");
+    miCola.imprimir();
+
+    cin.get();
+    return 0;
 }
 

@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.26"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Estructuras_de_datos",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Estructuras_de_datos::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Estructuras_de_datos-Debug-f590aac798a0a40e5f06.json",
+					"name" : "Estructuras_de_datos",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/scabr/OneDrive/Documentos/EstructurasRepositorio/Estructuras-de-datos/cmake-build-debug",
+		"source" : "C:/Users/scabr/OneDrive/Documentos/EstructurasRepositorio/Estructuras-de-datos"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 5
+	}
+}
