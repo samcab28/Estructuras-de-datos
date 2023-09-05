@@ -3052,6 +3052,7 @@ bool Clientes::ExisteCl(int codigo) {
 
 
 
+
 class cola
 {
 private:
@@ -3074,8 +3075,76 @@ public:
     void insertar(string v);
     void eliminar();
     void imprimir();
-    void Agregar(producto & ListaProducto, Clientes &  ListaClientes );
+    void Agregar(producto & ListaProducto, Clientes &  ListaClientes);
+    void ColaCO(producto & ListaProducto, Clientes &  ListaClientes);
 };
+
+void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes){
+
+	bool ejecucion = true;
+	cout<<"bienvenido a Compras"<<endl;
+	
+	while(ejecucion){
+		cout<<""<<endl;
+		cout<<"consultar compras digite 1: "<<endl;
+		cout<<"ver compras digite 2: "<<endl;
+		cout<<"agregar una compra digite 3:"<<endl;
+		cout<<"borrar una compra digite 4: "<<endl;
+		cout<<"modificar una compra digite 5"<<endl;
+		cout<<"para salir digite 6: "<<endl;
+		int x;
+		
+		cin >> x;
+		
+		
+		switch(x)
+		{
+			case 1:
+				cout<<""<<endl;
+				cout<<"opcion 1, consultar una compra"<<endl;
+				cout<<"compras disponibles: "<<endl;
+				imprimir();
+				break;
+			case 2:
+				cout<<""<<endl;
+				cout<<"opcion 2, ver todos los clientes"<<endl;
+				cout<<"se mostraran todos los clientes a continuacion: "<<endl;
+				imprimir();
+				break;		
+			case 3:
+				cout<<""<<endl;
+				cout<<"opcion 3, agregar un cliente"<<endl;
+				Agregar(ListaProducto,ListaClientes);
+				imprimir();
+				break;			
+			case 4: 
+				cout<<""<<endl;
+				cout<<"opcion 4, borrar un cliente"<<endl;
+				cout<<"clientes disponibles: "<<endl;
+				imprimir();
+				//BorrarPorCodigoCl();
+				imprimir();
+				break;	
+			case 5: 
+				cout<<""<<endl;
+				cout<<"opcion 5, modificar un cliente"<<endl;
+				cout<<"nombres disponibles"<<endl;
+				imprimir();
+				//ModificarNombreCL();
+				break;
+			case 6: 
+				cout<<""<<endl;
+				cout<<"opcion 6, salir a menu principal"<<endl;
+				ejecucion = false;			
+			default:
+				cout<<""<<endl;
+				cout<<"error opcion incorrecta"<<endl;
+				break;			
+		}
+	}
+
+}
+
 
 void cola::insertar(string v)
 {
@@ -3276,8 +3345,7 @@ int main()
 			case 7:
 				cout<<""<<endl;
 				cout<<"opcion 7 compras"<<endl;
-				ColaCompras.Agregar(ListaProducto,ListaClientes);
-				ColaCompras.imprimir();
+				ColaCompras.ColaCO(ListaProducto, ListaClientes);
 				break;
 			case 8: 
 				cout<<""<<endl;
