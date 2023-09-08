@@ -3053,6 +3053,7 @@ bool Clientes::ExisteCl(int codigo) {
 
 
 
+
 class cola
 {
 private:
@@ -3077,7 +3078,132 @@ public:
     void imprimir();
     void Agregar(producto & ListaProducto, Clientes &  ListaClientes);
     void ColaCO(producto & ListaProducto, Clientes &  ListaClientes);
+    bool VerificarNumeroEnCola();
+    void MostrarCodigoEnPosicion(int posicion);
 };
+
+
+
+void cola::MostrarCodigoEnPosicion(int posicion)
+{
+    if (posicion >= 1 && posicion <= 5)
+    {
+        if (Cola[posicion - 1] != "")
+        {
+            cout << "Posición " << posicion << ": " << Cola[posicion - 1] << endl;
+        }
+        else
+        {
+            cout << "Posición " << posicion << " está vacía." << endl;
+        }
+    }
+    else
+    {
+        cout << "Posición no válida. Debe ser un número entre 1 y 5." << endl;
+    }
+}
+
+bool cola::VerificarNumeroEnCola()
+{
+	int x;
+	cout<<"digite el numero de identificacion para comprobar si el cliente existe"<<endl;
+	cin >> x;
+	std::stringstream ss1;
+	ss1 << x;
+	string num1 = ss1.str();
+	int j; //valor para poder imprimir 
+    for (int i = frente; i <= fondo; i++)
+    {
+        string elemento = Cola[i];
+        // Busca el primer conjunto de números en el elemento de la cola
+        size_t pos = elemento.find(';');
+        if (pos != string::npos)
+        {
+            string primerNumero = elemento.substr(0, pos);
+            if (primerNumero == num1)
+            {
+                MostrarCodigoEnPosicion(i+1);
+                return true;
+            }
+        }
+        j++;
+    }
+    
+    cout << "Número no encontrado en la cola." << endl;
+  
+  return false;
+}
+
+void cola::Agregar(producto & ListaProducto, Clientes &  ListaClientes){
+	if (fondo <= 5 - 1)
+    {
+		cout<<"opciones disponibles de cliente"<<endl;
+			ListaClientes.MostrarCl();
+			cout<<"digite el numero de cedula del cliente"<<endl;
+			int codigo2;
+			cin >> codigo2;
+			if(ListaClientes.ExisteCl(codigo2)==true){
+				cout<<"cliente encontrado de manera exitosa"<<endl;
+				cout<<"se muestran los productos disponibles"<<endl;
+				ListaProducto.MostrarPRO();
+				cout<<"proceda a digita el producto que quiere comer"<<endl;
+				
+			    std::stringstream ss10;
+			    ss10 << codigo2;
+			    string num10 = ss10.str();
+			    
+			    int codigo1, codigo2, codigo3,codigo4,codigo5;
+			    cout << "Ingrese el primer codigo: " << endl;
+			    cin >> codigo1;
+			
+			    cout << "Ingrese el segundo codigo: " << endl;
+			    cin >> codigo2;
+			
+			    cout << "Ingrese el tercer codigo: " << endl;
+			    cin >> codigo3;
+			    
+			    cout << "Ingrese el cuarto codigo: " << endl;
+			    cin >> codigo4;
+			    
+			    cout << "Ingrese el quinto codigo: " << endl;
+			    cin >> codigo5;
+			
+			    std::stringstream ss1, ss2, ss3,ss4,ss5;
+			    ss1 << codigo1;
+			    ss2 << codigo2;
+			    ss3 << codigo3;
+			    ss4 << codigo4;
+			    ss5 << codigo5;
+			
+			    string num1 = ss1.str();
+			    string num2 = ss2.str();
+			    string num3 = ss3.str();
+			    string num4 = ss4.str();
+			    string num5 = ss5.str();
+	
+				string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+				
+				if(ListaProducto.ExistePRO(codigosBuscados) == true){
+					cout<<"producto encontrado y agregado de manera exitosa al cliente "+ num10<<endl;
+					string entrada = num10 + ";" + codigosBuscados;
+					insertar(entrada);
+				}
+				else{
+					cout<<"producto no encontrado"<<endl;
+					
+				}
+				
+	
+			}
+			else{
+				cout<<"cliente no encontrado"<<endl;
+			}
+    }
+    else
+    {
+        cout << "La cola esta llena";
+    }
+}
 
 void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes){
 
@@ -3103,6 +3229,7 @@ void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes){
 				cout<<""<<endl;
 				cout<<"opcion 1, consultar una compra"<<endl;
 				cout<<"compras disponibles: "<<endl;
+				VerificarNumeroEnCola();
 				imprimir();
 				break;
 			case 2:
@@ -3180,76 +3307,6 @@ void cola::imprimir()
     cout << endl;
 }
 
-void cola::Agregar(producto & ListaProducto, Clientes &  ListaClientes){
-	if (fondo <= 5 - 1)
-    {
-		cout<<"opciones disponibles de cliente"<<endl;
-			ListaClientes.MostrarCl();
-			cout<<"digite el numero de cedula del cliente"<<endl;
-			int codigo2;
-			cin >> codigo2;
-			if(ListaClientes.ExisteCl(codigo2)==true){
-				cout<<"cliente encontrado de manera exitosa"<<endl;
-				cout<<"se muestran los productos disponibles"<<endl;
-				ListaProducto.MostrarPRO();
-				cout<<"proceda a digita el producto que quiere comer"<<endl;
-				
-			    std::stringstream ss10;
-			    ss10 << codigo2;
-			    string num10 = ss10.str();
-			    
-			    int codigo1, codigo2, codigo3,codigo4,codigo5;
-			    cout << "Ingrese el primer codigo: " << endl;
-			    cin >> codigo1;
-			
-			    cout << "Ingrese el segundo codigo: " << endl;
-			    cin >> codigo2;
-			
-			    cout << "Ingrese el tercer codigo: " << endl;
-			    cin >> codigo3;
-			    
-			    cout << "Ingrese el cuarto codigo: " << endl;
-			    cin >> codigo4;
-			    
-			    cout << "Ingrese el quinto codigo: " << endl;
-			    cin >> codigo5;
-			
-			    std::stringstream ss1, ss2, ss3,ss4,ss5;
-			    ss1 << codigo1;
-			    ss2 << codigo2;
-			    ss3 << codigo3;
-			    ss4 << codigo4;
-			    ss5 << codigo5;
-			
-			    string num1 = ss1.str();
-			    string num2 = ss2.str();
-			    string num3 = ss3.str();
-			    string num4 = ss4.str();
-			    string num5 = ss5.str();
-	
-				string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
-				
-				if(ListaProducto.ExistePRO(codigosBuscados) == true){
-					cout<<"producto encontrado y agregado de manera exitosa al cliente "+ num10<<endl;
-					string entrada = num10 + ";" + codigosBuscados;
-					insertar(entrada);
-				}
-				else{
-					cout<<"producto no encontrado"<<endl;
-					
-				}
-				
-	
-			}
-			else{
-				cout<<"cliente no encontrado"<<endl;
-			}
-    }
-    else
-    {
-        cout << "La cola esta llena";
-    }
-}
 
 
 

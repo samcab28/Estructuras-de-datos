@@ -71,9 +71,8 @@ int main()
 
     miCola.eliminar();
     miCola.insertar("pájaro");
-    miCola.insertar("pájaro");
-    miCola.insertar("pájaro");
-    miCola.insertar("pájaro");
+    miCola.eliminar();
+    miCola.eliminar();
     miCola.insertar("p\o");
     miCola.imprimir();
 
