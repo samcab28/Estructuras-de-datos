@@ -3032,9 +3032,8 @@ bool Clientes::ExisteCl(int codigo) {
     string codigosBuscados = num1 + ";";
     pnodoCl aux = primero;
     bool encontrado = false;
-    int i = 0;
 
-    while (i <= largoLista()) {
+    while (aux != NULL) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -3042,13 +3041,11 @@ bool Clientes::ExisteCl(int codigo) {
             return true;
         }
         aux = aux->siguiente;
-        i ++;
     }
 
-    if (encontrado == false) {
-        return false;
-    }
+    return false;
 }
+
 
 
 
@@ -3080,9 +3077,113 @@ public:
     void ColaCO(producto & ListaProducto, Clientes &  ListaClientes);
     bool VerificarNumeroEnCola();
     void MostrarCodigoEnPosicion(int posicion);
+    void BorrarPorNumeroIdentificacion();
+    void ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &ListaClientes);
 };
 
+void cola::ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &ListaClientes) {
+    int numIdentificacion;
+    cout << "Ingrese el número de identificacion que desea modificar: ";
+    cin >> numIdentificacion;
+    
+    std::stringstream ss10;
+    ss10 << numIdentificacion;
+    string num10 = ss10.str();
 
+    for (int i = frente; i <= fondo; i++) {
+        string elemento = Cola[i];
+        // Busca el primer conjunto de números en el elemento de la cola
+        size_t pos = elemento.find(';');
+        if (pos != string::npos) {
+            string primerNumero = elemento.substr(0, pos);
+            if (primerNumero == num10) {
+                // El cliente con el número de identificación se encontró en la cola
+                cout << "Cliente con número de identificacion " << numIdentificacion << " encontrado" << endl;
+
+                // Mostrar los productos actuales del cliente
+                cout << "Productos actuales del cliente: " << endl;
+                MostrarCodigoEnPosicion(i + 1);
+                ListaProducto.MostrarPRO();
+
+                // Solicitar nuevos productos
+                int codigo1, codigo2, codigo3, codigo4, codigo5;
+                cout << "Ingrese el primer codigo: " << endl;
+                cin >> codigo1;
+
+                cout << "Ingrese el segundo codigo: " << endl;
+                cin >> codigo2;
+
+                cout << "Ingrese el tercer codigo: " << endl;
+                cin >> codigo3;
+
+                cout << "Ingrese el cuarto codigo: " << endl;
+                cin >> codigo4;
+
+                cout << "Ingrese el quinto codigo: " << endl;
+                cin >> codigo5;
+
+                // Convertir los nuevos códigos en cadenas
+                std::stringstream ss1, ss2, ss3, ss4, ss5;
+                ss1 << codigo1;
+                ss2 << codigo2;
+                ss3 << codigo3;
+                ss4 << codigo4;
+                ss5 << codigo5;
+                string num1 = ss1.str();
+                string num2 = ss2.str();
+                string num3 = ss3.str();
+                string num4 = ss4.str();
+                string num5 = ss5.str();
+
+                // Crear la nueva cadena de productos
+                string nuevosProductos = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+
+                // Actualizar la cola con la nueva cadena de productos
+                Cola[i] = num10 + ";" + nuevosProductos;
+
+                cout << "Productos modificados con éxito." << endl;
+                return;
+            }
+        }
+    }
+
+    cout << "Número de identificación no encontrado en la cola." << endl;
+}
+
+
+void cola::BorrarPorNumeroIdentificacion()
+{
+    int numIdentificacion;
+    cout << "Ingrese el número de identificacion que desea borrar: ";
+    cin >> numIdentificacion;
+    std::stringstream ss10;
+	ss10 << numIdentificacion;
+	string num10 = ss10.str();
+    
+
+    for (int i = frente; i <= fondo; i++)
+    {
+        string elemento = Cola[i];
+        // Busca el primer conjunto de números en el elemento de la cola
+        size_t pos = elemento.find(';');
+        if (pos != string::npos)
+        {
+            string primerNumero = elemento.substr(0, pos);
+            if (primerNumero == num10)
+            {
+                // Borra el elemento completo de la cola
+                for (int j = i; j < fondo; j++)
+                {
+                    Cola[j] = Cola[j + 1];
+                }
+                Cola[fondo] = "";
+                fondo--;
+                cout << "Elemento con número de identificacion " << numIdentificacion << " borrado" << endl;
+                i--; // Ajusta el índice para revisar el siguiente elemento
+            }
+        }
+    }
+}
 
 void cola::MostrarCodigoEnPosicion(int posicion)
 {
@@ -3090,16 +3191,16 @@ void cola::MostrarCodigoEnPosicion(int posicion)
     {
         if (Cola[posicion - 1] != "")
         {
-            cout << "Posición " << posicion << ": " << Cola[posicion - 1] << endl;
+            cout << "Posicion " << posicion << ": " << Cola[posicion - 1] << endl;
         }
         else
         {
-            cout << "Posición " << posicion << " está vacía." << endl;
+            cout << "Posicion " << posicion << " está vacia." << endl;
         }
     }
     else
     {
-        cout << "Posición no válida. Debe ser un número entre 1 y 5." << endl;
+        cout << "Posicion no válida. Debe ser un numero entre 1 y 5." << endl;
     }
 }
 
@@ -3197,12 +3298,15 @@ void cola::Agregar(producto & ListaProducto, Clientes &  ListaClientes){
 			}
 			else{
 				cout<<"cliente no encontrado"<<endl;
+				ColaCO(ListaProducto,ListaClientes);
 			}
     }
     else
     {
         cout << "La cola esta llena";
+        ColaCO(ListaProducto,ListaClientes);
     }
+    ColaCO(ListaProducto,ListaClientes);
 }
 
 void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes){
@@ -3229,35 +3333,35 @@ void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes){
 				cout<<""<<endl;
 				cout<<"opcion 1, consultar una compra"<<endl;
 				cout<<"compras disponibles: "<<endl;
-				VerificarNumeroEnCola();
 				imprimir();
+				VerificarNumeroEnCola();
 				break;
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2, ver todos los clientes"<<endl;
-				cout<<"se mostraran todos los clientes a continuacion: "<<endl;
+				cout<<"opcion 2, ver todos las compras"<<endl;
+				cout<<"se mostraran todos las compras continuacion: "<<endl;
 				imprimir();
 				break;		
 			case 3:
 				cout<<""<<endl;
-				cout<<"opcion 3, agregar un cliente"<<endl;
+				cout<<"opcion 3, agregar una compra"<<endl;
 				Agregar(ListaProducto,ListaClientes);
 				imprimir();
 				break;			
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, borrar un cliente"<<endl;
+				cout<<"opcion 4, borrar una compra"<<endl;
 				cout<<"clientes disponibles: "<<endl;
 				imprimir();
-				//BorrarPorCodigoCl();
+				BorrarPorNumeroIdentificacion();
 				imprimir();
 				break;	
 			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 5, modificar un cliente"<<endl;
+				cout<<"opcion 5, modificar una compra"<<endl;
 				cout<<"nombres disponibles"<<endl;
 				imprimir();
-				//ModificarNombreCL();
+				ModificarPorNumeroIdentificacion(ListaProducto,ListaClientes);
 				break;
 			case 6: 
 				cout<<""<<endl;
