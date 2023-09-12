@@ -3086,10 +3086,9 @@ public:
     bool ListaVacia() { return primero == NULL; }
     void BorrarFinal();
     void BorrarInicio();
-    void Mostrar();
+    void MostrarCompra();
     int largoLista();
     void Paises();
-    void CargarDesdeArchivo();
     void AgregarCompra(producto & ListaProducto, string valor);
     void ConsultarPaisPorCodigo();
     void BorrarPaisPorCodigo(int codigo);
@@ -3249,54 +3248,11 @@ void ListaCOM::AgregarCompra(producto &ListaProducto, string valor) {
         cout << "Producto encontrado y agregado de manera exitosa al cliente " << endl;
         string entrada2 = valor +";"+ codigosBuscados;
         InsertarFinal(entrada2);
-        Mostrar();
+        MostrarCompra();
     } else {
         cout << "Producto no encontrado" << endl;
     }
 }
-
-
-void ListaCOM::CargarDesdeArchivo()
-{
-    ifstream archivo("Paises.txt");
-    if (!archivo.is_open()) {
-        cout << "No se pudo abrir el archivo." << endl;
-        return;
-    }
-
-    string linea;
-    while (getline(archivo, linea)) {
-        size_t pos = linea.find(';');
-        if (pos != string::npos) {
-            string codigo = linea.substr(0, pos);
-            string nombre = linea.substr(pos + 1);
-            
-            bool existe = false;
-            pnodoCOM aux = primero;
-            
-            while (aux) {
-                size_t posAux = aux->valor.find(';');
-                if (posAux != string::npos) {
-                    string codigoEnLista = aux->valor.substr(0, posAux);
-                    
-                    if (codigoEnLista == codigo) {
-                        existe = true;
-                        cout << "Pais con codigo " << codigo << " ya existe en la lista." << endl;
-                        break;
-                    }
-                }
-                aux = aux->siguiente;
-            }
-            
-            if (!existe) {
-                InsertarFinal(codigo + ";" + nombre);
-            }
-        }
-    }
-
-    archivo.close();
-}
-
 
 ListaCOM::~ListaCOM()
 {
@@ -3395,7 +3351,7 @@ void ListaCOM::BorrarInicio()
         }
 }
 
-void ListaCOM::Mostrar()
+void ListaCOM::MostrarCompra()
 {
    nodoCOM *aux;
    
@@ -3486,8 +3442,6 @@ string cola::ObtenerValorEntrada()
         return "";
     }
 }
-
-
 
 void cola::ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &ListaClientes) {
     int numIdentificacion;
@@ -3671,7 +3625,6 @@ void cola::Agregar(producto &ListaProducto, Clientes &ListaClientes, ListaCOM &L
 }
 
 
-
 void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM & ListaCompras ){
 
 	bool ejecucion = true;
@@ -3702,8 +3655,10 @@ void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM &
 			case 2:
 				cout<<""<<endl;
 				cout<<"opcion 2, ver todos las compras"<<endl;
-				cout<<"se mostraran todos las compras continuacion: "<<endl;
+				cout<<"clientes en cola"<<endl;
 				imprimir();
+				cout<<"compras realizadas"<<endl;
+				ListaCompras.MostrarCompra();
 				break;		
 			case 3:
 				cout<<""<<endl;
@@ -3811,7 +3766,7 @@ int main()
 	
 	
     ListaCOM ListaCompras;
-    ListaCompras.Mostrar();
+    ListaCompras.MostrarCompra();
 
    	
 	bool ejecucion = true;
