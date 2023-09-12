@@ -3094,10 +3094,37 @@ public:
     void BorrarPaisPorCodigo(int codigo);
     void ModificarNombre();
     bool Existe(int codigo);
+    void BorrarPaisPorSeisCodigos();
+    void BorrarComprasPorInicio(string valor);
 
 private:
     pnodoCOM primero;
 };
+
+void ListaCOM::BorrarComprasPorInicio(string valor) {
+    pnodoCOM aux = primero;
+
+    while (aux) {
+        if (aux->valor.find(valor) == 0) {
+            // El valor del nodo empieza con el valor proporcionado, lo borramos.
+            pnodoCOM temp = aux;
+            aux = aux->siguiente;
+
+            if (temp == primero) {
+                BorrarInicio();
+            } else if (temp->siguiente == NULL) {
+                BorrarFinal();
+            } else {
+                temp->anterior->siguiente = temp->siguiente;
+                temp->siguiente->anterior = temp->anterior;
+                delete temp;
+            }
+        } else {
+            aux = aux->siguiente;
+        }
+    }
+}
+
 
 void ListaCOM::ModificarNombre() {
     int code;
@@ -3208,6 +3235,60 @@ void ListaCOM::BorrarPaisPorCodigo(int codigo) {
         cout << "No se encontro un pais con el codigo " << codigo << " en la lista." << endl;
     }
 }
+
+void ListaCOM::BorrarPaisPorSeisCodigos() {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return;
+    }
+
+    string codigo1, codigo2, codigo3, codigo4, codigo5, codigo6;
+
+    cout << "Ingrese el primer código: ";
+    cin >> codigo1;
+    cout << "Ingrese el segundo código: ";
+    cin >> codigo2;
+    cout << "Ingrese el tercer código: ";
+    cin >> codigo3;
+    cout << "Ingrese el cuarto código: ";
+    cin >> codigo4;
+    cout << "Ingrese el quinto código: ";
+    cin >> codigo5;
+    cout << "Ingrese el sexto código: ";
+    cin >> codigo6;
+
+    string codigosBuscados = codigo1 + ";" + codigo2 + ";" + codigo3 + ";" + codigo4 + ";" + codigo5 + ";" + codigo6;
+    
+    pnodoCOM aux = primero;
+    bool encontrado = false;
+
+    while (aux) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            cout << "Códigos encontrados en el nodo: " << aux->valor << endl;
+
+            if (aux == primero) {
+                BorrarInicio();
+            } else if (aux->siguiente == NULL) {
+                BorrarFinal();
+            } else {
+                pnodoCOM temp = aux;
+                aux->anterior->siguiente = aux->siguiente;
+                aux->siguiente->anterior = aux->anterior;
+                aux = aux->siguiente;
+                delete temp;
+            }
+            cout << "Borrado exitoso." << endl;
+            break;
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los códigos en la lista." << endl;
+    }
+}
+
 
 void ListaCOM::AgregarCompra(producto &ListaProducto, string valor) {
     cout << "Se muestran los productos disponibles" << endl;
@@ -3424,7 +3505,7 @@ public:
     void ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM & ListaCompras);
     bool VerificarNumeroEnCola(string &num1);
     void MostrarCodigoEnPosicion(int posicion);
-    void BorrarPorNumeroIdentificacion();
+    void BorrarPorNumeroIdentificacion(ListaCOM & ListaCompras);
     void ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &ListaClientes);
     string ObtenerValorEntrada();
    
@@ -3513,7 +3594,7 @@ void cola::ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &L
 }
 
 
-void cola::BorrarPorNumeroIdentificacion()
+void cola::BorrarPorNumeroIdentificacion(ListaCOM & ListaCompras)
 {
     int numIdentificacion;
     cout << "Ingrese el número de identificacion que desea borrar: ";
@@ -3541,6 +3622,7 @@ void cola::BorrarPorNumeroIdentificacion()
                 Cola[fondo] = "";
                 fondo--;
                 cout << "Elemento con número de identificacion " << numIdentificacion << " borrado" << endl;
+                ListaCompras.BorrarComprasPorInicio(num10);
                 i--; // Ajusta el índice para revisar el siguiente elemento
             }
         }
@@ -3671,8 +3753,23 @@ void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM &
 				cout<<"opcion 4, borrar una compra"<<endl;
 				cout<<"clientes disponibles: "<<endl;
 				imprimir();
-				BorrarPorNumeroIdentificacion();
-				imprimir();
+				cout<<"digite 1 borrar todas las compras de un cliente"<<endl;
+				cout<<"digite 2 borrar una compra en especifico"<<endl;
+				int menuborrar;
+				cin >> menuborrar;
+				switch(menuborrar){
+					case 1:
+						BorrarPorNumeroIdentificacion(ListaCompras);
+						imprimir();
+						break;
+					case 2:
+						ListaCompras.BorrarPaisPorSeisCodigos();
+						ListaCompras.MostrarCompra();
+						break;
+					default:
+						cout<<"error a la hora de digitar"<<endl;
+						ColaCO(ListaProducto, ListaClientes, ListaCompras);
+				}
 				break;	
 			case 5: 
 				cout<<""<<endl;
