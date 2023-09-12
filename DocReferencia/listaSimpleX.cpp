@@ -1,60 +1,341 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cctype>
+#include <set>
+
 using namespace std;
 
-class nodo {
+class nodoCOM {
 public:
-    nodo(char v) {
+    nodoCOM(string v)
+    {
         valor = v;
         siguiente = NULL;
+        anterior = NULL;
     }
 
-    nodo(char v, nodo* signodo) {
+    nodoCOM(string v, nodoCOM* signodoCOM)
+    {
         valor = v;
-        siguiente = signodo;
+        siguiente = signodoCOM;
     }
 
 private:
-    char valor;
-    nodo* siguiente;
+    string valor;
+    nodoCOM* siguiente;
+    nodoCOM* anterior;
 
-    friend class lista;
+    friend class ListaCOM;
 };
 
-typedef nodo* pnodo;
+typedef nodoCOM* pnodoCOM;
 
-class lista {
+class ListaCOM {
 public:
-    lista() { primero = NULL; }
-    ~lista();
+    ListaCOM() { primero = NULL; }
+    ~ListaCOM();
 
-    void InsertarInicio(char v);
-    void InsertarFinal(char v);
-    void InsertarPos(char v, int pos);
+    void InsertarFinal(string v);
     bool ListaVacia() { return primero == NULL; }
-    void Mostrar();
     void BorrarFinal();
     void BorrarInicio();
-    void borrarPosicion(int pos);
+    void Mostrar();
     int largoLista();
+    void Paises();
+    void CargarDesdeArchivo();
+    void AgregarPais();
+    void ConsultarPaisPorCodigo();
+    void BorrarPaisPorCodigo(int codigo);
+    void ModificarNombre();
+    bool Existe(int codigo);
 
 private:
-    pnodo primero;
+    pnodoCOM primero;
 };
 
-lista::~lista() {
-    pnodo aux;
+void ListaCOM::ModificarNombre() {
+    int code;
+    cout << "Digite el codigo a modificar" << endl;
+    cin >> code;
 
-    while (primero) {
-        aux = primero;
-        primero = primero->siguiente;
-        delete aux;
+    string newName;
+    cout << "Digite el nuevo nombre" << endl;
+    cin.ignore();  // Clear the newline character from the buffer
+    getline(cin, newName);
+
+    pnodoCOM aux = primero;
+
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+            if (codigoEnLista == code) {
+			    std::stringstream sscode;
+			    sscode << code;
+			
+			    string num1 = sscode.str();          	
+            	
+                aux->valor = num1 + ";" + newName;
+                cout << "Nombre del pais modificado exitosamente." << endl;
+                return;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    cout << "No se encontró un país con el código proporcionado." << endl;
+}
+
+void ListaCOM::ConsultarPaisPorCodigo() {
+    if (ListaVacia()) {
+        cout << "La lista esta vacia." << endl;
+        return;
+    }
+
+    cout << "Ingrese el codigo del pais a consultar: ";
+    int codigo;
+    cin >> codigo;
+
+    pnodoCOM aux = primero;
+    bool encontrado = false;
+
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+            if (codigoEnLista == codigo) {
+                encontrado = true;
+                string nombre = aux->valor.substr(pos + 1);
+                cout << "Codigo: " << codigoEnLista << endl;
+                cout << "Nombre: " << nombre << endl;
+                break;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontro un pais con el codigo " << codigo << " en la lista." << endl;
     }
 }
 
-int lista::largoLista(){
+void ListaCOM::BorrarPaisPorCodigo(int codigo) {
+    if (ListaVacia()) {
+        cout << "La lista esta vacia." << endl;
+        return;
+    }
+
+    pnodoCOM aux = primero;
+    bool encontrado = false;
+
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+            if (codigoEnLista == codigo) {
+                encontrado = true;
+                if (aux == primero) {
+                    BorrarInicio();
+                }
+                else if (aux->siguiente == NULL) {
+                    BorrarFinal();
+                }
+                else {
+                    aux->anterior->siguiente = aux->siguiente;
+                    aux->siguiente->anterior = aux->anterior;
+                    delete aux;
+                }
+                cout << "Pais con codigo " << codigo << " borrado exitosamente." << endl;
+                break;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontro un pais con el codigo " << codigo << " en la lista." << endl;
+    }
+}
+
+void ListaCOM::AgregarPais()
+{
+    cout << "Ingrese el codigo del pais (parte entera): ";
+    int codigo;
+    cin >> codigo;
+    cin.ignore();  // Limpia el buffer del salto de linea
+
+    cout << "Ingrese el nombre del pais: ";
+    string nombre;
+    getline(cin, nombre);
+
+    // Verificar si el codigo ya existe en la lista
+    bool codigoExistente = false;
+    pnodoCOM aux = primero;
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+            if (codigoEnLista == codigo) {
+                codigoExistente = true;
+                cout << "Error: Ya existe un pais con el codigo " << codigo << "." << endl;
+                break;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!codigoExistente) {
+        // Usar ostringstream para convertir el entero a cadena
+        ostringstream ss;
+        ss << codigo;
+        string codigoStr = ss.str();
+
+        string pais = codigoStr + ";" + nombre;
+        InsertarFinal(pais);
+        cout << "Pais agregado exitosamente." << endl;
+    }
+}
+
+void ListaCOM::CargarDesdeArchivo()
+{
+    ifstream archivo("Paises.txt");
+    if (!archivo.is_open()) {
+        cout << "No se pudo abrir el archivo." << endl;
+        return;
+    }
+
+    string linea;
+    while (getline(archivo, linea)) {
+        size_t pos = linea.find(';');
+        if (pos != string::npos) {
+            string codigo = linea.substr(0, pos);
+            string nombre = linea.substr(pos + 1);
+            
+            bool existe = false;
+            pnodoCOM aux = primero;
+            
+            while (aux) {
+                size_t posAux = aux->valor.find(';');
+                if (posAux != string::npos) {
+                    string codigoEnLista = aux->valor.substr(0, posAux);
+                    
+                    if (codigoEnLista == codigo) {
+                        existe = true;
+                        cout << "Pais con codigo " << codigo << " ya existe en la lista." << endl;
+                        break;
+                    }
+                }
+                aux = aux->siguiente;
+            }
+            
+            if (!existe) {
+                InsertarFinal(codigo + ";" + nombre);
+            }
+        }
+    }
+
+    archivo.close();
+}
+
+void ListaCOM::Paises()
+{
+	bool ejecucion = true;
+	cout<<""<<endl;
+	cout<<"bienvenido a paises"<<endl;
+	
+	while(ejecucion){
+		cout<<""<<endl;
+		cout<<"consultar pais digite 1: "<<endl;
+		cout<<"ver paises digite 2: "<<endl;
+		cout<<"agregar un pais digite 3:"<<endl;
+		cout<<"borrar un pais digite 4: "<<endl;
+		cout<<"modificar nombre digite 5: "<<endl;
+		cout<<"salir digite 6: "<<endl;
+		
+		int x;
+		
+		cin >> x;
+		
+		
+		switch(x)
+		{
+			case 1:
+				cout<<""<<endl;
+				cout<<"opcion 1, consultar un pais"<<endl;
+				cout<<"paises disponibles: "<<endl;
+				Mostrar();
+				ConsultarPaisPorCodigo();
+				break;
+			case 2:
+				cout<<""<<endl;
+				cout<<"opcion 2, ver todos los paises"<<endl;
+				cout<<"se mostraran todos los paises a continuacion: "<<endl;
+				Mostrar();
+				break;		
+			case 3:
+				cout<<""<<endl;
+				cout<<"opcion 3, agregar un pais"<<endl;
+				AgregarPais();
+				Mostrar();
+				break;			
+			case 4: 
+				cout<<""<<endl;
+				cout<<"opcion 4, borrar un pais"<<endl;
+				cout<<"paises disponibles: "<<endl;
+				Mostrar();
+				cout<<"registrar codigo: "<<endl;
+				int codigo;
+				cin >> codigo;
+				BorrarPaisPorCodigo(codigo);
+				break;		
+			case 5: 
+				cout<<""<<endl;
+				cout<<"opcion 5 modoficar nombre"<<endl;
+				cout<<"paises disponibles: "<<endl;
+				Mostrar();
+				ModificarNombre();
+				break;
+			case 6:
+				cout<<""<<endl;
+				cout<<"opcion 6, salir a menu principal"<<endl;
+				ejecucion = false;	
+				break;			
+			default:
+				cout<<""<<endl;
+				cout<<"error opcion incorrecta"<<endl;
+				break;			
+		}
+	}
+
+}
+
+ListaCOM::~ListaCOM()
+{
+   pnodoCOM aux;
+   
+   while(primero) {
+      aux = primero;
+      primero = primero->siguiente;
+      delete aux;
+   }
+   primero=NULL;
+}
+
+int ListaCOM::largoLista(){
     int cont=0;
 
-    pnodo aux= primero;
+    pnodoCOM aux;
+    aux = primero;
     if(ListaVacia()){
         return cont;
     }else{
@@ -63,209 +344,129 @@ int lista::largoLista(){
         cont++;
     }
     return cont;
-    cout<< endl;
     }
     
 }
 
-void lista::InsertarInicio(char v)//3 10 265
+void ListaCOM::InsertarFinal(string v)
 {
    if (ListaVacia())
    {
    
-     primero = new nodo(v);//6
-     
-   }
-   else
-   {
-     //primera forma
- //  primero=new nodo (v,primero);
-    //segunda forma
-    pnodo nuevo=new nodo(v);
-    nuevo->siguiente=primero;
-    primero=nuevo;
-     
-    
-    
-     
-   }
-}
- 
-void lista::InsertarFinal(char v)//76
-{
-   if (ListaVacia())
-     primero = new nodo(v);
-   else
-      { 
-      //primera forma
-	    //pnodo aux = primero;
-      //  while ( aux->siguiente != NULL)
-      //   aux= aux->siguiente;
-      //  aux->siguiente=new nodo(v);
+     primero = new nodoCOM(v);
        
-       //segunda forma 
-       pnodo aux = primero;
+   }
+   else
+     { pnodoCOM aux = primero;
         while ( aux->siguiente != NULL)
-         aux= aux->siguiente;
-        pnodo nuevo=new nodo(v);
-        aux->siguiente=nuevo;
+          aux= aux->siguiente;
+        aux->siguiente=new nodoCOM(v);
+        aux->siguiente->anterior=aux;       
       }    
 }
-
-
-void lista::InsertarPos(char v,int pos)
-{
-   if (ListaVacia())
-     primero = new nodo(v);
-   else{
-        if(pos <=1)
-		{
-        	//OPcion1
-          pnodo nuevo = new nodo(v);
-          nuevo->siguiente= primero;
-          primero= nuevo;     
-          //OPcion 2
-          //InsertarInicio(v);
-        }      
-        else{
-             nodo *aux= primero;
-             int i =2;
-             while((i != pos )&&(aux->siguiente!= NULL)){
-                   i++;
-                   aux=aux->siguiente;
-             }
-             pnodo nuevo= new nodo(v);
-             nuevo->siguiente=aux->siguiente;
-             aux->siguiente=nuevo;
-             
-        }
-        }
-}
-      
-void lista::BorrarFinal()
+   
+void ListaCOM::BorrarFinal()
 {
     if (ListaVacia()){
      cout << "No hay elementos en la lista:" << endl;
     
    }else{
-        
-        if (primero->siguiente == NULL) 
-		{   pnodo temp=primero;
-		    primero= NULL;
-		    delete temp;;
-            }
-			 else {
+        if (primero->siguiente == NULL)//solo un nodoCOM
+		 {
+        	pnodoCOM temp=primero;
+            primero= NULL;
+            delete temp;
+            } 
+			else 
+			{
 
-                pnodo aux = primero;
-                while (aux->siguiente->siguiente != NULL) {
+                pnodoCOM aux = primero;
+                while (aux->siguiente->siguiente != NULL) 
+                {
                     aux = aux->siguiente;
-
                 }
                 
-              pnodo temp = aux->siguiente;
+              pnodoCOM temp = aux->siguiente;
               aux->siguiente= NULL;
-
-                
+                      
                 delete temp;
             }
         }
 }
 
-void lista::BorrarInicio()
+void ListaCOM::BorrarInicio()
 {
     if (ListaVacia()){
      cout << "No hay elementos en la lista:" << endl;
     
    }else{
-        if (primero->siguiente == NULL) 
-		{   pnodo temp=primero;
-		    primero= NULL;
-		    delete temp;
-        } 
-		else 
-		{
-
-                pnodo aux = primero;
-                primero=primero->siguiente;                
-                delete aux;
-        }
-        }
-}
-
-
-
-void lista:: borrarPosicion(int pos){
-     if(ListaVacia()){
-              cout << "Lista vacia" <<endl;
-    }else{
-         if((pos>largoLista())||(pos<0)){
-        cout << "Error en posicion" << endl;
-        }else{
-        if(pos==1)
-		{
-        	pnodo temp=primero;
-        	primero=primero->siguiente;
-        	delete temp; //BorrarInicio();
-        }
-		else{
-          int cont=2;
-            pnodo aux=  primero;
-            while(cont<pos){
-             aux=aux->siguiente;
-             cont++;
-            }
-            pnodo temp=aux->siguiente;
-            aux->siguiente=aux->siguiente->siguiente;
+        if (primero->siguiente == NULL) {
+            pnodoCOM temp=primero;
+            primero= NULL;
             delete temp;
+            } 
+			else
+			{
+
+                pnodoCOM aux = primero;
+                primero=primero->siguiente;   
+				primero->anterior=NULL;            
+                delete aux;
             }
         }
-     }
-
 }
- 
 
-void lista::Mostrar()
+void ListaCOM::Mostrar()
 {
-   nodo *aux;
-   if (primero== NULL)
-       cout << "No hay elementos AQUI";  
-   else
-   {
+   nodoCOM *aux;
    
-       
-   		aux = primero;
-		while(aux) 
-		{
-		    cout << aux->valor << "-> ";
-		    aux = aux->siguiente;
-		}
-		cout << endl;
+   aux = primero;
+   while(aux) {
+      cout << aux->valor << "-> ";
+      aux = aux->siguiente;
    }
+   cout << endl;
 }
+
+bool ListaCOM::Existe(int codigo) {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return false;
+    }
+
+    std::stringstream ss1;
+    ss1 << codigo;
+    string num1 = ss1.str();
+    string codigosBuscados = num1 + ";";
+    pnodoCOM aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+            return true;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (encontrado == false) {
+        return false;
+    }
+}
+
 
 
 int main() {
-    lista L1;
+    ListaCOM ListaCompras;
 
     cout << "***************************************************************************************" << endl;
-    L1.InsertarInicio('3');
-    L1.Mostrar();
-    cout << endl;
-    cout << endl;
-    L1.InsertarInicio('1');
-    L1.Mostrar();
-    L1.InsertarInicio('A');
-    L1.Mostrar();
-    L1.InsertarFinal('B');
-    L1.Mostrar();
-    L1.InsertarFinal('C');
-    L1.Mostrar();
-    L1.InsertarPos('X', 1);
-    L1.Mostrar();
-    L1.BorrarInicio();
-    L1.Mostrar();
-    L1.BorrarFinal();
-    L1.Mostrar();
+    ListaCompras.CargarDesdeArchivo();
+    ListaCompras.Mostrar();
+
 
     cin.get();
     return 0;

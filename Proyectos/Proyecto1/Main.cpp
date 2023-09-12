@@ -6,6 +6,8 @@
 #include <set>
 
 using namespace std;
+class ListaCOM;
+class cola;
 
 class nodo {
 public:
@@ -3050,6 +3052,395 @@ bool Clientes::ExisteCl(int codigo) {
 
 
 
+class nodoCOM {
+public:
+    nodoCOM(string v)
+    {
+        valor = v;
+        siguiente = NULL;
+        anterior = NULL;
+    }
+
+    nodoCOM(string v, nodoCOM* signodoCOM)
+    {
+        valor = v;
+        siguiente = signodoCOM;
+    }
+
+private:
+    string valor;
+    nodoCOM* siguiente;
+    nodoCOM* anterior;
+
+    friend class ListaCOM;
+};
+
+typedef nodoCOM* pnodoCOM;
+
+class ListaCOM {
+public:
+    ListaCOM() { primero = NULL; }
+    ~ListaCOM();
+
+    void InsertarFinal(string v);
+    bool ListaVacia() { return primero == NULL; }
+    void BorrarFinal();
+    void BorrarInicio();
+    void Mostrar();
+    int largoLista();
+    void Paises();
+    void CargarDesdeArchivo();
+    void AgregarCompra(producto & ListaProducto, string valor);
+    void ConsultarPaisPorCodigo();
+    void BorrarPaisPorCodigo(int codigo);
+    void ModificarNombre();
+    bool Existe(int codigo);
+
+private:
+    pnodoCOM primero;
+};
+
+void ListaCOM::ModificarNombre() {
+    int code;
+    cout << "Digite el codigo a modificar" << endl;
+    cin >> code;
+
+    string newName;
+    cout << "Digite el nuevo nombre" << endl;
+    cin.ignore();  // Clear the newline character from the buffer
+    getline(cin, newName);
+
+    pnodoCOM aux = primero;
+
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+            if (codigoEnLista == code) {
+			    std::stringstream sscode;
+			    sscode << code;
+			
+			    string num1 = sscode.str();          	
+            	
+                aux->valor = num1 + ";" + newName;
+                cout << "Nombre del pais modificado exitosamente." << endl;
+                return;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    cout << "No se encontró un país con el código proporcionado." << endl;
+}
+
+void ListaCOM::ConsultarPaisPorCodigo() {
+    if (ListaVacia()) {
+        cout << "La lista esta vacia." << endl;
+        return;
+    }
+
+    cout << "Ingrese el codigo del pais a consultar: ";
+    int codigo;
+    cin >> codigo;
+
+    pnodoCOM aux = primero;
+    bool encontrado = false;
+
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+            if (codigoEnLista == codigo) {
+                encontrado = true;
+                string nombre = aux->valor.substr(pos + 1);
+                cout << "Codigo: " << codigoEnLista << endl;
+                cout << "Nombre: " << nombre << endl;
+                break;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontro un pais con el codigo " << codigo << " en la lista." << endl;
+    }
+}
+
+void ListaCOM::BorrarPaisPorCodigo(int codigo) {
+    if (ListaVacia()) {
+        cout << "La lista esta vacia." << endl;
+        return;
+    }
+
+    pnodoCOM aux = primero;
+    bool encontrado = false;
+
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+
+            if (codigoEnLista == codigo) {
+                encontrado = true;
+                if (aux == primero) {
+                    BorrarInicio();
+                }
+                else if (aux->siguiente == NULL) {
+                    BorrarFinal();
+                }
+                else {
+                    aux->anterior->siguiente = aux->siguiente;
+                    aux->siguiente->anterior = aux->anterior;
+                    delete aux;
+                }
+                cout << "Pais con codigo " << codigo << " borrado exitosamente." << endl;
+                break;
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontro un pais con el codigo " << codigo << " en la lista." << endl;
+    }
+}
+
+void ListaCOM::AgregarCompra(producto &ListaProducto, string valor) {
+    cout << "Se muestran los productos disponibles" << endl;
+    ListaProducto.MostrarPRO();
+    cout << "Proceda a digitar el producto que quiere comprar" << endl;
+
+    int codigo1, codigo2, codigo3, codigo4, codigo5;
+    cout << "Ingrese el primer código: " << endl;
+    cin >> codigo1;
+
+    cout << "Ingrese el segundo código: " << endl;
+    cin >> codigo2;
+
+    cout << "Ingrese el tercer código: " << endl;
+    cin >> codigo3;
+
+    cout << "Ingrese el cuarto código: " << endl;
+    cin >> codigo4;
+
+    cout << "Ingrese el quinto código: " << endl;
+    cin >> codigo5;
+
+    std::stringstream ss1, ss2, ss3, ss4, ss5;
+    ss1 << codigo1;
+    ss2 << codigo2;
+    ss3 << codigo3;
+    ss4 << codigo4;
+    ss5 << codigo5;
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+    string num3 = ss3.str();
+    string num4 = ss4.str();
+    string num5 = ss5.str();
+
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+
+    if (ListaProducto.ExistePRO(codigosBuscados)) {
+        cout << "Producto encontrado y agregado de manera exitosa al cliente " << endl;
+        string entrada2 = valor +";"+ codigosBuscados;
+        InsertarFinal(entrada2);
+        Mostrar();
+    } else {
+        cout << "Producto no encontrado" << endl;
+    }
+}
+
+
+void ListaCOM::CargarDesdeArchivo()
+{
+    ifstream archivo("Paises.txt");
+    if (!archivo.is_open()) {
+        cout << "No se pudo abrir el archivo." << endl;
+        return;
+    }
+
+    string linea;
+    while (getline(archivo, linea)) {
+        size_t pos = linea.find(';');
+        if (pos != string::npos) {
+            string codigo = linea.substr(0, pos);
+            string nombre = linea.substr(pos + 1);
+            
+            bool existe = false;
+            pnodoCOM aux = primero;
+            
+            while (aux) {
+                size_t posAux = aux->valor.find(';');
+                if (posAux != string::npos) {
+                    string codigoEnLista = aux->valor.substr(0, posAux);
+                    
+                    if (codigoEnLista == codigo) {
+                        existe = true;
+                        cout << "Pais con codigo " << codigo << " ya existe en la lista." << endl;
+                        break;
+                    }
+                }
+                aux = aux->siguiente;
+            }
+            
+            if (!existe) {
+                InsertarFinal(codigo + ";" + nombre);
+            }
+        }
+    }
+
+    archivo.close();
+}
+
+
+ListaCOM::~ListaCOM()
+{
+   pnodoCOM aux;
+   
+   while(primero) {
+      aux = primero;
+      primero = primero->siguiente;
+      delete aux;
+   }
+   primero=NULL;
+}
+
+int ListaCOM::largoLista(){
+    int cont=0;
+
+    pnodoCOM aux;
+    aux = primero;
+    if(ListaVacia()){
+        return cont;
+    }else{
+        while(aux!=NULL){
+        aux=aux->siguiente;
+        cont++;
+    }
+    return cont;
+    }
+    
+}
+
+void ListaCOM::InsertarFinal(string v)
+{
+   if (ListaVacia())
+   {
+   
+     primero = new nodoCOM(v);
+       
+   }
+   else
+     { pnodoCOM aux = primero;
+        while ( aux->siguiente != NULL)
+          aux= aux->siguiente;
+        aux->siguiente=new nodoCOM(v);
+        aux->siguiente->anterior=aux;       
+      }    
+}
+   
+void ListaCOM::BorrarFinal()
+{
+    if (ListaVacia()){
+     cout << "No hay elementos en la lista:" << endl;
+    
+   }else{
+        if (primero->siguiente == NULL)//solo un nodoCOM
+		 {
+        	pnodoCOM temp=primero;
+            primero= NULL;
+            delete temp;
+            } 
+			else 
+			{
+
+                pnodoCOM aux = primero;
+                while (aux->siguiente->siguiente != NULL) 
+                {
+                    aux = aux->siguiente;
+                }
+                
+              pnodoCOM temp = aux->siguiente;
+              aux->siguiente= NULL;
+                      
+                delete temp;
+            }
+        }
+}
+
+void ListaCOM::BorrarInicio()
+{
+    if (ListaVacia()){
+     cout << "No hay elementos en la lista:" << endl;
+    
+   }else{
+        if (primero->siguiente == NULL) {
+            pnodoCOM temp=primero;
+            primero= NULL;
+            delete temp;
+            } 
+			else
+			{
+
+                pnodoCOM aux = primero;
+                primero=primero->siguiente;   
+				primero->anterior=NULL;            
+                delete aux;
+            }
+        }
+}
+
+void ListaCOM::Mostrar()
+{
+   nodoCOM *aux;
+   
+   aux = primero;
+   while(aux) {
+      cout << aux->valor << "-> ";
+      aux = aux->siguiente;
+   }
+   cout << endl;
+}
+
+bool ListaCOM::Existe(int codigo) {
+    if (ListaVacia()) {
+        cout << "La lista está vacía." << endl;
+        return false;
+    }
+
+    std::stringstream ss1;
+    ss1 << codigo;
+    string num1 = ss1.str();
+    string codigosBuscados = num1 + ";";
+    pnodoCOM aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+            return true;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (encontrado == false) {
+        return false;
+    }
+}
+
+
+
+
+
 
 class cola
 {
@@ -3073,13 +3464,30 @@ public:
     void insertar(string v);
     void eliminar();
     void imprimir();
-    void Agregar(producto & ListaProducto, Clientes &  ListaClientes);
-    void ColaCO(producto & ListaProducto, Clientes &  ListaClientes);
-    bool VerificarNumeroEnCola();
+    void Agregar(producto & ListaProducto, Clientes &  ListaClientes, ListaCOM & ListaCompras);
+    void ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM & ListaCompras);
+    bool VerificarNumeroEnCola(string &num1);
     void MostrarCodigoEnPosicion(int posicion);
     void BorrarPorNumeroIdentificacion();
     void ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &ListaClientes);
+    string ObtenerValorEntrada();
+   
 };
+
+string cola::ObtenerValorEntrada()
+{
+    if (!ColaVacia())
+    {
+        return Cola[frente];
+    }
+    else
+    {
+        cout << "La cola está vacía." << endl;
+        return "";
+    }
+}
+
+
 
 void cola::ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &ListaClientes) {
     int numIdentificacion;
@@ -3204,112 +3612,67 @@ void cola::MostrarCodigoEnPosicion(int posicion)
     }
 }
 
-bool cola::VerificarNumeroEnCola()
-{
-	int x;
-	cout<<"digite el numero de identificacion para comprobar si el cliente existe"<<endl;
-	cin >> x;
-	std::stringstream ss1;
-	ss1 << x;
-	string num1 = ss1.str();
-	int j; //valor para poder imprimir 
-    for (int i = frente; i <= fondo; i++)
-    {
+bool cola::VerificarNumeroEnCola(string &num1) {
+    int j = 0; // Valor para poder imprimir
+    for (int i = frente; i <= fondo; i++) {
         string elemento = Cola[i];
         // Busca el primer conjunto de números en el elemento de la cola
         size_t pos = elemento.find(';');
-        if (pos != string::npos)
-        {
+        if (pos != string::npos) {
             string primerNumero = elemento.substr(0, pos);
-            if (primerNumero == num1)
-            {
-                MostrarCodigoEnPosicion(i+1);
+            if (primerNumero == num1) {
+                MostrarCodigoEnPosicion(i + 1);
                 return true;
             }
         }
         j++;
     }
-    
+
     cout << "Número no encontrado en la cola." << endl;
-  
-  return false;
+
+    return false;
 }
 
-void cola::Agregar(producto & ListaProducto, Clientes &  ListaClientes){
-	if (fondo <= 5 - 1)
-    {
-		cout<<"opciones disponibles de cliente"<<endl;
-			ListaClientes.MostrarCl();
-			cout<<"digite el numero de cedula del cliente"<<endl;
-			int codigo2;
-			cin >> codigo2;
-			if(ListaClientes.ExisteCl(codigo2)==true){
-				cout<<"cliente encontrado de manera exitosa"<<endl;
-				cout<<"se muestran los productos disponibles"<<endl;
-				ListaProducto.MostrarPRO();
-				cout<<"proceda a digita el producto que quiere comer"<<endl;
-				
-			    std::stringstream ss10;
-			    ss10 << codigo2;
-			    string num10 = ss10.str();
-			    
-			    int codigo1, codigo2, codigo3,codigo4,codigo5;
-			    cout << "Ingrese el primer codigo: " << endl;
-			    cin >> codigo1;
-			
-			    cout << "Ingrese el segundo codigo: " << endl;
-			    cin >> codigo2;
-			
-			    cout << "Ingrese el tercer codigo: " << endl;
-			    cin >> codigo3;
-			    
-			    cout << "Ingrese el cuarto codigo: " << endl;
-			    cin >> codigo4;
-			    
-			    cout << "Ingrese el quinto codigo: " << endl;
-			    cin >> codigo5;
-			
-			    std::stringstream ss1, ss2, ss3,ss4,ss5;
-			    ss1 << codigo1;
-			    ss2 << codigo2;
-			    ss3 << codigo3;
-			    ss4 << codigo4;
-			    ss5 << codigo5;
-			
-			    string num1 = ss1.str();
-			    string num2 = ss2.str();
-			    string num3 = ss3.str();
-			    string num4 = ss4.str();
-			    string num5 = ss5.str();
-	
-				string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
-				
-				if(ListaProducto.ExistePRO(codigosBuscados) == true){
-					cout<<"producto encontrado y agregado de manera exitosa al cliente "+ num10<<endl;
-					string entrada = num10 + ";" + codigosBuscados;
-					insertar(entrada);
-				}
-				else{
-					cout<<"producto no encontrado"<<endl;
-					
-				}
-				
-	
-			}
-			else{
-				cout<<"cliente no encontrado"<<endl;
-				ColaCO(ListaProducto,ListaClientes);
-			}
+void cola::Agregar(producto &ListaProducto, Clientes &ListaClientes, ListaCOM &ListaCompras) {
+    if (fondo < 5 - 1) {
+        cout << "Opciones disponibles de cliente:" << endl;
+        ListaClientes.MostrarCl();
+        int codigo2;
+        cout << "Digite el número de cédula del cliente: ";
+        cin >> codigo2;
+
+        if (ListaClientes.ExisteCl(codigo2)) {
+            cout << "Cliente encontrado de manera exitosa" << endl;
+            std::stringstream ss10;
+            ss10 << codigo2;
+            string num10 = ss10.str();
+
+            if (VerificarNumeroEnCola(num10)) {
+                // El cliente ya existe en la cola, no es necesario insertarlo nuevamente.
+                ListaCompras.AgregarCompra(ListaProducto, num10);
+            } else {
+                // El cliente no está en la cola, lo insertamos y luego agregamos la compra.
+                string entrada = num10 + ";";
+                int posicion = fondo + 1;  // Siguiente posición disponible en la cola
+                insertar(entrada);  // Agregar el cliente en la siguiente posición
+                cout << "Se procede a agregar el producto" << endl;
+                ListaCompras.AgregarCompra(ListaProducto, num10);
+            }
+
+        } else {
+            cout << "Cliente no encontrado" << endl;
+            ColaCO(ListaProducto, ListaClientes, ListaCompras);
+        }
+    } else {
+        cout << "La cola está llena" << endl;
+        ColaCO(ListaProducto, ListaClientes, ListaCompras);
     }
-    else
-    {
-        cout << "La cola esta llena";
-        ColaCO(ListaProducto,ListaClientes);
-    }
-    ColaCO(ListaProducto,ListaClientes);
+    ColaCO(ListaProducto, ListaClientes, ListaCompras);
 }
 
-void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes){
+
+
+void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM & ListaCompras ){
 
 	bool ejecucion = true;
 	cout<<"bienvenido a Compras"<<endl;
@@ -3334,7 +3697,7 @@ void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes){
 				cout<<"opcion 1, consultar una compra"<<endl;
 				cout<<"compras disponibles: "<<endl;
 				imprimir();
-				VerificarNumeroEnCola();
+				//VerificarNumeroEnCola();
 				break;
 			case 2:
 				cout<<""<<endl;
@@ -3345,7 +3708,7 @@ void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes){
 			case 3:
 				cout<<""<<endl;
 				cout<<"opcion 3, agregar una compra"<<endl;
-				Agregar(ListaProducto,ListaClientes);
+				Agregar(ListaProducto,ListaClientes,ListaCompras);
 				imprimir();
 				break;			
 			case 4: 
@@ -3416,8 +3779,6 @@ void cola::imprimir()
 
 
 
-
-
 	
 int main()
 {
@@ -3447,6 +3808,11 @@ int main()
    	ListaClientes.CargarDesdeArchivoCl();
    	
 	cola ColaCompras;
+	
+	
+    ListaCOM ListaCompras;
+    ListaCompras.Mostrar();
+
    	
 	bool ejecucion = true;
 	
@@ -3506,7 +3872,7 @@ int main()
 			case 7:
 				cout<<""<<endl;
 				cout<<"opcion 7 compras"<<endl;
-				ColaCompras.ColaCO(ListaProducto, ListaClientes);
+				ColaCompras.ColaCO(ListaProducto, ListaClientes, ListaCompras);
 				break;
 			case 8: 
 				cout<<""<<endl;
