@@ -3096,10 +3096,24 @@ public:
     bool Existe(int codigo);
     void BorrarPaisPorSeisCodigos();
     void BorrarComprasPorInicio(string valor);
+    void MostrarComprasPorInicio(string valor);
 
 private:
     pnodoCOM primero;
 };
+
+void ListaCOM::MostrarComprasPorInicio(string valor) {
+    pnodoCOM aux = primero;
+
+    while (aux) {
+        if (aux->valor.find(valor) == 0) {
+            // El valor del nodo empieza con el valor proporcionado, lo imprimimos.
+            cout << aux->valor << endl;
+        }
+        aux = aux->siguiente;
+    }
+}
+
 
 void ListaCOM::BorrarComprasPorInicio(string valor) {
     pnodoCOM aux = primero;
@@ -3508,8 +3522,41 @@ public:
     void BorrarPorNumeroIdentificacion(ListaCOM & ListaCompras);
     void ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &ListaClientes);
     string ObtenerValorEntrada();
+    void MostrarComprasPorNumeroCliente(ListaCOM &ListaCompras);
    
 };
+
+    
+void cola::MostrarComprasPorNumeroCliente(ListaCOM &ListaCompras) {
+    int numIdentificacion;
+    cout << "Ingrese el número de identificacion que desea mostrar: ";
+    cin >> numIdentificacion;
+    std::stringstream ss10;
+    ss10 << numIdentificacion;
+    string num10 = ss10.str();
+
+    bool encontrado = false;
+
+    for (int i = frente; i <= fondo; i++) {
+        string elemento = Cola[i];
+        // Busca el primer conjunto de números en el elemento de la cola
+        size_t pos = elemento.find(';');
+        if (pos != string::npos) {
+            string primerNumero = elemento.substr(0, pos);
+            if (primerNumero == num10) {
+                encontrado = true;
+                cout << "Elemento con número de identificación " << numIdentificacion << " se muestra" << endl;
+                ListaCompras.MostrarComprasPorInicio(num10);
+            }
+        }
+    }
+
+    if (!encontrado) {
+        cout << "Cliente con número de identificación " << numIdentificacion << " no encontrado en la cola de compras." << endl;
+    }
+}
+
+
 
 string cola::ObtenerValorEntrada()
 {
@@ -3732,7 +3779,7 @@ void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM &
 				cout<<"opcion 1, consultar una compra"<<endl;
 				cout<<"compras disponibles: "<<endl;
 				imprimir();
-				//VerificarNumeroEnCola();
+				MostrarComprasPorNumeroCliente(ListaCompras);
 				break;
 			case 2:
 				cout<<""<<endl;

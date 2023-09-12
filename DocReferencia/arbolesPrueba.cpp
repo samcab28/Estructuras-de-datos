@@ -466,8 +466,8 @@ int main()
 	
 	
 	//solo usar en caso de graficar
-    //system("cls");
-    //miArbol.graficarArbol(raizArbolPtr, 45, 2, 0, 16);
+    system("cls");
+    miArbol.graficarArbol(raizArbolPtr, 45, 2, 0, 16);
     return 0;
 }
 
