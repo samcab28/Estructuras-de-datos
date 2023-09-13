@@ -539,19 +539,19 @@ public:
     void AgregarCIU(PyC & ListaPyC);
     void ModificarNombreCIU();
     bool ExisteCIU(string codigo);
-    void MostrarCiudadesPorPais();
+    string MostrarCiudadesPorPais();
 private:
     pnodoCIU primero;
 };
 
-void Ciudad::MostrarCiudadesPorPais() {
+string Ciudad::MostrarCiudadesPorPais() {
 	cout<<"digite el codigo de pais a buscar"<<endl;
 	string codigoPais;
 	cin >> codigoPais;
-	
+	string memoria;
     if (ListaVacia()) {
         cout << "La lista de ciudades esta vacia." << endl;
-        return;
+        return "lista vacia";
     }
 
     pnodoCIU aux = primero;
@@ -560,11 +560,15 @@ void Ciudad::MostrarCiudadesPorPais() {
     while (i <= largoLista()) {
         if (aux->valor.find(codigoPais) != string::npos) {
             cout << aux->valor << endl;
+            memoria += aux -> valor + "; // ";
         }
         aux = aux->siguiente;
         i++;
     }
+    
+    return memoria;
 }
+
 
 void Ciudad::ModificarNombreCIU() {
     if (ListaVacia()) {
@@ -1059,7 +1063,7 @@ public:
     void ModificarNombreRE();
     void agregarRE(Ciudad & ListaCiudad);
     bool ExisteRE(string codigo);
-    void MostrarRestaurantesPorCiudad();
+    string MostrarRestaurantesPorCiudad();
     int stringAEnteroRE(const std::string &cadena);
     string EncontrarValorMayorPedido();
     
@@ -1108,7 +1112,7 @@ string Restaurante::EncontrarValorMayorPedido() {
     }
 }
 
-void Restaurante::MostrarRestaurantesPorCiudad() {
+string Restaurante::MostrarRestaurantesPorCiudad() {
     cout << "Digite el codigo de pais: ";
     string codigoPais;
     cin >> codigoPais;
@@ -1119,9 +1123,10 @@ void Restaurante::MostrarRestaurantesPorCiudad() {
 
     string codigosBuscados = codigoPais + ";" + codigoCiudad;
     
+    string memoria;
     if (ListaVacia()) {
         cout << "La lista de restaurantes esta vacia." << endl;
-        return;
+        return "lista vacia";
     }
 
     pnodoRE aux = primero;
@@ -1129,11 +1134,13 @@ void Restaurante::MostrarRestaurantesPorCiudad() {
 
     while (i <= largoLista()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
+        	memoria += aux -> valor + "; // ";
             cout << aux->valor << endl;
         }
         aux = aux->siguiente;
         i++;
     }
+    return memoria;
 }
 
 void Restaurante::agregarRE(Ciudad & ListaCiudad){
@@ -4331,7 +4338,6 @@ int main()
 				cout<<""<<endl;
 				
 				cout<<"reportes de ciudad:"<<endl;
-				cout<<""<<endl;
 				cout<<"paises disponibles"<<endl;
 				ListaPyC.Mostrar();
 				ListaCiudad.MostrarCiudadesPorPais();
@@ -4372,6 +4378,8 @@ int main()
 		}		
 	}
 
+
+	cout<<"generacion de reporte en txt"<<endl;
     ofstream archivo("reportes.txt");
 
     if (!archivo.is_open()) {
@@ -4385,11 +4393,17 @@ int main()
     archivo<<""<<endl;
     
     archivo<< "Reporte de ciudades"<<endl;
-    //string RepCiu = ListaCiudad.MostrarCiudadesPorPais();
-    //archivo<<RepCiu<<endl;
+    cout<<"paises disponibles"<<endl;
+    ListaPyC.Mostrar();
+    string RepCiu = ListaCiudad.MostrarCiudadesPorPais();
+    archivo<<RepCiu<<endl;
     archivo<<""<<endl;
     
     archivo<<"Reporte de restaurantes"<<endl;
+    cout<<"paises y ciudades disponibles"<<endl;
+    ListaCiudad.MostrarCIU();
+    string RepRes = ListaRestaurante.MostrarRestaurantesPorCiudad();
+    archivo<<RepRes<<endl;
     archivo<<""<<endl;
     
     archivo<<"Reporte de Clientes"<<endl;

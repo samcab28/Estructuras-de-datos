@@ -2,8 +2,10 @@ Reporte de paises:
 123;Panama-> 345;Estados Unidos-> 4567;Mexico-> 
 
 Reporte de ciudades
+123;345;David; // 345;987;Orlando; // 123;345;David; // 
 
 Reporte de restaurantes
+123;345;34;MacPanama;0; // 123;345;2341;X;0; // 123;345;34;MacPanama;0; // 
 
 Reporte de Clientes
 123456;Maria Campos-> 6578;Pedro Perez-> 40193;Jose Torres-> 
