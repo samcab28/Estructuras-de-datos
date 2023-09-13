@@ -4154,19 +4154,19 @@ void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM &
 				cout<<""<<endl;
 				cout<<"opcion 4, borrar una compra"<<endl;
 				cout<<"clientes disponibles: "<<endl;
-				imprimir();
 				cout<<"digite 1 borrar todas las compras de un cliente"<<endl;
 				cout<<"digite 2 borrar una compra en especifico"<<endl;
 				int menuborrar;
 				cin >> menuborrar;
 				switch(menuborrar){
 					case 1:
-						BorrarPorNumeroIdentificacion(ListaCompras);
 						imprimir();
+						BorrarPorNumeroIdentificacion(ListaCompras);
 						break;
 					case 2:
-						ListaCompras.BorrarPaisPorSeisCodigos();
 						ListaCompras.MostrarCompra();
+						ListaCompras.BorrarPaisPorSeisCodigos();
+
 						break;
 					default:
 						cout<<"error a la hora de digitar"<<endl;
