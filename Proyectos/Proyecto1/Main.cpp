@@ -1061,16 +1061,16 @@ public:
     bool ExisteRE(string codigo);
     void MostrarRestaurantesPorCiudad();
     int stringAEnteroRE(const std::string &cadena);
-    void EncontrarValorMayorPedido();
+    string EncontrarValorMayorPedido();
     
 private:
     pnodoRE primero;
 };
 
-void Restaurante::EncontrarValorMayorPedido() {
+string Restaurante::EncontrarValorMayorPedido() {
     if (ListaVacia()) {
         cout << "La lista de restaurantes est? vac?a." << endl;
-        return;
+        return "lista vacia";
     }
 
     pnodoRE aux = primero;
@@ -1102,6 +1102,7 @@ void Restaurante::EncontrarValorMayorPedido() {
 
     if (nodoMayor != NULL) {
         cout << "Informacion del Restaurante: " << nodoMayor->valor << endl;
+        return "Informacion del Restaurante: " + nodoMayor->valor;
     } else {
         cout << "No se encontr? ning?n restaurante con con consultas." << endl;
     }
@@ -1691,15 +1692,15 @@ public:
     void AgregarME(Restaurante & ListaRestaurante);
     bool ExisteME(string codigo);
     int stringAEnteroME(const std::string &cadena);
-    void EncontrarValorMayorPedido();
+    string EncontrarValorMayorPedido();
 private:
     pnodoME primero;
 };
 
-void Menu::EncontrarValorMayorPedido() {
+string Menu::EncontrarValorMayorPedido() {
     if (ListaVacia()) {
         cout << "La lista de menu esta vacia." << endl;
-        return;
+        return "lista vacia";
     }
 
     pnodoME aux = primero;
@@ -1731,6 +1732,7 @@ void Menu::EncontrarValorMayorPedido() {
 
     if (nodoMayor != NULL) {
         cout << "Informacion del m: " << nodoMayor->valor << endl;
+        return "Informacion del menu: " + nodoMayor->valor;
     } else {
         cout << "No se encontr? ning?n restaurante con con consultas." << endl;
     }
@@ -2325,15 +2327,15 @@ public:
     void ModificarNombrePRO();
     bool ExistePRO(string codigo);
     int stringAEnteroPRO(const std::string &cadena);
-    void EncontrarValorMayorPedido();
+    string EncontrarValorMayorPedido();
 private:
     pnodoPRO primero;
 };
 
-void producto::EncontrarValorMayorPedido() {
+string producto::EncontrarValorMayorPedido() {
     if (ListaVacia()) {
         cout << "La lista de menu esta vacia." << endl;
-        return;
+        return "lista vacia";
     }
 
     pnodoPRO aux = primero;
@@ -2365,6 +2367,7 @@ void producto::EncontrarValorMayorPedido() {
 
     if (nodoMayor != NULL) {
         cout << "Informacion del m: " << nodoMayor->valor << endl;
+        return "Informacion del producto: " + nodoMayor->valor;
     } else {
         cout << "No se encontr? ning?n restaurante con con consultas." << endl;
     }
@@ -4332,7 +4335,6 @@ int main()
 				cout<<"paises disponibles"<<endl;
 				ListaPyC.Mostrar();
 				ListaCiudad.MostrarCiudadesPorPais();
-				cout<<"reportes de ciudad:"<<endl;
 				cout<<""<<endl;
 				
 				cout<<"reportes de restaurantes:"<<endl;
@@ -4396,13 +4398,18 @@ int main()
     archivo<<""<<endl;
     
     archivo<< "Reporte de Restaurante mas buscado"<<endl;
+    string RepRestMas = ListaRestaurante.EncontrarValorMayorPedido();
+    archivo<<RepRestMas<<endl;
     archivo<<""<<endl;
     
     archivo<<"Reporte de menu mas buscado"<<endl;
+    string RepMeMas = ListaMenu.EncontrarValorMayorPedido();
+    archivo<<RepMeMas<<endl;
     archivo<<""<<endl;
     
     archivo<<"Reporte de producto mas buscado"<<endl;
-    archivo<<""<<endl;
+    string RepProMas = ListaProducto.EncontrarValorMayorPedido();
+    archivo<<RepProMas<<endl;
 
 
     archivo.close();

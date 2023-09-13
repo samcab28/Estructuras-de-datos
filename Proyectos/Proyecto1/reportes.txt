@@ -1,0 +1,18 @@
+Reporte de paises: 
+123;Panama-> 345;Estados Unidos-> 4567;Mexico-> 
+
+Reporte de ciudades
+
+Reporte de restaurantes
+
+Reporte de Clientes
+123456;Maria Campos-> 6578;Pedro Perez-> 40193;Jose Torres-> 
+
+Reporte de Restaurante mas buscado
+Informacion del Restaurante: 123;345;34;MacPanama;0
+
+Reporte de menu mas buscado
+Informacion del menu: 123;345;34;1;HC;0
+
+Reporte de producto mas buscado
+Informacion del producto: 123;345;34;1;109;BigMac;480;2300;;;0
