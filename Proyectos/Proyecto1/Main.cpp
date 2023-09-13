@@ -2311,9 +2311,78 @@ public:
     void AgregarPRO(Menu & ListaMenu);
     void ModificarNombrePRO();
     bool ExistePRO(string codigo);
+    int stringAEnteroPRO(const std::string &cadena);
+    void EncontrarValorMayorPedido();
 private:
     pnodoPRO primero;
 };
+
+void producto::EncontrarValorMayorPedido() {
+    if (ListaVacia()) {
+        cout << "La lista de menu esta vacia." << endl;
+        return;
+    }
+
+    pnodoPRO aux = primero;
+    int valorMayor = -1;  // Inicializamos con un valor menor al mínimo posible
+    pnodoPRO nodoMayor = NULL;  // Nodo correspondiente al valor más alto
+
+    while (aux->siguiente != primero) {
+        size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+        string pedidoStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
+        int numeroPedido = stringAEnteroPRO(pedidoStr);
+
+        if (numeroPedido > valorMayor) {
+            valorMayor = numeroPedido;
+            nodoMayor = aux;
+        }
+
+        aux = aux->siguiente;
+    }
+
+    // Comprobar el último nodo también
+    size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+    string pedidoStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
+    int numeroPedido = stringAEnteroPRO(pedidoStr);
+
+    if (numeroPedido > valorMayor) {
+        valorMayor = numeroPedido;
+        nodoMayor = aux;
+    }
+
+    if (nodoMayor != NULL) {
+        cout << "Informacion del m: " << nodoMayor->valor << endl;
+    } else {
+        cout << "No se encontró ningún restaurante con con consultas." << endl;
+    }
+}
+
+int producto::stringAEnteroPRO(const std::string &cadena) {
+    int resultado = 0;
+    int multiplicador = 1;
+
+    // Comprueba si la cadena representa un número negativo
+    size_t indice = 0;
+    if (cadena[0] == '-') {
+        multiplicador = -1;
+        indice = 1; // Saltar el signo negativo
+    }
+
+    // Recorre la cadena y construye el número entero
+    for (; indice < cadena.length(); ++indice) {
+        char digito = cadena[indice];
+        if (isdigit(digito)) {
+            int valorDigito = digito - '0';
+            resultado = resultado * 10 + valorDigito;
+        } else {
+            // Manejo de error si la cadena contiene caracteres no numéricos
+            std::cerr << "Error: La cadena contiene caracteres no numéricos." << std::endl;
+            return 0;
+        }
+    }
+
+    return resultado * multiplicador;
+}
 
 void producto::ModificarNombrePRO() {
     if (ListaVacia()) {
@@ -2635,40 +2704,59 @@ void producto::ComprobacionPRO() {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+	while (i <= largoLista()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
-
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
-            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1 );
-			
-		    std::string cadena = aux -> valor ;
-		    std::istringstream stream(cadena);
-		    std::string dato;
-			int j = 0;
-		    while (std::getline(stream, dato, ';')) {
-		        if (!dato.empty()) {
-		        	
-		        	if(j == 5){
-		        		cout<<"pruducto: "<<dato<<endl;
-					}
-		        	if(j == 6){
-		        		cout<<"calorias: "<<dato<<endl;
-					}
-		        	if(j == 7){
-		        		cout<<"precio: "<<dato<<endl;
-					}
-		            j++;
-		        }
-		    }
+            if (posicionUltimoPuntoComa != string::npos) {
+                size_t posicionNumero = posicionUltimoPuntoComa + 1;
+                std::string numeroStr = aux->valor.substr(posicionNumero);
+                int numero = stringAEnteroPRO(numeroStr);
+                numero++;
+                
+				std::stringstream ss1;
+    			ss1 << numero;
+
+				string num1 = ss1.str();
+    
+    
+                
+                string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
+                aux->valor = nuevoValor;
+
+                cout << "Codigos encontrados en la lista: " << codigosBuscados << endl;
+                cout << "Nuevo valor asociado: " << nuevoValor << endl;
+			    std::string cadena = aux -> valor ;
+			    std::istringstream stream(cadena);
+			    std::string dato;
+				int j = 0;
+				while (std::getline(stream, dato, ';')) {
+						        if (!dato.empty()) {
+						        	
+						        	if(j == 5){
+						        		cout<<"pruducto: "<<dato<<endl;
+									}
+						        	if(j == 6){
+						        		cout<<"calorias: "<<dato<<endl;
+									}
+						        	if(j == 7){
+						        		cout<<"precio: "<<dato<<endl;
+									}
+						            j++;
+						        }
+						    }
+				            break;
+            } else {
+                cout << "No se encontró el último punto y coma en el valor." << endl;
+            }
             break;
         }
         aux = aux->siguiente;
-        i ++;
+        i++;
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los c?digos en la lista." << endl;
+        cout << "No se encontraron los códigos en la lista." << endl;
     }
 }
 
@@ -2697,7 +2785,7 @@ void producto::CargarDesdeArchivoPRO() {
             if (numero4_set.find(numero4) == numero4_set.end())
             {
                 numero4_set.insert(numero4);  // Agregar a conjunto de NUPRORO3
-                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4+ ";"+ numero5+ ";" + nombre +";" + numero6 + ";" + numero7;
+                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4+ ";"+ numero5+ ";" + nombre +";" + numero6 + ";" + numero7 +";" + "0";
                 InsertarFinal(nuevo_valor);
             }
             else
@@ -4233,6 +4321,7 @@ int main()
 				cout<<""<<endl;
 				
 				cout<<"producto mas buscado:"<<endl;
+				ListaProducto.EncontrarValorMayorPedido();
 				cout<<""<<endl;
 				
 				
