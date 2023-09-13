@@ -53,10 +53,23 @@ public:
     void BorrarPaisPorCodigo(int codigo);
     void ModificarNombre();
     bool Existe(int codigo);
+    string ObtenerContenidoComoString();
 
 private:
     pnodo primero;
 };
+
+string PyC::ObtenerContenidoComoString() {
+        std::stringstream ss;
+        nodo* aux = primero;
+        
+        while (aux) {
+            ss << aux->valor << "-> ";
+            aux = aux->siguiente;
+        }
+        
+        return ss.str();
+}
 
 void PyC::ModificarNombre() {
     int code;
@@ -90,7 +103,7 @@ void PyC::ModificarNombre() {
         aux = aux->siguiente;
     }
 
-    cout << "No se encontró un país con el código proporcionado." << endl;
+    cout << "No se encontr? un pa?s con el c?digo proporcionado." << endl;
 }
 
 void PyC::ConsultarPaisPorCodigo() {
@@ -433,7 +446,7 @@ void PyC::Mostrar()
 
 bool PyC::Existe(int codigo) {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return false;
     }
 
@@ -555,7 +568,7 @@ void Ciudad::MostrarCiudadesPorPais() {
 
 void Ciudad::ModificarNombreCIU() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
 
@@ -758,15 +771,15 @@ void Ciudad::BorrarPorCodigosCIU() {
 
 void Ciudad::ComprobacionCIU() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
 
     int codigo1, codigo2;
-    cout << "Ingrese primer código: " << endl;
+    cout << "Ingrese primer c?digo: " << endl;
     cin >> codigo1;
 
-    cout << "Ingrese el segundo código: " << endl;
+    cout << "Ingrese el segundo c?digo: " << endl;
     cin >> codigo2;
 
     std::stringstream ss1, ss2;
@@ -959,7 +972,7 @@ void Ciudad::MostrarCIU()
 
 bool Ciudad::ExisteCIU(string codigo) {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return false;
     }
     
@@ -1056,13 +1069,13 @@ private:
 
 void Restaurante::EncontrarValorMayorPedido() {
     if (ListaVacia()) {
-        cout << "La lista de restaurantes está vacía." << endl;
+        cout << "La lista de restaurantes est? vac?a." << endl;
         return;
     }
 
     pnodoRE aux = primero;
-    int valorMayor = -1;  // Inicializamos con un valor menor al mínimo posible
-    pnodoRE nodoMayor = NULL;  // Nodo correspondiente al valor más alto
+    int valorMayor = -1;  // Inicializamos con un valor menor al m?nimo posible
+    pnodoRE nodoMayor = NULL;  // Nodo correspondiente al valor m?s alto
 
     while (aux->siguiente != primero) {
         size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -1077,7 +1090,7 @@ void Restaurante::EncontrarValorMayorPedido() {
         aux = aux->siguiente;
     }
 
-    // Comprobar el último nodo también
+    // Comprobar el ?ltimo nodo tambi?n
     size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
     string pedidoStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
     int numeroPedido = stringAEnteroRE(pedidoStr);
@@ -1090,7 +1103,7 @@ void Restaurante::EncontrarValorMayorPedido() {
     if (nodoMayor != NULL) {
         cout << "Informacion del Restaurante: " << nodoMayor->valor << endl;
     } else {
-        cout << "No se encontró ningún restaurante con con consultas." << endl;
+        cout << "No se encontr? ning?n restaurante con con consultas." << endl;
     }
 }
 
@@ -1170,7 +1183,7 @@ void Restaurante::agregarRE(Ciudad & ListaCiudad){
 
 void Restaurante::ModificarNombreRE() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
 
@@ -1348,22 +1361,22 @@ int Restaurante::stringAEnteroRE(const std::string &cadena) {
     int resultado = 0;
     int multiplicador = 1;
 
-    // Comprueba si la cadena representa un número negativo
+    // Comprueba si la cadena representa un n?mero negativo
     size_t indice = 0;
     if (cadena[0] == '-') {
         multiplicador = -1;
         indice = 1; // Saltar el signo negativo
     }
 
-    // Recorre la cadena y construye el número entero
+    // Recorre la cadena y construye el n?mero entero
     for (; indice < cadena.length(); ++indice) {
         char digito = cadena[indice];
         if (isdigit(digito)) {
             int valorDigito = digito - '0';
             resultado = resultado * 10 + valorDigito;
         } else {
-            // Manejo de error si la cadena contiene caracteres no numéricos
-            std::cerr << "Error: La cadena contiene caracteres no numéricos." << std::endl;
+            // Manejo de error si la cadena contiene caracteres no num?ricos
+            std::cerr << "Error: La cadena contiene caracteres no num?ricos." << std::endl;
             return 0;
         }
     }
@@ -1373,18 +1386,18 @@ int Restaurante::stringAEnteroRE(const std::string &cadena) {
 
 void Restaurante::ComprobacionRE() {
     if (ListaVacia()) {
-        cout << "La lista está vacía" << endl;
+        cout << "La lista est? vac?a" << endl;
         return;
     }
 
     int codigo1, codigo2, codigo3;
-    cout << "Ingrese el primer código: " << endl;
+    cout << "Ingrese el primer c?digo: " << endl;
     cin >> codigo1;
 
-    cout << "Ingrese el segundo código: " << endl;
+    cout << "Ingrese el segundo c?digo: " << endl;
     cin >> codigo2;
 
-    cout << "Ingrese el tercer código: " << endl;
+    cout << "Ingrese el tercer c?digo: " << endl;
     cin >> codigo3;
 
     std::stringstream ss1, ss2, ss3;
@@ -1424,7 +1437,7 @@ void Restaurante::ComprobacionRE() {
                 cout << "Codigos encontrados en la lista: " << codigosBuscados << endl;
                 cout << "Nuevo valor asociado: " << nuevoValor << endl;
             } else {
-                cout << "No se encontró el último punto y coma en el valor." << endl;
+                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
             }
             break;
         }
@@ -1433,7 +1446,7 @@ void Restaurante::ComprobacionRE() {
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los códigos en la lista." << endl;
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
 }
 
@@ -1597,7 +1610,7 @@ void Restaurante::MostrarRE()
 
 bool Restaurante::ExisteRE(string codigo) {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return false;
     }
     
@@ -1690,8 +1703,8 @@ void Menu::EncontrarValorMayorPedido() {
     }
 
     pnodoME aux = primero;
-    int valorMayor = -1;  // Inicializamos con un valor menor al mínimo posible
-    pnodoME nodoMayor = NULL;  // Nodo correspondiente al valor más alto
+    int valorMayor = -1;  // Inicializamos con un valor menor al m?nimo posible
+    pnodoME nodoMayor = NULL;  // Nodo correspondiente al valor m?s alto
 
     while (aux->siguiente != primero) {
         size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -1706,7 +1719,7 @@ void Menu::EncontrarValorMayorPedido() {
         aux = aux->siguiente;
     }
 
-    // Comprobar el último nodo también
+    // Comprobar el ?ltimo nodo tambi?n
     size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
     string pedidoStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
     int numeroPedido = stringAEnteroME(pedidoStr);
@@ -1719,7 +1732,7 @@ void Menu::EncontrarValorMayorPedido() {
     if (nodoMayor != NULL) {
         cout << "Informacion del m: " << nodoMayor->valor << endl;
     } else {
-        cout << "No se encontró ningún restaurante con con consultas." << endl;
+        cout << "No se encontr? ning?n restaurante con con consultas." << endl;
     }
 }
 
@@ -1727,22 +1740,22 @@ int Menu::stringAEnteroME(const std::string &cadena) {
     int resultado = 0;
     int multiplicador = 1;
 
-    // Comprueba si la cadena representa un número negativo
+    // Comprueba si la cadena representa un n?mero negativo
     size_t indice = 0;
     if (cadena[0] == '-') {
         multiplicador = -1;
         indice = 1; // Saltar el signo negativo
     }
 
-    // Recorre la cadena y construye el número entero
+    // Recorre la cadena y construye el n?mero entero
     for (; indice < cadena.length(); ++indice) {
         char digito = cadena[indice];
         if (isdigit(digito)) {
             int valorDigito = digito - '0';
             resultado = resultado * 10 + valorDigito;
         } else {
-            // Manejo de error si la cadena contiene caracteres no numéricos
-            std::cerr << "Error: La cadena contiene caracteres no numéricos." << std::endl;
+            // Manejo de error si la cadena contiene caracteres no num?ricos
+            std::cerr << "Error: La cadena contiene caracteres no num?ricos." << std::endl;
             return 0;
         }
     }
@@ -1803,7 +1816,7 @@ void Menu::AgregarME(Restaurante & ListaRestaurante){
 
 void Menu::ModificarNombreME() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
 
@@ -2049,7 +2062,7 @@ void Menu::ComprobacionME() {
                 cout << "Codigos encontrados en la lista: " << codigosBuscados << endl;
                 cout << "Nuevo valor asociado: " << nuevoValor << endl;
             } else {
-                cout << "No se encontró el último punto y coma en el valor." << endl;
+                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
             }
             break;
         }
@@ -2058,7 +2071,7 @@ void Menu::ComprobacionME() {
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los códigos en la lista." << endl;
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
 }
 
@@ -2222,7 +2235,7 @@ void Menu::MostrarME()
 
 bool Menu::ExisteME(string codigo) {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return false;
     }
     
@@ -2324,8 +2337,8 @@ void producto::EncontrarValorMayorPedido() {
     }
 
     pnodoPRO aux = primero;
-    int valorMayor = -1;  // Inicializamos con un valor menor al mínimo posible
-    pnodoPRO nodoMayor = NULL;  // Nodo correspondiente al valor más alto
+    int valorMayor = -1;  // Inicializamos con un valor menor al m?nimo posible
+    pnodoPRO nodoMayor = NULL;  // Nodo correspondiente al valor m?s alto
 
     while (aux->siguiente != primero) {
         size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -2340,7 +2353,7 @@ void producto::EncontrarValorMayorPedido() {
         aux = aux->siguiente;
     }
 
-    // Comprobar el último nodo también
+    // Comprobar el ?ltimo nodo tambi?n
     size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
     string pedidoStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
     int numeroPedido = stringAEnteroPRO(pedidoStr);
@@ -2353,7 +2366,7 @@ void producto::EncontrarValorMayorPedido() {
     if (nodoMayor != NULL) {
         cout << "Informacion del m: " << nodoMayor->valor << endl;
     } else {
-        cout << "No se encontró ningún restaurante con con consultas." << endl;
+        cout << "No se encontr? ning?n restaurante con con consultas." << endl;
     }
 }
 
@@ -2361,22 +2374,22 @@ int producto::stringAEnteroPRO(const std::string &cadena) {
     int resultado = 0;
     int multiplicador = 1;
 
-    // Comprueba si la cadena representa un número negativo
+    // Comprueba si la cadena representa un n?mero negativo
     size_t indice = 0;
     if (cadena[0] == '-') {
         multiplicador = -1;
         indice = 1; // Saltar el signo negativo
     }
 
-    // Recorre la cadena y construye el número entero
+    // Recorre la cadena y construye el n?mero entero
     for (; indice < cadena.length(); ++indice) {
         char digito = cadena[indice];
         if (isdigit(digito)) {
             int valorDigito = digito - '0';
             resultado = resultado * 10 + valorDigito;
         } else {
-            // Manejo de error si la cadena contiene caracteres no numéricos
-            std::cerr << "Error: La cadena contiene caracteres no numéricos." << std::endl;
+            // Manejo de error si la cadena contiene caracteres no num?ricos
+            std::cerr << "Error: La cadena contiene caracteres no num?ricos." << std::endl;
             return 0;
         }
     }
@@ -2386,7 +2399,7 @@ int producto::stringAEnteroPRO(const std::string &cadena) {
 
 void producto::ModificarNombrePRO() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
 
@@ -2597,7 +2610,7 @@ void producto::AgregarPRO(Menu & ListaMenu){
 
 void producto::BorrarPorCodigosPRO() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
 
@@ -2747,7 +2760,7 @@ void producto::ComprobacionPRO() {
 						    }
 				            break;
             } else {
-                cout << "No se encontró el último punto y coma en el valor." << endl;
+                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
             }
             break;
         }
@@ -2756,7 +2769,7 @@ void producto::ComprobacionPRO() {
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los códigos en la lista." << endl;
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
 }
 
@@ -2923,7 +2936,7 @@ void producto::MostrarPRO()
 
 bool producto::ExistePRO(string codigo) {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return false;
     }
     
@@ -3001,10 +3014,29 @@ public:
     void AgregarClienteCl();
     void ModificarNombreCL();
     bool ExisteCl(int codigo);
+    string ObtenerContenidoComoString();
 
 private:
     pnodoCl primero;
 };
+
+string Clientes::ObtenerContenidoComoString() {
+        std::stringstream ss;
+        nodoCl* aux;
+	   if (primero== NULL)
+	       cout << "No hay elementos AQUI";  
+	   else
+	   {
+	   		aux = primero;
+			while(aux) 
+			{
+			    ss << aux->valor << "-> ";
+			    aux = aux->siguiente;
+			}
+			cout << endl;
+	   }
+        return ss.str();
+}
 
 void Clientes::ModificarNombreCL() {
     int code;
@@ -3038,7 +3070,7 @@ void Clientes::ModificarNombreCL() {
         aux = aux->siguiente;
     }
 
-    cout << "No se encontró un país con el código proporcionado." << endl;
+    cout << "No se encontr? un pa?s con el c?digo proporcionado." << endl;
 }
 
 void Clientes::clientesCl()
@@ -3337,7 +3369,7 @@ void Clientes::MostrarCl()
 
 bool Clientes::ExisteCl(int codigo) {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return false;
     }
 
@@ -3485,7 +3517,7 @@ void ListaCOM::ModificarNombre() {
         aux = aux->siguiente;
     }
 
-    cout << "No se encontró un país con el código proporcionado." << endl;
+    cout << "No se encontr? un pa?s con el c?digo proporcionado." << endl;
 }
 
 void ListaCOM::ConsultarPaisPorCodigo() {
@@ -3565,23 +3597,23 @@ void ListaCOM::BorrarPaisPorCodigo(int codigo) {
 
 void ListaCOM::BorrarPaisPorSeisCodigos() {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return;
     }
 
     string codigo1, codigo2, codigo3, codigo4, codigo5, codigo6;
 
-    cout << "Ingrese el primer código: ";
+    cout << "Ingrese el primer c?digo: ";
     cin >> codigo1;
-    cout << "Ingrese el segundo código: ";
+    cout << "Ingrese el segundo c?digo: ";
     cin >> codigo2;
-    cout << "Ingrese el tercer código: ";
+    cout << "Ingrese el tercer c?digo: ";
     cin >> codigo3;
-    cout << "Ingrese el cuarto código: ";
+    cout << "Ingrese el cuarto c?digo: ";
     cin >> codigo4;
-    cout << "Ingrese el quinto código: ";
+    cout << "Ingrese el quinto c?digo: ";
     cin >> codigo5;
-    cout << "Ingrese el sexto código: ";
+    cout << "Ingrese el sexto c?digo: ";
     cin >> codigo6;
 
     string codigosBuscados = codigo1 + ";" + codigo2 + ";" + codigo3 + ";" + codigo4 + ";" + codigo5 + ";" + codigo6;
@@ -3592,7 +3624,7 @@ void ListaCOM::BorrarPaisPorSeisCodigos() {
     while (aux) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
-            cout << "Códigos encontrados en el nodo: " << aux->valor << endl;
+            cout << "C?digos encontrados en el nodo: " << aux->valor << endl;
 
             if (aux == primero) {
                 BorrarInicio();
@@ -3612,7 +3644,7 @@ void ListaCOM::BorrarPaisPorSeisCodigos() {
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los códigos en la lista." << endl;
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
 }
 
@@ -3623,19 +3655,19 @@ void ListaCOM::AgregarCompra(producto &ListaProducto, string valor) {
     cout << "Proceda a digitar el producto que quiere comprar" << endl;
 
     int codigo1, codigo2, codigo3, codigo4, codigo5;
-    cout << "Ingrese el primer código: " << endl;
+    cout << "Ingrese el primer c?digo: " << endl;
     cin >> codigo1;
 
-    cout << "Ingrese el segundo código: " << endl;
+    cout << "Ingrese el segundo c?digo: " << endl;
     cin >> codigo2;
 
-    cout << "Ingrese el tercer código: " << endl;
+    cout << "Ingrese el tercer c?digo: " << endl;
     cin >> codigo3;
 
-    cout << "Ingrese el cuarto código: " << endl;
+    cout << "Ingrese el cuarto c?digo: " << endl;
     cin >> codigo4;
 
-    cout << "Ingrese el quinto código: " << endl;
+    cout << "Ingrese el quinto c?digo: " << endl;
     cin >> codigo5;
 
     std::stringstream ss1, ss2, ss3, ss4, ss5;
@@ -3773,7 +3805,7 @@ void ListaCOM::MostrarCompra()
 
 bool ListaCOM::Existe(int codigo) {
     if (ListaVacia()) {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return false;
     }
 
@@ -3820,7 +3852,7 @@ public:
         fondo = -1;
         for (int i = 0; i < 5; i++)
         {
-            Cola[i] = ""; // Inicializamos el arreglo de strings con cadenas vacías
+            Cola[i] = ""; // Inicializamos el arreglo de strings con cadenas vac?as
         }
     }
 
@@ -3842,7 +3874,7 @@ public:
     
 void cola::MostrarComprasPorNumeroCliente(ListaCOM &ListaCompras) {
     int numIdentificacion;
-    cout << "Ingrese el número de identificacion que desea mostrar: ";
+    cout << "Ingrese el n?mero de identificacion que desea mostrar: ";
     cin >> numIdentificacion;
     std::stringstream ss10;
     ss10 << numIdentificacion;
@@ -3852,20 +3884,20 @@ void cola::MostrarComprasPorNumeroCliente(ListaCOM &ListaCompras) {
 
     for (int i = frente; i <= fondo; i++) {
         string elemento = Cola[i];
-        // Busca el primer conjunto de números en el elemento de la cola
+        // Busca el primer conjunto de n?meros en el elemento de la cola
         size_t pos = elemento.find(';');
         if (pos != string::npos) {
             string primerNumero = elemento.substr(0, pos);
             if (primerNumero == num10) {
                 encontrado = true;
-                cout << "Elemento con número de identificación " << numIdentificacion << " se muestra" << endl;
+                cout << "Elemento con n?mero de identificaci?n " << numIdentificacion << " se muestra" << endl;
                 ListaCompras.MostrarComprasPorInicio(num10);
             }
         }
     }
 
     if (!encontrado) {
-        cout << "Cliente con número de identificación " << numIdentificacion << " no encontrado en la cola de compras." << endl;
+        cout << "Cliente con n?mero de identificaci?n " << numIdentificacion << " no encontrado en la cola de compras." << endl;
     }
 }
 
@@ -3879,14 +3911,14 @@ string cola::ObtenerValorEntrada()
     }
     else
     {
-        cout << "La cola está vacía." << endl;
+        cout << "La cola est? vac?a." << endl;
         return "";
     }
 }
 
 void cola::ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &ListaClientes) {
     int numIdentificacion;
-    cout << "Ingrese el número de identificacion que desea modificar: ";
+    cout << "Ingrese el n?mero de identificacion que desea modificar: ";
     cin >> numIdentificacion;
     
     std::stringstream ss10;
@@ -3895,13 +3927,13 @@ void cola::ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &L
 
     for (int i = frente; i <= fondo; i++) {
         string elemento = Cola[i];
-        // Busca el primer conjunto de números en el elemento de la cola
+        // Busca el primer conjunto de n?meros en el elemento de la cola
         size_t pos = elemento.find(';');
         if (pos != string::npos) {
             string primerNumero = elemento.substr(0, pos);
             if (primerNumero == num10) {
-                // El cliente con el número de identificación se encontró en la cola
-                cout << "Cliente con número de identificacion " << numIdentificacion << " encontrado" << endl;
+                // El cliente con el n?mero de identificaci?n se encontr? en la cola
+                cout << "Cliente con n?mero de identificacion " << numIdentificacion << " encontrado" << endl;
 
                 // Mostrar los productos actuales del cliente
                 cout << "Productos actuales del cliente: " << endl;
@@ -3925,7 +3957,7 @@ void cola::ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &L
                 cout << "Ingrese el quinto codigo: " << endl;
                 cin >> codigo5;
 
-                // Convertir los nuevos códigos en cadenas
+                // Convertir los nuevos c?digos en cadenas
                 std::stringstream ss1, ss2, ss3, ss4, ss5;
                 ss1 << codigo1;
                 ss2 << codigo2;
@@ -3944,20 +3976,20 @@ void cola::ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &L
                 // Actualizar la cola con la nueva cadena de productos
                 Cola[i] = num10 + ";" + nuevosProductos;
 
-                cout << "Productos modificados con éxito." << endl;
+                cout << "Productos modificados con ?xito." << endl;
                 return;
             }
         }
     }
 
-    cout << "Número de identificación no encontrado en la cola." << endl;
+    cout << "N?mero de identificaci?n no encontrado en la cola." << endl;
 }
 
 
 void cola::BorrarPorNumeroIdentificacion(ListaCOM & ListaCompras)
 {
     int numIdentificacion;
-    cout << "Ingrese el número de identificacion que desea borrar: ";
+    cout << "Ingrese el n?mero de identificacion que desea borrar: ";
     cin >> numIdentificacion;
     std::stringstream ss10;
 	ss10 << numIdentificacion;
@@ -3967,7 +3999,7 @@ void cola::BorrarPorNumeroIdentificacion(ListaCOM & ListaCompras)
     for (int i = frente; i <= fondo; i++)
     {
         string elemento = Cola[i];
-        // Busca el primer conjunto de números en el elemento de la cola
+        // Busca el primer conjunto de n?meros en el elemento de la cola
         size_t pos = elemento.find(';');
         if (pos != string::npos)
         {
@@ -3981,9 +4013,9 @@ void cola::BorrarPorNumeroIdentificacion(ListaCOM & ListaCompras)
                 }
                 Cola[fondo] = "";
                 fondo--;
-                cout << "Elemento con número de identificacion " << numIdentificacion << " borrado" << endl;
+                cout << "Elemento con n?mero de identificacion " << numIdentificacion << " borrado" << endl;
                 ListaCompras.BorrarComprasPorInicio(num10);
-                i--; // Ajusta el índice para revisar el siguiente elemento
+                i--; // Ajusta el ?ndice para revisar el siguiente elemento
             }
         }
     }
@@ -3999,12 +4031,12 @@ void cola::MostrarCodigoEnPosicion(int posicion)
         }
         else
         {
-            cout << "Posicion " << posicion << " está vacia." << endl;
+            cout << "Posicion " << posicion << " est? vacia." << endl;
         }
     }
     else
     {
-        cout << "Posicion no válida. Debe ser un numero entre 1 y 5." << endl;
+        cout << "Posicion no v?lida. Debe ser un numero entre 1 y 5." << endl;
     }
 }
 
@@ -4012,7 +4044,7 @@ bool cola::VerificarNumeroEnCola(string &num1) {
     int j = 0; // Valor para poder imprimir
     for (int i = frente; i <= fondo; i++) {
         string elemento = Cola[i];
-        // Busca el primer conjunto de números en el elemento de la cola
+        // Busca el primer conjunto de n?meros en el elemento de la cola
         size_t pos = elemento.find(';');
         if (pos != string::npos) {
             string primerNumero = elemento.substr(0, pos);
@@ -4024,7 +4056,7 @@ bool cola::VerificarNumeroEnCola(string &num1) {
         j++;
     }
 
-    cout << "Número no encontrado en la cola." << endl;
+    cout << "N?mero no encontrado en la cola." << endl;
 
     return false;
 }
@@ -4034,7 +4066,7 @@ void cola::Agregar(producto &ListaProducto, Clientes &ListaClientes, ListaCOM &L
         cout << "Opciones disponibles de cliente:" << endl;
         ListaClientes.MostrarCl();
         int codigo2;
-        cout << "Digite el número de cédula del cliente: ";
+        cout << "Digite el n?mero de c?dula del cliente: ";
         cin >> codigo2;
 
         if (ListaClientes.ExisteCl(codigo2)) {
@@ -4047,10 +4079,10 @@ void cola::Agregar(producto &ListaProducto, Clientes &ListaClientes, ListaCOM &L
                 // El cliente ya existe en la cola, no es necesario insertarlo nuevamente.
                 ListaCompras.AgregarCompra(ListaProducto, num10);
             } else {
-                // El cliente no está en la cola, lo insertamos y luego agregamos la compra.
+                // El cliente no est? en la cola, lo insertamos y luego agregamos la compra.
                 string entrada = num10 + ";";
-                int posicion = fondo + 1;  // Siguiente posición disponible en la cola
-                insertar(entrada);  // Agregar el cliente en la siguiente posición
+                int posicion = fondo + 1;  // Siguiente posici?n disponible en la cola
+                insertar(entrada);  // Agregar el cliente en la siguiente posici?n
                 cout << "Se procede a agregar el producto" << endl;
                 ListaCompras.AgregarCompra(ListaProducto, num10);
             }
@@ -4060,7 +4092,7 @@ void cola::Agregar(producto &ListaProducto, Clientes &ListaClientes, ListaCOM &L
             ColaCO(ListaProducto, ListaClientes, ListaCompras);
         }
     } else {
-        cout << "La cola está llena" << endl;
+        cout << "La cola est? llena" << endl;
         ColaCO(ListaProducto, ListaClientes, ListaCompras);
     }
     ColaCO(ListaProducto, ListaClientes, ListaCompras);
@@ -4329,7 +4361,7 @@ int main()
 			case 9: 
 				cout<<""<<endl;
 				cout<<"opcion 9 salir"<<endl;
-				exit(0);
+				ejecucion = false;
 				break;
 			default:
 				cout<<""<<endl;
@@ -4338,6 +4370,44 @@ int main()
 		}		
 	}
 
+    ofstream archivo("reportes.txt");
+
+    if (!archivo.is_open()) {
+        cerr << "No se pudo abrir el archivo." << endl;
+        return 1;
+    }
+
+    archivo << "Reporte de paises: " << endl;
+    string RepPais = ListaPyC.ObtenerContenidoComoString();
+    archivo << RepPais <<endl;
+    archivo<<""<<endl;
+    
+    archivo<< "Reporte de ciudades"<<endl;
+    //string RepCiu = ListaCiudad.MostrarCiudadesPorPais();
+    //archivo<<RepCiu<<endl;
+    archivo<<""<<endl;
+    
+    archivo<<"Reporte de restaurantes"<<endl;
+    archivo<<""<<endl;
+    
+    archivo<<"Reporte de Clientes"<<endl;
+    string RepClientes = ListaClientes.ObtenerContenidoComoString();
+    archivo<<RepClientes<<endl;
+    archivo<<""<<endl;
+    
+    archivo<< "Reporte de Restaurante mas buscado"<<endl;
+    archivo<<""<<endl;
+    
+    archivo<<"Reporte de menu mas buscado"<<endl;
+    archivo<<""<<endl;
+    
+    archivo<<"Reporte de producto mas buscado"<<endl;
+    archivo<<""<<endl;
+
+
+    archivo.close();
+
+    cout << "La informacion se ha guardado en archivo.txt." << endl;
    cin.get();
    return 0;
 }
