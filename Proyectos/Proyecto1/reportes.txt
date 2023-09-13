@@ -1,20 +1,20 @@
 Reporte de paises: 
-123;Panama-> 345;Estados Unidos-> 4567;Mexico-> 
+1;Costa Rica-> 2;Colombia-> 3;Peru-> 
 
 Reporte de ciudades
-123;345;David; // 345;987;Orlando; // 123;345;David; // 
+1;19;Hojancha; // 1;22;Alajuela; // 1;33;Heredia; // 1;19;Hojancha; // 
 
 Reporte de restaurantes
-123;345;34;MacPanama;0; // 123;345;2341;X;0; // 123;345;34;MacPanama;0; // 
+1;22;123;Tortilleria Sancho;0; // 1;22;125;Mangos Bendicion;0; // 
 
 Reporte de Clientes
-123456;Maria Campos-> 6578;Pedro Perez-> 40193;Jose Torres-> 
+402630815; Samir-> 504500571; Pame-> 119030494; josi-> 123456789; Cuco-> 987654321; Lucas-> 
 
 Reporte de Restaurante mas buscado
-Informacion del Restaurante: 123;345;34;MacPanama;0
+Informacion del Restaurante: 1;19;112;Heladeria Morataya;0
 
 Reporte de menu mas buscado
-Informacion del menu: 123;345;34;1;HC;0
+Informacion del menu: 1;19;112;223;Helados;0
 
 Reporte de producto mas buscado
-Informacion del producto: 123;345;34;1;109;BigMac;480;2300;;;0
+Informacion del producto: 1;19;112;223;310;Fresa;400;1000;;;0
