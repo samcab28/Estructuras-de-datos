@@ -1,9 +1,10 @@
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <sstream>
 #include <cctype>
 #include <set>
+#include <string> 
+#include <cstdlib> 
 
 using namespace std;
 class ListaCOM;
@@ -525,10 +526,32 @@ public:
     void AgregarCIU(PyC & ListaPyC);
     void ModificarNombreCIU();
     bool ExisteCIU(string codigo);
+    void MostrarCiudadesPorPais();
 private:
     pnodoCIU primero;
 };
 
+void Ciudad::MostrarCiudadesPorPais() {
+	cout<<"digite el codigo de pais a buscar"<<endl;
+	string codigoPais;
+	cin >> codigoPais;
+	
+    if (ListaVacia()) {
+        cout << "La lista de ciudades esta vacia." << endl;
+        return;
+    }
+
+    pnodoCIU aux = primero;
+    int i = 0;
+
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigoPais) != string::npos) {
+            cout << aux->valor << endl;
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+}
 
 void Ciudad::ModificarNombreCIU() {
     if (ListaVacia()) {
@@ -1023,9 +1046,40 @@ public:
     void ModificarNombreRE();
     void agregarRE(Ciudad & ListaCiudad);
     bool ExisteRE(string codigo);
+    void MostrarRestaurantesPorCiudad();
+    int stringAEnteroRE(const std::string &cadena);
+    
 private:
     pnodoRE primero;
 };
+
+void Restaurante::MostrarRestaurantesPorCiudad() {
+    cout << "Digite el codigo de pais: ";
+    string codigoPais;
+    cin >> codigoPais;
+
+    cout << "Digite el codigo de ciudad: ";
+    string codigoCiudad;
+    cin >> codigoCiudad;
+
+    string codigosBuscados = codigoPais + ";" + codigoCiudad;
+    
+    if (ListaVacia()) {
+        cout << "La lista de restaurantes esta vacia." << endl;
+        return;
+    }
+
+    pnodoRE aux = primero;
+    int i = 0;
+
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            cout << aux->valor << endl;
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+}
 
 void Restaurante::agregarRE(Ciudad & ListaCiudad){
 	cout<<"agregar ciudades"<<endl;
@@ -1249,20 +1303,47 @@ void Restaurante::BorrarPorCodigosRE() {
     }
 }
 
+int Restaurante::stringAEnteroRE(const std::string &cadena) {
+    int resultado = 0;
+    int multiplicador = 1;
+
+    // Comprueba si la cadena representa un número negativo
+    size_t indice = 0;
+    if (cadena[0] == '-') {
+        multiplicador = -1;
+        indice = 1; // Saltar el signo negativo
+    }
+
+    // Recorre la cadena y construye el número entero
+    for (; indice < cadena.length(); ++indice) {
+        char digito = cadena[indice];
+        if (isdigit(digito)) {
+            int valorDigito = digito - '0';
+            resultado = resultado * 10 + valorDigito;
+        } else {
+            // Manejo de error si la cadena contiene caracteres no numéricos
+            std::cerr << "Error: La cadena contiene caracteres no numéricos." << std::endl;
+            return 0;
+        }
+    }
+
+    return resultado * multiplicador;
+}
+
 void Restaurante::ComprobacionRE() {
     if (ListaVacia()) {
-        cout << "La lista esta vacia" << endl;
+        cout << "La lista está vacía" << endl;
         return;
     }
 
     int codigo1, codigo2, codigo3;
-    cout << "Ingrese el primer codigo: " << endl;
+    cout << "Ingrese el primer código: " << endl;
     cin >> codigo1;
 
-    cout << "Ingrese el segundo codigo: " << endl;
+    cout << "Ingrese el segundo código: " << endl;
     cin >> codigo2;
 
-    cout << "Ingrese el tercer codigo: " << endl;
+    cout << "Ingrese el tercer código: " << endl;
     cin >> codigo3;
 
     std::stringstream ss1, ss2, ss3;
@@ -1283,20 +1364,40 @@ void Restaurante::ComprobacionRE() {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
-            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+            if (posicionUltimoPuntoComa != string::npos) {
+                size_t posicionNumero = posicionUltimoPuntoComa + 1;
+                std::string numeroStr = aux->valor.substr(posicionNumero);
+                int numero = stringAEnteroRE(numeroStr);
+                numero++;
+                
+				std::stringstream ss1;
+    			ss1 << numero;
 
-            cout << "Codigos encontrados en la lista: " << codigosBuscados << endl;
-            cout << "Nombre asociado: " << nombre << endl;
+				string num1 = ss1.str();
+    
+    
+                
+                string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
+                aux->valor = nuevoValor;
+
+                cout << "Codigos encontrados en la lista: " << codigosBuscados << endl;
+                cout << "Nuevo valor asociado: " << nuevoValor << endl;
+            } else {
+                cout << "No se encontró el último punto y coma en el valor." << endl;
+            }
             break;
         }
         aux = aux->siguiente;
-        i ++;
+        i++;
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los c?digos en la lista." << endl;
+        cout << "No se encontraron los códigos en la lista." << endl;
     }
 }
+
+
+
 
 void Restaurante::CargarDesdeArchivoRE() {
     set<string> numero3_set;  
@@ -1318,7 +1419,7 @@ void Restaurante::CargarDesdeArchivoRE() {
             if (numero3_set.find(numero3) == numero3_set.end())
             {
                 numero3_set.insert(numero3);  // Agregar a conjunto de NUMERO3
-                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + nombre;
+                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + nombre + +";"+"0";
                 InsertarFinal(nuevo_valor);
             }
             else
@@ -3927,7 +4028,8 @@ int main()
 		cout<<"para productos, digite 5"<<endl;
 		cout<<"para clientes, digite 6"<<endl;
 		cout<<"para compras, digite 7"<<endl;
-		cout<<"para salir, digite 8"<<endl;
+		cout<<"para generar reporte digite 8"<<endl;
+		cout<<"para salir, digite 9"<<endl;
 		
 		cin >> MenuPrincipal;
 		
@@ -3975,10 +4077,46 @@ int main()
 				break;
 			case 8: 
 				cout<<""<<endl;
-				cout<<"opcion 7 salir"<<endl;
+				cout<<"opcion 8 generar reportes"<<endl;
+				
+				cout<<"reportes de pais:"<<endl;
+				ListaPyC.Mostrar();
+				cout<<""<<endl;
+				
+				cout<<"reportes de ciudad:"<<endl;
+				cout<<""<<endl;
+				cout<<"paises disponibles"<<endl;
+				ListaPyC.Mostrar();
+				ListaCiudad.MostrarCiudadesPorPais();
+				cout<<"reportes de ciudad:"<<endl;
+				cout<<""<<endl;
+				
+				cout<<"reportes de restaurantes:"<<endl;
+				cout<<"paises y ciudades disponibles"<<endl;
+				ListaCiudad.MostrarCIU();
+				ListaRestaurante.MostrarRestaurantesPorCiudad();
+				cout<<""<<endl;
+				
+				cout<<"reportes de clientes:"<<endl;
+				ListaClientes.MostrarCl();
+				cout<<""<<endl;
+				
+				cout<<"restaurante mas buscado:"<<endl;
+				cout<<""<<endl;
+				
+				cout<<"menu mas buscado:"<<endl;
+				cout<<""<<endl;
+				
+				cout<<"producto mas buscado:"<<endl;
+				cout<<""<<endl;
+				
+				
+				break;
+			case 9: 
+				cout<<""<<endl;
+				cout<<"opcion 9 salir"<<endl;
 				exit(0);
 				break;
-					
 			default:
 				cout<<""<<endl;
 				cout<<"error opcion incorrecta"<<endl;
