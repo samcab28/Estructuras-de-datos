@@ -59,8 +59,14 @@ public:
     void imprimir();
     void Ejecucion();
     string verValorEspecifico(int posicion);
+    void verContenido();
 };
 
+void pila::verContenido() {
+    for (int i = Tope; i >= 0; i--) {
+        cout << Pila[i] << endl;
+    }
+}
 
 string pila::verValorEspecifico(int posicion) {
     if (posicion >= 0 && posicion <= Tope) {
@@ -111,6 +117,7 @@ class lista {
 	void InsertarFinal(string v);
 	void Mostrar();
 	bool ListaVacia() { return primero == NULL; }
+	void evaluarExpresion(pnodo primerl, pila& pilaSimbolos, pila& pilaNumeros);
    private:
     pnodo primero;
     friend class pila;
@@ -274,69 +281,34 @@ void lista::mostrarExpresion(pnodo primerl){
 	}
 }
 
-void lista::evaluarExpresion(pnodo primerl) {
-	pila pilaAUX;
-    pnodo aux;
-    aux = primerl->siguiente;
-    
-    if (aux == NULL) {
-        cout << "error, cola vacia" << endl;
-    } else {
-        string numeros;
-		string simbolos;  // Declare and initialize nuevo
-        while (aux != NULL) {
-            if (aux->valor >= "0" && aux->valor <= "9") {
-            	
-            	//parte de simbolos
-            	simbolos.clear();
-            	
-            	//parte de letras
-                numeros += aux->valor;
-                cout << "numero   " << aux->valor << "  string:  " << numeros << std::endl;
-                
-                //continuacion de ciclo
-                aux = aux->siguiente;
-                
-            } else {
-            	
-            	//parte de letras
-            	numeros.clear();
-            	
-            	//parte de simbolos
-            	simbolos += aux -> valor;
-                cout << "extra    " << aux->valor << "   simbolos:    " << simbolos <<std::endl;
-                string extra = aux -> valor;
-                pilaAUX.push(extra);
-                pilaAUX.imprimir();
-                
-                //cout<<""<<endl;
-                //cout<<"hola"<<endl;
-                
-                //pilaAUX.verValorEspecifico(2);
-                //pilaAUX.verValorEspecifico(4);
-                
-                //continuacion de ciclo
-                aux = aux->siguiente;
-            }
+void lista::evaluarExpresion(pnodo primerl, pila& pilaSimbolos, pila& pilaNumeros) {
+    pnodo aux = primerl->siguiente;
+
+    while (aux != NULL) {
+        string valor = aux->valor;
+
+        if (isdigit(valor[0])) {
+            // Es un número, colócalo en la pila de números
+            pilaNumeros.push(valor);
+        } else {
+            // No es un número, colócalo en la pila de símbolos
+            pilaSimbolos.push(valor);
         }
+
+        aux = aux->siguiente;
     }
 }
 
-void lista::listaAuxilio(string valor)
-{
-	lista ListaAUX;
-	
-	//cout<<valor<<endl;
-	
-	ListaAUX.InsertarFinal(valor);
-	//ListaAUX.Mostrar();
-}
+
 
 
 
 int main(){
 	
 	lista L;
+	pila pilaSimbolos;
+	pila pilaNumeros;
+ 
 	
 	pnodo primerol1 = new nodo();
 	pnodo primerol2 = new nodo();
@@ -364,7 +336,14 @@ int main(){
 	L.mostrarExpresion(Cola[4]);
 	cout<<""<<endl;
 	
-	//L.evaluarExpresion(Cola[4]);
+	 L.evaluarExpresion(Cola[0], pilaSimbolos, pilaNumeros);
+
+	cout << "Contenido de la pilaSimbolos:" << endl;
+	pilaSimbolos.verContenido();
+	
+	cout << "Contenido de la pilaNumeros:" << endl;
+	pilaNumeros.verContenido();
+
 	
 	return 0;
 }
