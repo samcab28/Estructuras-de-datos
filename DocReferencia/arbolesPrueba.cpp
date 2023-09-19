@@ -397,6 +397,7 @@ int main()
     miArbol.insertarNodo(15,raizArbolPtr);
     miArbol.insertarNodo(30,raizArbolPtr);
     miArbol.insertarNodo(35,raizArbolPtr);
+    miArbol.insertarNodo(30,raizArbolPtr);
 
     cout<<""<<endl;
     cout<<"muestra de acostado"<<endl;
@@ -466,8 +467,8 @@ int main()
 	
 	
 	//solo usar en caso de graficar
-    system("cls");
-    miArbol.graficarArbol(raizArbolPtr, 45, 2, 0, 16);
+    /*system("cls");
+    miArbol.graficarArbol(raizArbolPtr, 45, 2, 0, 16);*/
     return 0;
 }
 

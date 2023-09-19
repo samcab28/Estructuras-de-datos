@@ -98,6 +98,35 @@ void Arbol::muestraAcostado(int nivel, Nodo* nodoPtr)
     muestraAcostado(nivel + 1, nodoPtr->izquierdoPtr);
 }
 
+void Arbol::inOrden(Nodo * nodoPtr){
+    if(nodoPtr == NULL){
+        return;
+    }
+
+    inOrden(nodoPtr -> izquierdoPtr);
+    cout<<nodoPtr -> dato <<" - ";
+    inOrden(nodoPtr -> derechoPtr);
+}
+
+void Arbol::preOrden(Nodo * nodoPtr){
+    if(nodoPtr == NULL){
+        return;
+    }
+
+    cout<<nodoPtr -> dato<< " - ";
+    preOrden(nodoPtr->izquierdoPtr);
+    preOrden(nodoPtr->derechoPtr);
+}
+
+void Arbol::postOrden(Nodo * nodoPtr){
+    if(nodoPtr == NULL){
+        return;
+    }
+
+    postOrden(nodoPtr -> izquierdoPtr);
+    postOrden(nodoPtr -> derechoPtr);
+    cout<< nodoPtr -> dato << " - ";
+}
 
 int main()
 {
@@ -117,6 +146,18 @@ int main()
     cout<<""<<endl;
     cout<<"muestra de acostado"<<endl;
     miArbol.muestraAcostado(0,raizArbolPtr);
+    
+    cout<<""<<endl;
+    cout<<"muestra de inOrden"<<endl;
+    miArbol.inOrden(raizArbolPtr);
+    
+    cout<<""<<endl;
+    cout<<"muestra de preOrden"<<endl;
+    miArbol.preOrden(raizArbolPtr);
+    
+    cout<<""<<endl;
+    cout<<"muestra de postOrden"<<endl;
+    miArbol.postOrden(raizArbolPtr);
 
     return 0;
 }

@@ -377,6 +377,36 @@ void lista::mostrarExpresion(pnodo primerl){
 	}
 }
 
+void Arbol::inOrden(Nodo * nodoPtr){
+    if(nodoPtr == NULL){
+        return;
+    }
+
+    inOrden(nodoPtr -> izquierdoPtr);
+    cout<<nodoPtr -> dato <<" - ";
+    inOrden(nodoPtr -> derechoPtr);
+}
+
+void Arbol::preOrden(Nodo * nodoPtr){
+    if(nodoPtr == NULL){
+        return;
+    }
+
+    cout<<nodoPtr -> dato<< " - ";
+    preOrden(nodoPtr->izquierdoPtr);
+    preOrden(nodoPtr->derechoPtr);
+}
+
+void Arbol::postOrden(Nodo * nodoPtr){
+    if(nodoPtr == NULL){
+        return;
+    }
+
+    postOrden(nodoPtr -> izquierdoPtr);
+    postOrden(nodoPtr -> derechoPtr);
+    cout<< nodoPtr -> dato << " - ";
+}
+
 void lista::evaluarExpresion(pnodo primerl, pila& pilaSimbolos, pila& pilaNumeros) {
     pnodo aux = primerl->siguiente;
     Arbol miArbol;
@@ -388,13 +418,28 @@ void lista::evaluarExpresion(pnodo primerl, pila& pilaSimbolos, pila& pilaNumero
             pilaNumeros.push(valor);
             miArbol.insertarNodo(valor, raizArbolPtr);
         } else {
-            // No es un n?mero, col?calo en la pila de s?mbolos
+            //cout<<"el valor es"<<valor<<endl;
             pilaSimbolos.push(valor);
         }
 
         aux = aux->siguiente;
     }
+    
+    cout<<""<<endl;
+    cout<<"muestra de acostado"<<endl;
     miArbol.muestraAcostado(0,raizArbolPtr);
+    
+    cout<<""<<endl;
+    cout<<"muestra de inOrden"<<endl;
+    miArbol.inOrden(raizArbolPtr);
+    
+    cout<<""<<endl;
+    cout<<"muestra de preOrden"<<endl;
+    miArbol.preOrden(raizArbolPtr);
+    
+    cout<<""<<endl;
+    cout<<"muestra de postOrden"<<endl;
+    miArbol.postOrden(raizArbolPtr);
 }
 
 
@@ -431,13 +476,15 @@ int main(){
 	L.mostrarExpresion(Cola[4]);
 	cout<<""<<endl;
 	
-	 L.evaluarExpresion(Cola[0], pilaSimbolos, pilaNumeros);
-
-	cout << "Contenido de la pilaSimbolos:" << endl;
-	pilaSimbolos.verContenido();
+	cout<<""<<endl;
+	cout<<"contenido de lista 1"<<endl;
+	L.evaluarExpresion(Cola[0], pilaSimbolos, pilaNumeros);
 	
-	cout << "Contenido de la pilaNumeros:" << endl;
-	pilaNumeros.verContenido();
+	cout<<""<<endl;
+	cout<<""<<endl;
+	cout<<"contenido de lista 2"<<endl;
+	L.evaluarExpresion(Cola[1], pilaSimbolos, pilaNumeros);
+
 
 	
 	return 0;
