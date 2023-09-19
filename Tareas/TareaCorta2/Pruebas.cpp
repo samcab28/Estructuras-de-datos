@@ -104,7 +104,7 @@ int main()
     Arbol miArbol;  // Crear el objeto Arbol
     Nodo * raizArbolPtr = miArbol.regresaRaiz();
 
-    // Ejemplo de cómo usar la inserción de nodos
+    // Ejemplo de c?mo usar la inserci?n de nodos
     miArbol.insertarNodo("hola",raizArbolPtr);
     miArbol.insertarNodo("jesus",raizArbolPtr);
     miArbol.insertarNodo("pedro",raizArbolPtr);

@@ -8,8 +8,104 @@ samir cabrera y fernando abarca
 #include <string>
 #include <sstream>
 #include <cctype>
+#include <queue>
 
 using namespace std;
+
+class Nodo
+{
+public:
+    string dato;  
+    Nodo* izquierdoPtr;
+    Nodo* derechoPtr;
+};
+
+
+class Arbol
+{
+private:
+    Nodo* raizPtr;
+    bool esVacio();
+    void gotoxy(int x,int y);
+
+public:
+    Arbol();
+    ~Arbol();
+    Nodo*& regresaRaiz();
+    void insertarNodo(string valor, Nodo*& nodoPtr);
+    void muestraAcostado(int nivel, Nodo* nodoPtr);
+    void inOrden(Nodo * nodoPtr);
+    void preOrden(Nodo * nodoPtr);
+    void postOrden(Nodo * nodoPtr);
+    void busqueda(int x, Nodo * nodoPtr);
+    void podarArbol(Nodo *&nodoPtr);
+    Nodo * buscaMenor(Nodo * nodoPtr);
+    Nodo * buscaMayor(Nodo * nodoPtr);
+    void eliminarPredecesor(int x, Nodo *&nodoPtr);
+    void eliminarSucesor(int x, Nodo *& nodoPtr);
+    int altura(Nodo * nodoPtr);
+    int contarHojas(Nodo * nodoPtr);
+    int contarNodos(Nodo * nodoPtr);
+    void recorridoNiveles(Nodo * nodoPtr);
+    bool esLleno(Nodo * nodoPtr);
+    bool esCompleto(Nodo * nodoPtr);
+    void graficarArbol(Nodo* nodoPtr, int x, int y, int nivel, int distancia);
+};
+
+Arbol::Arbol()
+{
+    raizPtr = NULL;
+}
+
+Arbol::~Arbol()
+{
+    //podarArbol(raizPtr);
+}
+
+Nodo*& Arbol::regresaRaiz()
+{
+    return raizPtr;
+}
+
+void Arbol::insertarNodo(string valor, Nodo*& nodoPtr)
+{
+    if (nodoPtr == NULL)
+    {
+        nodoPtr = new Nodo();
+        nodoPtr->dato = valor;
+        nodoPtr->izquierdoPtr = NULL;
+        nodoPtr->derechoPtr = NULL;
+    }
+    else if (valor < nodoPtr->dato)
+    {
+        insertarNodo(valor, nodoPtr->izquierdoPtr);
+    }
+    else if (valor > nodoPtr->dato)
+    {
+        insertarNodo(valor, nodoPtr->derechoPtr);
+    }
+}
+
+
+void Arbol::muestraAcostado(int nivel, Nodo* nodoPtr)
+{
+    if (nodoPtr == NULL)
+    {
+        return;
+    }
+
+    muestraAcostado(nivel + 1, nodoPtr->derechoPtr);
+
+    for (int i = 0; i < nivel; i++)
+    {
+        cout << "  ";
+    }
+
+    cout << nodoPtr->dato << endl;
+
+    muestraAcostado(nivel + 1, nodoPtr->izquierdoPtr);
+}
+
 
 class nodo {
 public:
@@ -73,7 +169,7 @@ string pila::verValorEspecifico(int posicion) {
     	cout<<Pila[posicion]<<endl;
         return Pila[posicion];
     } else {
-        return "Posición inválida";
+        return "Posici?n inv?lida";
     }
 }
 
@@ -82,7 +178,7 @@ void pila::push(string v) {
         Tope++;
         Pila[Tope] = v;
     } else {
-        cout << "La pila está llena";
+        cout << "La pila est? llena";
     }
 }
 
@@ -90,7 +186,7 @@ void pila::pop() {
     if (!pilaVacia()) {
         Tope--;
     } else {
-        cout << "La pila está vacía";
+        cout << "La pila est? vac?a";
     }
 }
 
@@ -283,24 +379,23 @@ void lista::mostrarExpresion(pnodo primerl){
 
 void lista::evaluarExpresion(pnodo primerl, pila& pilaSimbolos, pila& pilaNumeros) {
     pnodo aux = primerl->siguiente;
-
+    Arbol miArbol;
+    Nodo * raizArbolPtr = miArbol.regresaRaiz();
     while (aux != NULL) {
         string valor = aux->valor;
 
         if (isdigit(valor[0])) {
-            // Es un número, colócalo en la pila de números
             pilaNumeros.push(valor);
+            miArbol.insertarNodo(valor, raizArbolPtr);
         } else {
-            // No es un número, colócalo en la pila de símbolos
+            // No es un n?mero, col?calo en la pila de s?mbolos
             pilaSimbolos.push(valor);
         }
 
         aux = aux->siguiente;
     }
+    miArbol.muestraAcostado(0,raizArbolPtr);
 }
-
-
-
 
 
 int main(){
