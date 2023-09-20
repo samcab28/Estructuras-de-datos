@@ -37,19 +37,7 @@ public:
     void inOrden(Nodo * nodoPtr);
     void preOrden(Nodo * nodoPtr);
     void postOrden(Nodo * nodoPtr);
-    void busqueda(int x, Nodo * nodoPtr);
-    void podarArbol(Nodo *&nodoPtr);
-    Nodo * buscaMenor(Nodo * nodoPtr);
-    Nodo * buscaMayor(Nodo * nodoPtr);
-    void eliminarPredecesor(int x, Nodo *&nodoPtr);
-    void eliminarSucesor(int x, Nodo *& nodoPtr);
-    int altura(Nodo * nodoPtr);
-    int contarHojas(Nodo * nodoPtr);
-    int contarNodos(Nodo * nodoPtr);
-    void recorridoNiveles(Nodo * nodoPtr);
-    bool esLleno(Nodo * nodoPtr);
-    bool esCompleto(Nodo * nodoPtr);
-    void graficarArbol(Nodo* nodoPtr, int x, int y, int nivel, int distancia);
+
 };
 
 Arbol::Arbol()
@@ -484,6 +472,21 @@ int main(){
 	cout<<""<<endl;
 	cout<<"contenido de lista 2"<<endl;
 	L.evaluarExpresion(Cola[1], pilaSimbolos, pilaNumeros);
+	
+	cout<<""<<endl;
+	cout<<""<<endl;
+	cout<<"contenido de lista 3"<<endl;
+	L.evaluarExpresion(Cola[2], pilaSimbolos, pilaNumeros);
+	
+	cout<<""<<endl;
+	cout<<""<<endl;
+	cout<<"contenido de lista 4"<<endl;
+	L.evaluarExpresion(Cola[3], pilaSimbolos, pilaNumeros);
+	
+	cout<<""<<endl;
+	cout<<""<<endl;
+	cout<<"contenido de lista 5"<<endl;
+	L.evaluarExpresion(Cola[4], pilaSimbolos, pilaNumeros);
 
 
 	
