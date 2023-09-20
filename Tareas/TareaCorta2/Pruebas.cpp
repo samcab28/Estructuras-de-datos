@@ -556,6 +556,11 @@ int main() {
 
 	Lista.mostrarExpresion(Cola[1]);
 	Lista.crearPostfijo(Cola[1]);
+	cout<<""<<endl;
+	cout<<""<<endl;
+	cout<<""<<endl;
+	//Lista.mostrarExpresion((3+2-1)^2+(4*6))
+	//Lista.crearPostfijo((3+2-1)^2+(4*6));
 	
 
     return 0;
