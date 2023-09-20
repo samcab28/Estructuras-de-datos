@@ -554,14 +554,20 @@ int main() {
 
     Lista.crearCola(Cola);
 
-	Lista.mostrarExpresion(Cola[1]);
-	Lista.crearPostfijo(Cola[1]);
-	cout<<""<<endl;
-	cout<<""<<endl;
-	cout<<""<<endl;
-	//Lista.mostrarExpresion((3+2-1)^2+(4*6))
-	//Lista.crearPostfijo((3+2-1)^2+(4*6));
 	
+	for(int i =0; i<5; i++){
+		if(i==0){
+		}
+		else{
+			cout<<""<<endl;
+			cout<<""<<endl;
+			cout<<""<<endl;
+			cout<<""<<endl;	
+		}
+		cout<<"informacion de archivo: "<<i+1<<endl;
+		Lista.mostrarExpresion(Cola[i]);
+		Lista.crearPostfijo(Cola[i]);
+	}
 
     return 0;
 }
