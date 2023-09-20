@@ -439,7 +439,6 @@ void lista::crearPostfijo(pnodo primerl) {
 
     while (aux->siguiente != NULL) {
         if (aux->valor == "+" || aux->valor == "-" || aux->valor == "*" || aux->valor == "/" || aux->valor == "^" || aux->valor == "(" || aux->valor == ")") {
-
             if (aux->valor == "(") {
                 pilaOperadores.push(aux->valor);
             } else if (aux->valor == ")") {
@@ -451,14 +450,18 @@ void lista::crearPostfijo(pnodo primerl) {
                 pilaOperadores.pop();
             } else {
                 int priorFuera = TablaFuera.buscarOP(aux->valor);
+                cout << "afuera pila operadores: " << aux->valor << endl;
                 int priorDentro = TablaDentro.buscarOP(pilaOperadores.pilaVacia() ? "" : pilaOperadores.tope->valor);
+                cout << "adentro pila numeros: " << aux->valor << endl;
 
                 if (priorFuera > priorDentro) {
                     pilaOperadores.push(aux->valor);
+                    cout << "push a expresion: " << aux->valor << endl;
                 } else {
                     while (!pilaOperadores.pilaVacia() && TablaDentro.buscarOP(pilaOperadores.tope->valor) >= priorFuera) {
                         postfijo.insertarFinal(pilaOperadores.tope->valor);
                         miArbol.insertarNodo(pilaOperadores.tope->valor, raizArbolPtr);
+                        cout << "evalua " << pilaOperadores.tope->valor << endl;
                         pilaOperadores.pop();
                     }
                     pilaOperadores.push(aux->valor);
@@ -467,6 +470,7 @@ void lista::crearPostfijo(pnodo primerl) {
         } else {
             postfijo.insertarFinal(aux->valor);
             miArbol.insertarNodo(aux->valor, raizArbolPtr);
+            cout << "Numero: " << aux->valor << endl;
         }
         aux = aux->siguiente;
     }
@@ -476,8 +480,6 @@ void lista::crearPostfijo(pnodo primerl) {
         miArbol.insertarNodo(pilaOperadores.tope->valor, raizArbolPtr);
         pilaOperadores.pop();
     }
-    postfijo.mostrar();
-
     aux = postfijo.primero;
 
     pila PilaResultado;
@@ -509,16 +511,17 @@ void lista::crearPostfijo(pnodo primerl) {
             }
 
             PilaResultado.push(ss.str());
+            cout << "Resultado parcial: " << PilaResultado.tope->valor << endl; // Imprimir el resultado parcial
         } else {
             PilaResultado.push(aux->valor);
         }
         aux = aux->siguiente;
     }
-    
-    // Mostrar el árbol desde la raíz.
-    cout << "Resultado: " << PilaResultado.tope->valor << endl;
-    miArbol.muestraAcostado(0, raizArbolPtr);
-   cout<<""<<endl;
+
+    // Mostrar el resultado final
+    cout << "Resultado final: " << PilaResultado.tope->valor << endl;
+
+    cout<<""<<endl;
     cout<<"muestra de inOrden"<<endl;
     miArbol.inOrden(raizArbolPtr);
     
@@ -530,6 +533,7 @@ void lista::crearPostfijo(pnodo primerl) {
     cout<<"muestra de postOrden"<<endl;
     miArbol.postOrden(raizArbolPtr);
 }
+
 
 
 
