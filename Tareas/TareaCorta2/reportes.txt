@@ -1,0 +1,59 @@
+
+
+Reporte de archivo: 1
+afuera pila operadores: -
+adentro pila operadores: -
+afuera pila operadores: +
+adentro pila operadores: +
+afuera pila operadores: -
+adentro pila operadores: -
+afuera pila operadores: -
+adentro pila operadores: -
+afuera pila operadores: *
+adentro pila operadores: *
+
+
+Reporte de archivo: 2
+afuera pila operadores: +
+adentro pila operadores: +
+afuera pila operadores: -
+adentro pila operadores: -
+afuera pila operadores: ^
+adentro pila operadores: ^
+afuera pila operadores: +
+adentro pila operadores: +
+afuera pila operadores: *
+adentro pila operadores: *
+
+
+Reporte de archivo: 3
+afuera pila operadores: ^
+adentro pila operadores: ^
+afuera pila operadores: -
+adentro pila operadores: -
+afuera pila operadores: /
+adentro pila operadores: /
+
+
+Reporte de archivo: 4
+afuera pila operadores: *
+adentro pila operadores: *
+afuera pila operadores: /
+adentro pila operadores: /
+afuera pila operadores: ^
+adentro pila operadores: ^
+afuera pila operadores: /
+adentro pila operadores: /
+afuera pila operadores: -
+adentro pila operadores: -
+afuera pila operadores: /
+adentro pila operadores: /
+
+
+Reporte de archivo: 5
+afuera pila operadores: ^
+adentro pila operadores: ^
+afuera pila operadores: /
+adentro pila operadores: /
+afuera pila operadores: ^
+adentro pila operadores: ^
