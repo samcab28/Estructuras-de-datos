@@ -424,14 +424,11 @@ public:
     void Imprimir();
     void Borrar(string v);
     void MostrarCIU();
-    void BorrarFinal();
-    void BorrarInicio();
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoCIU();
     void ArbolCiudadsCIU(ArbolPais & ListaArbolPais);
     void ComprobacionCIU();
-    void BorrarPorCodigosCIU();
     void AgregarCIU(ArbolPais & ListaArbolPais);
     void ModificarNombreCIU();
     bool ExisteCIU(string codigo);
@@ -556,9 +553,8 @@ void ArbolCiudad::ArbolCiudadsCIU(ArbolPais & ListaArbolPais)
 		cout<<"consultar ArbolCiudades digite 1: "<<endl;
 		cout<<"ver ArbolCiudades digite 2: "<<endl;
 		cout<<"agregar un ArbolCiudad digite 3:"<<endl;
-		cout<<"borrar un ArbolCiudad digite 4: "<<endl;
-		cout<<"modificar una ArbolCiudad digite 5"<<endl;
-		cout<<"salir digite 6: "<<endl;
+		cout<<"modificar una ArbolCiudad digite 4:"<<endl;
+		cout<<"salir digite 5: "<<endl;
 		int x;
 		
 		cin >> x;
@@ -587,21 +583,14 @@ void ArbolCiudad::ArbolCiudadsCIU(ArbolPais & ListaArbolPais)
 				break;			
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, borrar un ArbolCiudad"<<endl;
-				cout<<"ArbolCiudads disponibles: "<<endl;
-				MostrarCIU();
-				BorrarPorCodigosCIU();
-				break;	
-			case 5: 
-				cout<<""<<endl;
-				cout<<"opcion 5, modificar nombre ArbolCiudad"<<endl;
+				cout<<"opcion 4, modificar nombre ArbolCiudad"<<endl;
 				cout<<"ArbolCiudades disponibles"<<endl;
 				MostrarCIU();
 				ModificarNombreCIU();	
 				break;
-			case 6:
+			case 5:
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a ArbolMenu principal"<<endl;
+				cout<<"opcion 5, salir a ArbolMenu principal"<<endl;
 				ejecucion = false;	
 				break;				
 			default:
@@ -613,61 +602,6 @@ void ArbolCiudad::ArbolCiudadsCIU(ArbolPais & ListaArbolPais)
 
 }
 
-void ArbolCiudad::BorrarPorCodigosCIU() {
-    if (ListaVacia()) {
-        cout << "La lista esta vac?a." << endl;
-        return;
-    }
-    
-    int codigo1, codigo2;
-    cout << "Ingrese el primer codigo: " << endl;
-    cin >> codigo1;
-
-    cout << "Ingrese el segundo codigo: " << endl;
-    cin >> codigo2;
-
-
-    
-    std::stringstream ss1, ss2;
-    ss1 << codigo1;
-    ss2 << codigo2;
-
-    string num1 = ss1.str();
-    string num2 = ss2.str();
- 
-
-    string codigosBuscados = num1 + ";" + num2;
-    pnodoCIU aux = primero;
-    bool encontrado = false;
-    int i = 0;
-
-    while (i <= largoLista()) {
-        if (aux->valor.find(codigosBuscados) != string::npos) {
-            encontrado = true;
-
-            if (aux == primero) {
-                BorrarInicio();
-            } else if (aux->siguiente == primero) {
-                BorrarFinal();
-            } else {
-                pnodoCIU temp = aux;
-                aux->anterior->siguiente = aux->siguiente;
-                aux->siguiente->anterior = aux->anterior;
-                aux = aux->siguiente;
-                delete temp;
-            }
-
-            cout << "nodoCIU con los codigos " << codigosBuscados << " borrado exitosamente." << endl;
-            break;
-        }
-        aux = aux->siguiente;
-        i ++;
-    }
-
-    if (!encontrado) {
-        cout << "No se encontraron los codigos en la lista." << endl;
-    }
-}
 
 void ArbolCiudad::ComprobacionCIU() {
     if (ListaVacia()) {
@@ -808,54 +742,8 @@ void ArbolCiudad::InsertarFinal(string v)
     }    
 }
  
-void ArbolCiudad::BorrarFinal()
-{
-    if (ListaVacia())
-      cout << "No hay elementos en la lista:" << endl;
-    else
-    {
-      if (primero->siguiente == primero)
-      {
-        pnodoCIU temp= primero;
-        primero= NULL;
-        delete temp;
-      }
-      else 
-      {
-         pnodoCIU aux = primero; //1
-         while (aux->siguiente->siguiente != primero)
-              aux = aux->siguiente;
-         pnodoCIU temp = aux->siguiente;//2
-         aux->siguiente= primero;//3
-         primero->anterior=aux;//4
-         delete temp;//5
-      }
-    }
-}
 
-void ArbolCiudad::BorrarInicio()
-{
-    if (ListaVacia())
-      cout << "No hay elementos en la lista:" << endl;
-    else
-    {
-     if (primero->siguiente == primero)
-     {
-        pnodoCIU temp= primero;
-        primero= NULL;
-        delete temp;
-     }
-     else
-     {
-        pnodoCIU aux = primero->anterior;//1
-        pnodoCIU temp= primero;//2
-        aux->siguiente=primero->siguiente;//3
-        primero=primero->siguiente; //4
-        primero->anterior=aux;//5
-        delete temp;//6
-      }
-    }
-}
+
 
 void ArbolCiudad::MostrarCIU()
 {
@@ -948,14 +836,11 @@ public:
     void Imprimir();
     void Borrar(string v);
     void MostrarRE();
-    void BorrarFinal();
-    void BorrarInicio();
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoRE();
     void ArbolRestaurantesRE(ArbolCiudad & ListaArbolCiudad);
     void ComprobacionRE();
-    void BorrarPorCodigosRE();
     void ModificarNombreRE();
     void agregarRE(ArbolCiudad & ListaArbolCiudad);
     bool ExisteRE(string codigo);
@@ -1147,9 +1032,8 @@ void ArbolRestaurante::ArbolRestaurantesRE(ArbolCiudad & listaArbolCiudad2)
 		cout<<"consultar ArbolRestaurantes digite 1: "<<endl;
 		cout<<"ver ArbolRestaurantes digite 2: "<<endl;
 		cout<<"agregar un ArbolRestaurante digite 3:"<<endl;
-		cout<<"borrar un ArbolRestaurante digite 4: "<<endl;
-		cout<<"modificar un ArbolRestaurante digite 5:"<<endl;
-		cout<<"para salir digite 6: "<<endl;
+		cout<<"modificar un ArbolRestaurante digite 4:"<<endl;
+		cout<<"para salir digite 5: "<<endl;
 		int x;
 		
 		cin >> x;
@@ -1175,23 +1059,17 @@ void ArbolRestaurante::ArbolRestaurantesRE(ArbolCiudad & listaArbolCiudad2)
 				cout<<"opcion 3, agregar un ArbolRestaurante"<<endl;
 				agregarRE(listaArbolCiudad2);
 				break;			
+
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, borrar un ArbolRestaurante"<<endl;
-				cout<<"ArbolRestaurantes disponibles: "<<endl;
-				MostrarRE();
-				BorrarPorCodigosRE();
-				break;	
-			case 5: 
-				cout<<""<<endl;
-				cout<<"opcion 5, modificar nombre ArbolRestaurante"<<endl;
+				cout<<"opcion 4, modificar nombre ArbolRestaurante"<<endl;
 				cout<<"codigos disponibles"<<endl;
 				MostrarRE();
 				ModificarNombreRE();	
 				break;
-			case 6:
+			case 5:
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a ArbolMenu principal"<<endl;
+				cout<<"opcion 5, salir a ArbolMenu principal"<<endl;
 				ejecucion = false;	
 				break;
 			default:
@@ -1203,63 +1081,9 @@ void ArbolRestaurante::ArbolRestaurantesRE(ArbolCiudad & listaArbolCiudad2)
 
 }
 
-void ArbolRestaurante::BorrarPorCodigosRE() {
-    if (ListaVacia()) {
-        cout << "La lista est? vac?a." << endl;
-        return;
-    }
-    
-    int codigo1, codigo2, codigo3;
-    cout << "Ingrese el primer codigo: " << endl;
-    cin >> codigo1;
 
-    cout << "Ingrese el segundo codigo: " << endl;
-    cin >> codigo2;
 
-    cout << "Ingrese el tercer codigo: " << endl;
-    cin >> codigo3;
-    
-    std::stringstream ss1, ss2, ss3;
-    ss1 << codigo1;
-    ss2 << codigo2;
-    ss3 << codigo3;
 
-    string num1 = ss1.str();
-    string num2 = ss2.str();
-    string num3 = ss3.str();
-
-    string codigosBuscados = num1 + ";" + num2 + ";" + num3;
-    pnodoRE aux = primero;
-    bool encontrado = false;
-    int i = 0;
-
-    while (i <= largoLista()) {
-        if (aux->valor.find(codigosBuscados) != string::npos) {
-            encontrado = true;
-
-            if (aux == primero) {
-                BorrarInicio();
-            } else if (aux->siguiente == primero) {
-                BorrarFinal();
-            } else {
-                pnodoRE temp = aux;
-                aux->anterior->siguiente = aux->siguiente;
-                aux->siguiente->anterior = aux->anterior;
-                aux = aux->siguiente;
-                delete temp;
-            }
-
-            cout << "nodoRE con los c?digos " << codigosBuscados << " borrado exitosamente." << endl;
-            break;
-        }
-        aux = aux->siguiente;
-        i ++;
-    }
-
-    if (!encontrado) {
-        cout << "No se encontraron los c?digos en la lista." << endl;
-    }
-}
 
 int ArbolRestaurante::stringAEnteroRE(const std::string &cadena) {
     int resultado = 0;
@@ -1449,54 +1273,7 @@ void ArbolRestaurante::InsertarFinal(string v)
     }    
 }
 
-void ArbolRestaurante::BorrarFinal()
-{
-    if (ListaVacia())
-      cout << "No hay elementos en la lista:" << endl;
-    else
-    {
-      if (primero->siguiente == primero)
-      {
-        pnodoRE temp= primero;
-        primero= NULL;
-        delete temp;
-      }
-      else 
-      {
-         pnodoRE aux = primero; //1
-         while (aux->siguiente->siguiente != primero)
-              aux = aux->siguiente;
-         pnodoRE temp = aux->siguiente;//2
-         aux->siguiente= primero;//3
-         primero->anterior=aux;//4
-         delete temp;//5
-      }
-    }
-}
 
-void ArbolRestaurante::BorrarInicio()
-{
-    if (ListaVacia())
-      cout << "No hay elementos en la lista:" << endl;
-    else
-    {
-     if (primero->siguiente == primero)
-     {
-        pnodoRE temp= primero;
-        primero= NULL;
-        delete temp;
-     }
-     else
-     {
-        pnodoRE aux = primero->anterior;//1
-        pnodoRE temp= primero;//2
-        aux->siguiente=primero->siguiente;//3
-        primero=primero->siguiente; //4
-        primero->anterior=aux;//5
-        delete temp;//6
-      }
-    }
-}
 
 void ArbolRestaurante::MostrarRE()
 {
@@ -1583,14 +1360,11 @@ public:
     void Imprimir();
     void Borrar(string v);
     void MostrarME();
-    void BorrarFinal();
-    void BorrarInicio();
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoME();
     void ArbolMenusME(ArbolRestaurante & ListaArbolRestaurante);
     void ComprobacionME();
-    void BorrarPorCodigosME();
     void ModificarNombreME();
     void AgregarME(ArbolRestaurante & ListaArbolRestaurante);
     bool ExisteME(string codigo);
@@ -1786,9 +1560,8 @@ void ArbolMenu::ArbolMenusME(ArbolRestaurante & ListaArbolRestaurante)
 		cout<<"consultar ArbolMenus digite 1: "<<endl;
 		cout<<"ver ArbolMenus digite 2: "<<endl;
 		cout<<"agregar un ArbolMenu digite 3:"<<endl;
-		cout<<"borrar un ArbolMenu digite 4: "<<endl;
-		cout<<"modificar un ArbolMenu digite 5"<<endl;
-		cout<<"para salir digite 6: "<<endl;
+		cout<<"modificar un ArbolMenu digite 4:"<<endl;
+		cout<<"para salir digite 5: "<<endl;
 		int x;
 		
 		cin >> x;
@@ -1816,23 +1589,17 @@ void ArbolMenu::ArbolMenusME(ArbolRestaurante & ListaArbolRestaurante)
 				MostrarME();
 				AgregarME(ListaArbolRestaurante);
 				break;			
+
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, borrar un ArbolMenu"<<endl;
-				cout<<"ArbolMenus disponibles: "<<endl;
-				MostrarME();
-				BorrarPorCodigosME();
-				break;	
-			case 5: 
-				cout<<""<<endl;
-				cout<<"opcion 5, modificar nombre"<<endl;
+				cout<<"opcion 4, modificar nombre"<<endl;
 				cout<<"codigos disponibles"<<endl;
 				MostrarME();
 				ModificarNombreME();
 				break;
-			case 6: 
+			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a ArbolMenu principal"<<endl;
+				cout<<"opcion 5, salir a ArbolMenu principal"<<endl;
 				ejecucion = false;	
 				break;		
 			default:
@@ -1845,68 +1612,7 @@ void ArbolMenu::ArbolMenusME(ArbolRestaurante & ListaArbolRestaurante)
 }
 
 
-void ArbolMenu::BorrarPorCodigosME() {
-    if (ListaVacia()) {
-        cout << "La lista est? vac?a." << endl;
-        return;
-    }
-    
-    int codigo1, codigo2, codigo3,codigo4;
-    cout << "Ingrese el primer codigo: " << endl;
-    cin >> codigo1;
 
-    cout << "Ingrese el segundo codigo: " << endl;
-    cin >> codigo2;
-
-    cout << "Ingrese el tercer codigo: " << endl;
-    cin >> codigo3;
-    
-    cout << "Ingrese el cuarto codigo: " << endl;
-    cin >> codigo4;
-
-    std::stringstream ss1, ss2, ss3,ss4;
-    ss1 << codigo1;
-    ss2 << codigo2;
-    ss3 << codigo3;
-    ss4 << codigo4;
-
-    string num1 = ss1.str();
-    string num2 = ss2.str();
-    string num3 = ss3.str();
-    string num4 = ss4.str();
-
-    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4;
-    pnodoME aux = primero;
-    bool encontrado = false;
-    int i = 0;
-
-    while (i <= largoLista()) {
-        if (aux->valor.find(codigosBuscados) != string::npos) {
-            encontrado = true;
-
-            if (aux == primero) {
-                BorrarInicio();
-            } else if (aux->siguiente == primero) {
-                BorrarFinal();
-            } else {
-                pnodoME temp = aux;
-                aux->anterior->siguiente = aux->siguiente;
-                aux->siguiente->anterior = aux->anterior;
-                aux = aux->siguiente;
-                delete temp;
-            }
-
-            cout << "nodoME con los c?digos " << codigosBuscados << " borrado exitosamente." << endl;
-            break;
-        }
-        aux = aux->siguiente;
-        i ++;
-    }
-
-    if (!encontrado) {
-        cout << "No se encontraron los c?digos en la lista." << endl;
-    }
-}
 
 
 void ArbolMenu::ComprobacionME() {
@@ -2077,54 +1783,8 @@ void ArbolMenu::InsertarFinal(string v)
     }    
 }
 
-void ArbolMenu::BorrarFinal()
-{
-    if (ListaVacia())
-      cout << "No hay elementos en la lista:" << endl;
-    else
-    {
-      if (primero->siguiente == primero)
-      {
-        pnodoME temp= primero;
-        primero= NULL;
-        delete temp;
-      }
-      else 
-      {
-         pnodoME aux = primero; //1
-         while (aux->siguiente->siguiente != primero)
-              aux = aux->siguiente;
-         pnodoME temp = aux->siguiente;//2
-         aux->siguiente= primero;//3
-         primero->anterior=aux;//4
-         delete temp;//5
-      }
-    }
-}
 
-void ArbolMenu::BorrarInicio()
-{
-    if (ListaVacia())
-      cout << "No hay elementos en la lista:" << endl;
-    else
-    {
-     if (primero->siguiente == primero)
-     {
-        pnodoME temp= primero;
-        primero= NULL;
-        delete temp;
-     }
-     else
-     {
-        pnodoME aux = primero->anterior;//1
-        pnodoME temp= primero;//2
-        aux->siguiente=primero->siguiente;//3
-        primero=primero->siguiente; //4
-        primero->anterior=aux;//5
-        delete temp;//6
-      }
-    }
-}
+
 
 void ArbolMenu::MostrarME()
 {
@@ -2218,14 +1878,11 @@ public:
     void Imprimir();
     void Borrar(string v);
     void MostrarPRO();
-    void BorrarFinal();
-    void BorrarInicio();
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoPRO();
     void ArbolProductosPRO(ArbolMenu & ListaArbolMenu);
     void ComprobacionPRO();
-    void BorrarPorCodigosPRO();
     void AgregarPRO(ArbolMenu & ListaArbolMenu);
     void ModificarNombrePRO();
     bool ExistePRO(string codigo);
@@ -2388,9 +2045,8 @@ void ArbolProducto::ArbolProductosPRO(ArbolMenu & ListaArbolMenu)
 		cout<<"consultar ArbolProductos digite 1: "<<endl;
 		cout<<"ver ArbolProductos digite 2: "<<endl;
 		cout<<"agregar un ArbolProducto digite 3:"<<endl;
-		cout<<"borrar un ArbolProducto digite 4: "<<endl;
-		cout<<"modificar un ArbolProducto digite 5"<<endl;
-		cout<<"para salir digite 6: "<<endl;
+		cout<<"modificar un ArbolProducto digite 4:"<<endl;
+		cout<<"para salir digite 5: "<<endl;
 		int x;
 		
 		cin >> x;
@@ -2416,23 +2072,17 @@ void ArbolProducto::ArbolProductosPRO(ArbolMenu & ListaArbolMenu)
 				cout<<"opcion 3, agregar un ArbolProducto"<<endl;
 				AgregarPRO(ListaArbolMenu);
 				break;			
+
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, borrar un ArbolProducto"<<endl;
-				cout<<"ArbolProductos disponibles: "<<endl;
-				MostrarPRO();
-				BorrarPorCodigosPRO();
-				break;	
-			case 5: 
-				cout<<""<<endl;
-				cout<<"opcion 5, modificar nombre"<<endl;
+				cout<<"opcion 4, modificar nombre"<<endl;
 				cout<<"opciones de moficicacion disponibles"<<endl;
 				MostrarPRO();
 				ModificarNombrePRO();
 				break;
-			case 6: 
+			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a ArbolProducto principal"<<endl;
+				cout<<"opcion 5, salir a ArbolProducto principal"<<endl;
 				ejecucion = false;	
 				break;
 			default:
@@ -2514,73 +2164,6 @@ void ArbolProducto::AgregarPRO(ArbolMenu & ListaArbolMenu){
 	}
 }
 
-void ArbolProducto::BorrarPorCodigosPRO() {
-    if (ListaVacia()) {
-        cout << "La lista est? vac?a." << endl;
-        return;
-    }
-
-    int codigo1, codigo2,codigo3,codigo4,codigo5;
-    cout << "Ingrese primer codigo: " << endl;
-    cin >> codigo1;
-
-    cout << "Ingrese el segundo codigo: " << endl;
-    cin >> codigo2;
-    
-    cout << "Ingrese el tercer codigo: " << endl;
-    cin >> codigo3;
-    
-    cout << "Ingrese el cuarto codigo: " << endl;
-    cin >> codigo4;
-    
-    cout<<"ingrese el quinto codigo: "<<endl;
-    cin >> codigo5;
-
-    std::stringstream ss1, ss2, ss3,ss4,ss5;
-    ss1 << codigo1;
-    ss2 << codigo2;
-    ss3 <<codigo3;
-    ss4 << codigo4;
-    ss5 << codigo5;
-
-    string num1 = ss1.str();
-    string num2 = ss2.str();
-    string num3 = ss3.str();
-    string num4 = ss4.str();
-    string num5 = ss5.str();
-
-    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
-    pnodoPRO aux = primero;
-    bool encontrado = false;
-    int i = 0;
-
-    while (i <= largoLista()) {
-        if (aux->valor.find(codigosBuscados) != string::npos) {
-            encontrado = true;
-			cout<<"codigo encontrado"<<endl;
-			
-			if (aux == primero) {
-                BorrarInicio();
-            } else if (aux->siguiente == primero) {
-                BorrarFinal();
-            } else {
-                pnodoPRO temp = aux;
-                aux->anterior->siguiente = aux->siguiente;
-                aux->siguiente->anterior = aux->anterior;
-                aux = aux->siguiente;
-                delete temp;
-            }
-            cout<<"borrado exitoso"<<endl;
-            break;
-        }
-        aux = aux->siguiente;
-        i ++;
-    }
-
-    if (encontrado == false) {
-        cout << "No se encontraron los codigos en la lista." << endl;
-    }
-}
 
 
 void ArbolProducto::ComprobacionPRO() {
@@ -2778,54 +2361,8 @@ void ArbolProducto::InsertarFinal(string v)
     }    
 }
   
-void ArbolProducto::BorrarFinal()
-{
-    if (ListaVacia())
-      cout << "No hay elementos en la lista:" << endl;
-    else
-    {
-      if (primero->siguiente == primero)
-      {
-        pnodoPRO temp= primero;
-        primero= NULL;
-        delete temp;
-      }
-      else 
-      {
-         pnodoPRO aux = primero; //1
-         while (aux->siguiente->siguiente != primero)
-              aux = aux->siguiente;
-         pnodoPRO temp = aux->siguiente;//2
-         aux->siguiente= primero;//3
-         primero->anterior=aux;//4
-         delete temp;//5
-      }
-    }
-}
 
-void ArbolProducto::BorrarInicio()
-{
-    if (ListaVacia())
-      cout << "No hay elementos en la lista:" << endl;
-    else
-    {
-     if (primero->siguiente == primero)
-     {
-        pnodoPRO temp= primero;
-        primero= NULL;
-        delete temp;
-     }
-     else
-     {
-        pnodoPRO aux = primero->anterior;//1
-        pnodoPRO temp= primero;//2
-        aux->siguiente=primero->siguiente;//3
-        primero=primero->siguiente; //4
-        primero->anterior=aux;//5
-        delete temp;//6
-      }
-    }
-}
+
 
 void ArbolProducto::MostrarPRO()
 {
@@ -2915,7 +2452,6 @@ public:
     int largoLista();
     void CargarDesdeArchivoCl();
     void ConsultarClientePorCodigoCl();
-    void BorrarPorCodigoCl();
     void ArbolClientesCl();
     void AgregarClienteCl();
     void ModificarNombreCL();
@@ -2989,9 +2525,8 @@ void ArbolClientes::ArbolClientesCl()
 		cout<<"consultar ArbolClientes digite 1: "<<endl;
 		cout<<"ver ArbolClientes digite 2: "<<endl;
 		cout<<"agregar un cliente digite 3:"<<endl;
-		cout<<"borrar un cliente digite 4: "<<endl;
-		cout<<"modificar un cliente digite 5"<<endl;
-		cout<<"para salir digite 6: "<<endl;
+		cout<<"modificar un cliente digite 4:"<<endl;
+		cout<<"para salir digite 5: "<<endl;
 		int x;
 		
 		cin >> x;
@@ -3018,24 +2553,17 @@ void ArbolClientes::ArbolClientesCl()
 				AgregarClienteCl();
 				MostrarCl();
 				break;			
+	
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, borrar un cliente"<<endl;
-				cout<<"ArbolClientes disponibles: "<<endl;
-				MostrarCl();
-				BorrarPorCodigoCl();
-				MostrarCl();
-				break;	
-			case 5: 
-				cout<<""<<endl;
-				cout<<"opcion 5, modificar un cliente"<<endl;
+				cout<<"opcion 4, modificar un cliente"<<endl;
 				cout<<"nombres disponibles"<<endl;
 				MostrarCl();
 				ModificarNombreCL();
 				break;
-			case 6: 
+			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a ArbolMenu principal"<<endl;
+				cout<<"opcion 5, salir a ArbolMenu principal"<<endl;
 				ejecucion = false;			
 			default:
 				cout<<""<<endl;
@@ -3087,52 +2615,6 @@ void ArbolClientes::AgregarClienteCl()
     }
 }
 
-void ArbolClientes::BorrarPorCodigoCl(){
-	long long codigo;
-	cout<<"digite el codigo a borrar: "<<endl;
-	cin >> codigo;
-	
-    if (ListaVacia()) {
-        cout << "La lista esta vacia." << endl;
-        return;
-    }
-
-    if (primero->valor.find(';') != string::npos) {
-        int codigoEnLista;
-        istringstream(primero->valor.substr(0, primero->valor.find(';'))) >> codigoEnLista;
-
-        if (codigoEnLista == codigo) {
-            pnodoCl temp = primero;
-            primero = primero->siguiente;
-            delete temp;
-            cout << "Cliente con codigo " << codigo << " eliminado." << endl;
-            return;
-        }
-    }
-
-    pnodoCl prev = primero;
-    pnodoCl curr = primero->siguiente;
-
-    while (curr) {
-        size_t pos = curr->valor.find(';');
-        if (pos != string::npos) {
-            int codigoEnLista;
-            istringstream(curr->valor.substr(0, pos)) >> codigoEnLista;
-
-            if (codigoEnLista == codigo) {
-                prev->siguiente = curr->siguiente;
-                delete curr;
-                cout << "Cliente con codigo " << codigo << " eliminado." << endl;
-                return;
-            }
-        }
-
-        prev = curr;
-        curr = curr->siguiente;
-    }
-
-    cout << "No se encontro un cliente con el codigo " << codigo << " en la lista." << endl;
-}
 
 void ArbolClientes::ConsultarClientePorCodigoCl() {
     if (ListaVacia()) {
