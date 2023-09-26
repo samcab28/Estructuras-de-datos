@@ -42,15 +42,12 @@ public:
 
     void InsertarFinal(string v);
     bool ListaVacia() { return primero == NULL; }
-    void BorrarFinal();
-    void BorrarInicio();
     void Mostrar();
     int largoLista();
     void Paises();
     void CargarDesdeArchivo();
     void AgregarPais();
     void ConsultarPaisPorCodigo();
-    void BorrarPaisPorCodigo(int codigo);
     void ModificarNombre();
     bool Existe(int codigo);
     string ObtenerContenidoComoString();
@@ -130,46 +127,6 @@ void ArbolPais::ConsultarPaisPorCodigo() {
                 string nombre = aux->valor.substr(pos + 1);
                 cout << "Codigo: " << codigoEnLista << endl;
                 cout << "Nombre: " << nombre << endl;
-                break;
-            }
-        }
-        aux = aux->siguiente;
-    }
-
-    if (!encontrado) {
-        cout << "No se encontro un pais con el codigo " << codigo << " en la lista." << endl;
-    }
-}
-
-void ArbolPais::BorrarPaisPorCodigo(int codigo) {
-    if (ListaVacia()) {
-        cout << "La lista esta vacia." << endl;
-        return;
-    }
-
-    pnodo aux = primero;
-    bool encontrado = false;
-
-    while (aux) {
-        size_t pos = aux->valor.find(';');
-        if (pos != string::npos) {
-            int codigoEnLista;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
-
-            if (codigoEnLista == codigo) {
-                encontrado = true;
-                if (aux == primero) {
-                    BorrarInicio();
-                }
-                else if (aux->siguiente == NULL) {
-                    BorrarFinal();
-                }
-                else {
-                    aux->anterior->siguiente = aux->siguiente;
-                    aux->siguiente->anterior = aux->anterior;
-                    delete aux;
-                }
-                cout << "Pais con codigo " << codigo << " borrado exitosamente." << endl;
                 break;
             }
         }
@@ -370,56 +327,6 @@ void ArbolPais::InsertarFinal(string v)
       }    
 }
    
-void ArbolPais::BorrarFinal()
-{
-    if (ListaVacia()){
-     cout << "No hay elementos en la lista:" << endl;
-    
-   }else{
-        if (primero->siguiente == NULL)//solo un nodo
-		 {
-        	pnodo temp=primero;
-            primero= NULL;
-            delete temp;
-            } 
-			else 
-			{
-
-                pnodo aux = primero;
-                while (aux->siguiente->siguiente != NULL) 
-                {
-                    aux = aux->siguiente;
-                }
-                
-              pnodo temp = aux->siguiente;
-              aux->siguiente= NULL;
-                      
-                delete temp;
-            }
-        }
-}
-
-void ArbolPais::BorrarInicio()
-{
-    if (ListaVacia()){
-     cout << "No hay elementos en la lista:" << endl;
-    
-   }else{
-        if (primero->siguiente == NULL) {
-            pnodo temp=primero;
-            primero= NULL;
-            delete temp;
-            } 
-			else
-			{
-
-                pnodo aux = primero;
-                primero=primero->siguiente;   
-				primero->anterior=NULL;            
-                delete aux;
-            }
-        }
-}
 
 void ArbolPais::Mostrar()
 {
