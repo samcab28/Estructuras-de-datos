@@ -30,15 +30,15 @@ private:
     nodo* siguiente;
     nodo* anterior;
 
-    friend class PyC;
+    friend class ArbolPais;
 };
 
 typedef nodo* pnodo;
 
-class PyC {
+class ArbolPais {
 public:
-    PyC() { primero = NULL; }
-    ~PyC();
+    ArbolPais() { primero = NULL; }
+    ~ArbolPais();
 
     void InsertarFinal(string v);
     bool ListaVacia() { return primero == NULL; }
@@ -59,7 +59,7 @@ private:
     pnodo primero;
 };
 
-string PyC::ObtenerContenidoComoString() {
+string ArbolPais::ObtenerContenidoComoString() {
         std::stringstream ss;
         nodo* aux = primero;
         
@@ -71,7 +71,7 @@ string PyC::ObtenerContenidoComoString() {
         return ss.str();
 }
 
-void PyC::ModificarNombre() {
+void ArbolPais::ModificarNombre() {
     int code;
     cout << "Digite el codigo a modificar" << endl;
     cin >> code;
@@ -106,7 +106,7 @@ void PyC::ModificarNombre() {
     cout << "No se encontr? un pa?s con el c?digo proporcionado." << endl;
 }
 
-void PyC::ConsultarPaisPorCodigo() {
+void ArbolPais::ConsultarPaisPorCodigo() {
     if (ListaVacia()) {
         cout << "La lista esta vacia." << endl;
         return;
@@ -141,7 +141,7 @@ void PyC::ConsultarPaisPorCodigo() {
     }
 }
 
-void PyC::BorrarPaisPorCodigo(int codigo) {
+void ArbolPais::BorrarPaisPorCodigo(int codigo) {
     if (ListaVacia()) {
         cout << "La lista esta vacia." << endl;
         return;
@@ -181,7 +181,7 @@ void PyC::BorrarPaisPorCodigo(int codigo) {
     }
 }
 
-void PyC::AgregarPais()
+void ArbolPais::AgregarPais()
 {
     cout << "Ingrese el codigo del pais (parte entera): ";
     int codigo;
@@ -222,7 +222,7 @@ void PyC::AgregarPais()
     }
 }
 
-void PyC::CargarDesdeArchivo()
+void ArbolPais::CargarDesdeArchivo()
 {
     ifstream archivo("Paises.txt");
     if (!archivo.is_open()) {
@@ -263,7 +263,7 @@ void PyC::CargarDesdeArchivo()
     archivo.close();
 }
 
-void PyC::Paises()
+void ArbolPais::Paises()
 {
 	bool ejecucion = true;
 	cout<<""<<endl;
@@ -323,7 +323,7 @@ void PyC::Paises()
 				break;
 			case 6:
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a menu principal"<<endl;
+				cout<<"opcion 6, salir a ArbolMenu principal"<<endl;
 				ejecucion = false;	
 				break;			
 			default:
@@ -335,7 +335,7 @@ void PyC::Paises()
 
 }
 
-PyC::~PyC()
+ArbolPais::~ArbolPais()
 {
    pnodo aux;
    
@@ -347,7 +347,7 @@ PyC::~PyC()
    primero=NULL;
 }
 
-int PyC::largoLista(){
+int ArbolPais::largoLista(){
     int cont=0;
 
     pnodo aux;
@@ -364,7 +364,7 @@ int PyC::largoLista(){
     
 }
 
-void PyC::InsertarFinal(string v)
+void ArbolPais::InsertarFinal(string v)
 {
    if (ListaVacia())
    {
@@ -381,7 +381,7 @@ void PyC::InsertarFinal(string v)
       }    
 }
    
-void PyC::BorrarFinal()
+void ArbolPais::BorrarFinal()
 {
     if (ListaVacia()){
      cout << "No hay elementos en la lista:" << endl;
@@ -410,7 +410,7 @@ void PyC::BorrarFinal()
         }
 }
 
-void PyC::BorrarInicio()
+void ArbolPais::BorrarInicio()
 {
     if (ListaVacia()){
      cout << "No hay elementos en la lista:" << endl;
@@ -432,7 +432,7 @@ void PyC::BorrarInicio()
         }
 }
 
-void PyC::Mostrar()
+void ArbolPais::Mostrar()
 {
    nodo *aux;
    
@@ -444,7 +444,7 @@ void PyC::Mostrar()
    cout << endl;
 }
 
-bool PyC::Existe(int codigo) {
+bool ArbolPais::Existe(int codigo) {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return false;
@@ -512,14 +512,14 @@ private:
     nodoCIU *siguiente;
     nodoCIU *anterior;
 
-    friend class Ciudad;
+    friend class ArbolCiudad;
 };
 typedef nodoCIU *pnodoCIU;
 
-class Ciudad {
+class ArbolCiudad {
 public:
-    Ciudad() { primero = NULL; }
-    ~Ciudad();
+    ArbolCiudad() { primero = NULL; }
+    ~ArbolCiudad();
 
     void InsertarInicio(string v);
     void InsertarFinal(string v);
@@ -533,24 +533,24 @@ public:
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoCIU();
-    void CiudadsCIU(PyC & ListaPyC);
+    void ArbolCiudadsCIU(ArbolPais & ListaArbolPais);
     void ComprobacionCIU();
     void BorrarPorCodigosCIU();
-    void AgregarCIU(PyC & ListaPyC);
+    void AgregarCIU(ArbolPais & ListaArbolPais);
     void ModificarNombreCIU();
     bool ExisteCIU(string codigo);
-    string MostrarCiudadesPorPais();
+    string MostrarArbolCiudadesPorPais();
 private:
     pnodoCIU primero;
 };
 
-string Ciudad::MostrarCiudadesPorPais() {
+string ArbolCiudad::MostrarArbolCiudadesPorPais() {
 	cout<<"digite el codigo de pais a buscar"<<endl;
 	string codigoPais;
 	cin >> codigoPais;
 	string memoria;
     if (ListaVacia()) {
-        cout << "La lista de ciudades esta vacia." << endl;
+        cout << "La lista de ArbolCiudades esta vacia." << endl;
         return "lista vacia";
     }
 
@@ -570,7 +570,7 @@ string Ciudad::MostrarCiudadesPorPais() {
 }
 
 
-void Ciudad::ModificarNombreCIU() {
+void ArbolCiudad::ModificarNombreCIU() {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return;
@@ -617,27 +617,27 @@ void Ciudad::ModificarNombreCIU() {
 
 }
 
-void Ciudad::AgregarCIU(PyC & ListaPyC){
+void ArbolCiudad::AgregarCIU(ArbolPais & ListaArbolPais){
 	int NumPais;
-	cout<<"agregar ciudades"<<endl;
+	cout<<"agregar ArbolCiudades"<<endl;
 	cout<<"A continuacion se muestran los paises disponibles: "<<endl;		
-	ListaPyC.Mostrar();
-	cout<<"para agregar ciudades, se debe de verificar la existencia del pais, digite el numero de pais"<<endl;
+	ListaArbolPais.Mostrar();
+	cout<<"para agregar ArbolCiudades, se debe de verificar la existencia del pais, digite el numero de pais"<<endl;
 	cin>>NumPais;
-	if(ListaPyC.Existe(NumPais)){
+	if(ListaArbolPais.Existe(NumPais)){
 		cout<<"el pais si existe, se procede a agregar"<<endl;
-		int codigoCiudad;
-		cout<<"digite el codigo de la ciudad"<<endl;
-		cin >> codigoCiudad;
+		int codigoArbolCiudad;
+		cout<<"digite el codigo de la ArbolCiudad"<<endl;
+		cin >> codigoArbolCiudad;
 		
 	    std::stringstream ss1,ss2;
 	    ss1 << NumPais;
-	    ss2 << codigoCiudad;
+	    ss2 << codigoArbolCiudad;
 	    string num1 = ss1.str();
 	    string num2 = ss2.str();
 	    
 		string NombreNuevo;
-		cout<<"digite el nombre de la ciudad"<<endl;
+		cout<<"digite el nombre de la ArbolCiudad"<<endl;
 		cin >> NombreNuevo;
 	
 		string NuevoValor = num1 + ";" + num2 + ";" + NombreNuevo;
@@ -645,23 +645,23 @@ void Ciudad::AgregarCIU(PyC & ListaPyC){
 	
 	}else{
 		cout<<"el pais no existe, No se agrega"<<endl;
-		CiudadsCIU(ListaPyC);
+		ArbolCiudadsCIU(ListaArbolPais);
 	}
 }
 
 
-void Ciudad::CiudadsCIU(PyC & ListaPyC)
+void ArbolCiudad::ArbolCiudadsCIU(ArbolPais & ListaArbolPais)
 {
 	bool ejecucion = true;
-	cout<<"bienvenido a Ciudades"<<endl;
+	cout<<"bienvenido a ArbolCiudades"<<endl;
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"consultar Ciudades digite 1: "<<endl;
-		cout<<"ver Ciudades digite 2: "<<endl;
-		cout<<"agregar un Ciudad digite 3:"<<endl;
-		cout<<"borrar un Ciudad digite 4: "<<endl;
-		cout<<"modificar una ciudad digite 5"<<endl;
+		cout<<"consultar ArbolCiudades digite 1: "<<endl;
+		cout<<"ver ArbolCiudades digite 2: "<<endl;
+		cout<<"agregar un ArbolCiudad digite 3:"<<endl;
+		cout<<"borrar un ArbolCiudad digite 4: "<<endl;
+		cout<<"modificar una ArbolCiudad digite 5"<<endl;
 		cout<<"salir digite 6: "<<endl;
 		int x;
 		
@@ -672,40 +672,40 @@ void Ciudad::CiudadsCIU(PyC & ListaPyC)
 		{
 			case 1:
 				cout<<""<<endl;
-				cout<<"opcion 1, consultar un Ciudad"<<endl;
-				cout<<"Ciudads disponibles: "<<endl;
+				cout<<"opcion 1, consultar un ArbolCiudad"<<endl;
+				cout<<"ArbolCiudads disponibles: "<<endl;
 				MostrarCIU();
 				ComprobacionCIU();
 				break;
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2, ver todos los Ciudads"<<endl;
-				cout<<"se mostraran todos los Ciudads a continuacion: "<<endl;
+				cout<<"opcion 2, ver todos los ArbolCiudads"<<endl;
+				cout<<"se mostraran todos los ArbolCiudads a continuacion: "<<endl;
 				MostrarCIU();
 				break;		
 			case 3:
 				cout<<""<<endl;
-				cout<<"opcion 3, agregar un Ciudad"<<endl;
-				AgregarCIU(ListaPyC);
+				cout<<"opcion 3, agregar un ArbolCiudad"<<endl;
+				AgregarCIU(ListaArbolPais);
 
 				break;			
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, borrar un Ciudad"<<endl;
-				cout<<"Ciudads disponibles: "<<endl;
+				cout<<"opcion 4, borrar un ArbolCiudad"<<endl;
+				cout<<"ArbolCiudads disponibles: "<<endl;
 				MostrarCIU();
 				BorrarPorCodigosCIU();
 				break;	
 			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 5, modificar nombre ciudad"<<endl;
-				cout<<"ciudades disponibles"<<endl;
+				cout<<"opcion 5, modificar nombre ArbolCiudad"<<endl;
+				cout<<"ArbolCiudades disponibles"<<endl;
 				MostrarCIU();
 				ModificarNombreCIU();	
 				break;
 			case 6:
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a menu principal"<<endl;
+				cout<<"opcion 6, salir a ArbolMenu principal"<<endl;
 				ejecucion = false;	
 				break;				
 			default:
@@ -717,7 +717,7 @@ void Ciudad::CiudadsCIU(PyC & ListaPyC)
 
 }
 
-void Ciudad::BorrarPorCodigosCIU() {
+void ArbolCiudad::BorrarPorCodigosCIU() {
     if (ListaVacia()) {
         cout << "La lista esta vac?a." << endl;
         return;
@@ -773,7 +773,7 @@ void Ciudad::BorrarPorCodigosCIU() {
     }
 }
 
-void Ciudad::ComprobacionCIU() {
+void ArbolCiudad::ComprobacionCIU() {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return;
@@ -819,10 +819,10 @@ void Ciudad::ComprobacionCIU() {
 }
 
 
-void Ciudad::CargarDesdeArchivoCIU() {
+void ArbolCiudad::CargarDesdeArchivoCIU() {
     set<string> numero2_set;  
 
-    ifstream archivo("Ciudades.txt");
+    ifstream archivo("ArbolCiudades.txt");
     if (archivo.is_open())
     {
         string linea;
@@ -854,7 +854,7 @@ void Ciudad::CargarDesdeArchivoCIU() {
     }
 }
                 
-Ciudad::~Ciudad()
+ArbolCiudad::~ArbolCiudad()
 {
    pnodoCIU aux;
    pnodoCIU temp;
@@ -873,7 +873,7 @@ Ciudad::~Ciudad()
    primero= NULL;
 }
                         
-int Ciudad::largoLista() 
+int ArbolCiudad::largoLista() 
 {
     int cont=0;
 
@@ -894,7 +894,7 @@ int Ciudad::largoLista()
     
 }
 
-void Ciudad::InsertarFinal(string v)
+void ArbolCiudad::InsertarFinal(string v)
 {
    if (ListaVacia())
      {
@@ -912,7 +912,7 @@ void Ciudad::InsertarFinal(string v)
     }    
 }
  
-void Ciudad::BorrarFinal()
+void ArbolCiudad::BorrarFinal()
 {
     if (ListaVacia())
       cout << "No hay elementos en la lista:" << endl;
@@ -937,7 +937,7 @@ void Ciudad::BorrarFinal()
     }
 }
 
-void Ciudad::BorrarInicio()
+void ArbolCiudad::BorrarInicio()
 {
     if (ListaVacia())
       cout << "No hay elementos en la lista:" << endl;
@@ -961,7 +961,7 @@ void Ciudad::BorrarInicio()
     }
 }
 
-void Ciudad::MostrarCIU()
+void ArbolCiudad::MostrarCIU()
 {
    pnodoCIU aux=primero;
    while(aux->siguiente!=primero)
@@ -974,7 +974,7 @@ void Ciudad::MostrarCIU()
      cout<<endl;
 } 
 
-bool Ciudad::ExisteCIU(string codigo) {
+bool ArbolCiudad::ExisteCIU(string codigo) {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return false;
@@ -1015,7 +1015,7 @@ bool Ciudad::ExisteCIU(string codigo) {
 
 
 
-//clase restaurante
+//clase ArbolRestaurante
 class nodoRE {
 public:
     nodoRE(const string &v)
@@ -1036,14 +1036,14 @@ private:
     nodoRE *siguiente;
     nodoRE *anterior;
 
-    friend class Restaurante;
+    friend class ArbolRestaurante;
 };
 typedef nodoRE *pnodoRE;
 
-class Restaurante {
+class ArbolRestaurante {
 public:
-    Restaurante() { primero = NULL; }
-    ~Restaurante();
+    ArbolRestaurante() { primero = NULL; }
+    ~ArbolRestaurante();
 
     void InsertarInicio(string v);
     void InsertarFinal(string v);
@@ -1057,13 +1057,13 @@ public:
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoRE();
-    void restaurantesRE(Ciudad & ListaCiudad);
+    void ArbolRestaurantesRE(ArbolCiudad & ListaArbolCiudad);
     void ComprobacionRE();
     void BorrarPorCodigosRE();
     void ModificarNombreRE();
-    void agregarRE(Ciudad & ListaCiudad);
+    void agregarRE(ArbolCiudad & ListaArbolCiudad);
     bool ExisteRE(string codigo);
-    string MostrarRestaurantesPorCiudad();
+    string MostrarArbolRestaurantesPorArbolCiudad();
     int stringAEnteroRE(const std::string &cadena);
     string EncontrarValorMayorPedido();
     
@@ -1071,9 +1071,9 @@ private:
     pnodoRE primero;
 };
 
-string Restaurante::EncontrarValorMayorPedido() {
+string ArbolRestaurante::EncontrarValorMayorPedido() {
     if (ListaVacia()) {
-        cout << "La lista de restaurantes est? vac?a." << endl;
+        cout << "La lista de ArbolRestaurantes est? vac?a." << endl;
         return "lista vacia";
     }
 
@@ -1105,27 +1105,27 @@ string Restaurante::EncontrarValorMayorPedido() {
     }
 
     if (nodoMayor != NULL) {
-        cout << "Informacion del Restaurante: " << nodoMayor->valor << endl;
-        return "Informacion del Restaurante: " + nodoMayor->valor;
+        cout << "Informacion del ArbolRestaurante: " << nodoMayor->valor << endl;
+        return "Informacion del ArbolRestaurante: " + nodoMayor->valor;
     } else {
-        cout << "No se encontr? ning?n restaurante con con consultas." << endl;
+        cout << "No se encontr? ning?n ArbolRestaurante con con consultas." << endl;
     }
 }
 
-string Restaurante::MostrarRestaurantesPorCiudad() {
+string ArbolRestaurante::MostrarArbolRestaurantesPorArbolCiudad() {
     cout << "Digite el codigo de pais: ";
     string codigoPais;
     cin >> codigoPais;
 
-    cout << "Digite el codigo de ciudad: ";
-    string codigoCiudad;
-    cin >> codigoCiudad;
+    cout << "Digite el codigo de ArbolCiudad: ";
+    string codigoArbolCiudad;
+    cin >> codigoArbolCiudad;
 
-    string codigosBuscados = codigoPais + ";" + codigoCiudad;
+    string codigosBuscados = codigoPais + ";" + codigoArbolCiudad;
     
     string memoria;
     if (ListaVacia()) {
-        cout << "La lista de restaurantes esta vacia." << endl;
+        cout << "La lista de ArbolRestaurantes esta vacia." << endl;
         return "lista vacia";
     }
 
@@ -1143,11 +1143,11 @@ string Restaurante::MostrarRestaurantesPorCiudad() {
     return memoria;
 }
 
-void Restaurante::agregarRE(Ciudad & ListaCiudad){
-	cout<<"agregar ciudades"<<endl;
-	cout<<"A continuacion muestran paises y ciudades disponibles: "<<endl;		
-	ListaCiudad.MostrarCIU();
-	cout<<"para agregar Restaurantes, se debe de verificar la existencia del pais y ciudad, agregar sus codigos"<<endl;
+void ArbolRestaurante::agregarRE(ArbolCiudad & ListaArbolCiudad){
+	cout<<"agregar ArbolCiudades"<<endl;
+	cout<<"A continuacion muestran paises y ArbolCiudades disponibles: "<<endl;		
+	ListaArbolCiudad.MostrarCIU();
+	cout<<"para agregar ArbolRestaurantes, se debe de verificar la existencia del pais y ArbolCiudad, agregar sus codigos"<<endl;
     int codigo11, codigo21;
     cout << "Ingrese primer codigo: " << endl;
     cin >> codigo11;
@@ -1165,10 +1165,10 @@ void Restaurante::agregarRE(Ciudad & ListaCiudad){
     string codigosBuscados = num1 + ";" + num2;
     
     
-	if(ListaCiudad.ExisteCIU(codigosBuscados)){
-		cout<<"el pais y ciudad si existes, se procede a agregar"<<endl;
+	if(ListaArbolCiudad.ExisteCIU(codigosBuscados)){
+		cout<<"el pais y ArbolCiudad si existes, se procede a agregar"<<endl;
 	    int codigo1a;
-	    cout << "Ingrese el codigo del nuevo restaurante3: " << endl;
+	    cout << "Ingrese el codigo del nuevo ArbolRestaurante3: " << endl;
 	    cin >> codigo1a;
 
 	    std::stringstream ss1a;
@@ -1177,7 +1177,7 @@ void Restaurante::agregarRE(Ciudad & ListaCiudad){
 	    string num1a = ss1.str();
 		    
 		string NombreNuevo;
-		cout<<"digite el nombre del restaurante"<<endl;
+		cout<<"digite el nombre del ArbolRestaurante"<<endl;
 		cin >> NombreNuevo;
 	
 		string NuevoValor = codigosBuscados + ";" + num1a + ";" + NombreNuevo;
@@ -1185,11 +1185,11 @@ void Restaurante::agregarRE(Ciudad & ListaCiudad){
 	
 	}else{
 		cout<<"el pais no existe, No se agrega"<<endl;
-		restaurantesRE(ListaCiudad);
+		ArbolRestaurantesRE(ListaArbolCiudad);
 	}
 }
 
-void Restaurante::ModificarNombreRE() {
+void ArbolRestaurante::ModificarNombreRE() {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return;
@@ -1241,18 +1241,18 @@ void Restaurante::ModificarNombreRE() {
 
 }
 
-void Restaurante::restaurantesRE(Ciudad & listaCiudad2)
+void ArbolRestaurante::ArbolRestaurantesRE(ArbolCiudad & listaArbolCiudad2)
 {
 	bool ejecucion = true;
-	cout<<"bienvenido a restaurantes"<<endl;
+	cout<<"bienvenido a ArbolRestaurantes"<<endl;
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"consultar restaurantes digite 1: "<<endl;
-		cout<<"ver restaurantes digite 2: "<<endl;
-		cout<<"agregar un restaurante digite 3:"<<endl;
-		cout<<"borrar un restaurante digite 4: "<<endl;
-		cout<<"modificar un restaurante digite 5:"<<endl;
+		cout<<"consultar ArbolRestaurantes digite 1: "<<endl;
+		cout<<"ver ArbolRestaurantes digite 2: "<<endl;
+		cout<<"agregar un ArbolRestaurante digite 3:"<<endl;
+		cout<<"borrar un ArbolRestaurante digite 4: "<<endl;
+		cout<<"modificar un ArbolRestaurante digite 5:"<<endl;
 		cout<<"para salir digite 6: "<<endl;
 		int x;
 		
@@ -1263,39 +1263,39 @@ void Restaurante::restaurantesRE(Ciudad & listaCiudad2)
 		{
 			case 1:
 				cout<<""<<endl;
-				cout<<"opcion 1, consultar un restaurante"<<endl;
-				cout<<"restaurantes disponibles: "<<endl;
+				cout<<"opcion 1, consultar un ArbolRestaurante"<<endl;
+				cout<<"ArbolRestaurantes disponibles: "<<endl;
 				MostrarRE();
 				ComprobacionRE();
 				break;
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2, ver todos los restaurantes"<<endl;
-				cout<<"se mostraran todos los restaurantes a continuacion: "<<endl;
+				cout<<"opcion 2, ver todos los ArbolRestaurantes"<<endl;
+				cout<<"se mostraran todos los ArbolRestaurantes a continuacion: "<<endl;
 				MostrarRE();
 				break;		
 			case 3:
 				cout<<""<<endl;
-				cout<<"opcion 3, agregar un restaurante"<<endl;
-				agregarRE(listaCiudad2);
+				cout<<"opcion 3, agregar un ArbolRestaurante"<<endl;
+				agregarRE(listaArbolCiudad2);
 				break;			
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, borrar un restaurante"<<endl;
-				cout<<"restaurantes disponibles: "<<endl;
+				cout<<"opcion 4, borrar un ArbolRestaurante"<<endl;
+				cout<<"ArbolRestaurantes disponibles: "<<endl;
 				MostrarRE();
 				BorrarPorCodigosRE();
 				break;	
 			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 5, modificar nombre restaurante"<<endl;
+				cout<<"opcion 5, modificar nombre ArbolRestaurante"<<endl;
 				cout<<"codigos disponibles"<<endl;
 				MostrarRE();
 				ModificarNombreRE();	
 				break;
 			case 6:
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a menu principal"<<endl;
+				cout<<"opcion 6, salir a ArbolMenu principal"<<endl;
 				ejecucion = false;	
 				break;
 			default:
@@ -1307,7 +1307,7 @@ void Restaurante::restaurantesRE(Ciudad & listaCiudad2)
 
 }
 
-void Restaurante::BorrarPorCodigosRE() {
+void ArbolRestaurante::BorrarPorCodigosRE() {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return;
@@ -1365,7 +1365,7 @@ void Restaurante::BorrarPorCodigosRE() {
     }
 }
 
-int Restaurante::stringAEnteroRE(const std::string &cadena) {
+int ArbolRestaurante::stringAEnteroRE(const std::string &cadena) {
     int resultado = 0;
     int multiplicador = 1;
 
@@ -1392,7 +1392,7 @@ int Restaurante::stringAEnteroRE(const std::string &cadena) {
     return resultado * multiplicador;
 }
 
-void Restaurante::ComprobacionRE() {
+void ArbolRestaurante::ComprobacionRE() {
     if (ListaVacia()) {
         cout << "La lista est? vac?a" << endl;
         return;
@@ -1458,10 +1458,10 @@ void Restaurante::ComprobacionRE() {
     }
 }
 
-void Restaurante::CargarDesdeArchivoRE() {
+void ArbolRestaurante::CargarDesdeArchivoRE() {
     set<string> numero3_set;  
 
-    ifstream archivo("Restaurantes.txt");
+    ifstream archivo("ArbolRestaurantes.txt");
     if (archivo.is_open())
     {
         string linea;
@@ -1494,7 +1494,7 @@ void Restaurante::CargarDesdeArchivoRE() {
     }
 }
                 
-Restaurante::~Restaurante()
+ArbolRestaurante::~ArbolRestaurante()
 {
    pnodoRE aux;
    pnodoRE temp;
@@ -1513,7 +1513,7 @@ Restaurante::~Restaurante()
    primero= NULL;
 }
                            
-int Restaurante::largoLista() 
+int ArbolRestaurante::largoLista() 
 {
     int cont=0;
 
@@ -1534,7 +1534,7 @@ int Restaurante::largoLista()
     
 }
  
-void Restaurante::InsertarFinal(string v)
+void ArbolRestaurante::InsertarFinal(string v)
 {
    if (ListaVacia())
      {
@@ -1553,7 +1553,7 @@ void Restaurante::InsertarFinal(string v)
     }    
 }
 
-void Restaurante::BorrarFinal()
+void ArbolRestaurante::BorrarFinal()
 {
     if (ListaVacia())
       cout << "No hay elementos en la lista:" << endl;
@@ -1578,7 +1578,7 @@ void Restaurante::BorrarFinal()
     }
 }
 
-void Restaurante::BorrarInicio()
+void ArbolRestaurante::BorrarInicio()
 {
     if (ListaVacia())
       cout << "No hay elementos en la lista:" << endl;
@@ -1602,7 +1602,7 @@ void Restaurante::BorrarInicio()
     }
 }
 
-void Restaurante::MostrarRE()
+void ArbolRestaurante::MostrarRE()
 {
    pnodoRE aux=primero;
    while(aux->siguiente!=primero)
@@ -1616,7 +1616,7 @@ void Restaurante::MostrarRE()
 
 } 
 
-bool Restaurante::ExisteRE(string codigo) {
+bool ArbolRestaurante::ExisteRE(string codigo) {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return false;
@@ -1650,7 +1650,7 @@ bool Restaurante::ExisteRE(string codigo) {
 
 
 
-//clase menu
+//clase ArbolMenu
 class nodoME {
 public:
     nodoME(const string &v)
@@ -1671,14 +1671,14 @@ private:
     nodoME *siguiente;
     nodoME *anterior;
 
-    friend class Menu;
+    friend class ArbolMenu;
 };
 typedef nodoME *pnodoME;
 
-class Menu {
+class ArbolMenu {
 public:
-    Menu() { primero = NULL; }
-    ~Menu();
+    ArbolMenu() { primero = NULL; }
+    ~ArbolMenu();
 
     void InsertarInicio(string v);
     void InsertarFinal(string v);
@@ -1692,11 +1692,11 @@ public:
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoME();
-    void MenusME(Restaurante & ListaRestaurante);
+    void ArbolMenusME(ArbolRestaurante & ListaArbolRestaurante);
     void ComprobacionME();
     void BorrarPorCodigosME();
     void ModificarNombreME();
-    void AgregarME(Restaurante & ListaRestaurante);
+    void AgregarME(ArbolRestaurante & ListaArbolRestaurante);
     bool ExisteME(string codigo);
     int stringAEnteroME(const std::string &cadena);
     string EncontrarValorMayorPedido();
@@ -1704,9 +1704,9 @@ private:
     pnodoME primero;
 };
 
-string Menu::EncontrarValorMayorPedido() {
+string ArbolMenu::EncontrarValorMayorPedido() {
     if (ListaVacia()) {
-        cout << "La lista de menu esta vacia." << endl;
+        cout << "La lista de ArbolMenu esta vacia." << endl;
         return "lista vacia";
     }
 
@@ -1739,13 +1739,13 @@ string Menu::EncontrarValorMayorPedido() {
 
     if (nodoMayor != NULL) {
         cout << "Informacion del m: " << nodoMayor->valor << endl;
-        return "Informacion del menu: " + nodoMayor->valor;
+        return "Informacion del ArbolMenu: " + nodoMayor->valor;
     } else {
-        cout << "No se encontr? ning?n restaurante con con consultas." << endl;
+        cout << "No se encontr? ning?n ArbolRestaurante con con consultas." << endl;
     }
 }
 
-int Menu::stringAEnteroME(const std::string &cadena) {
+int ArbolMenu::stringAEnteroME(const std::string &cadena) {
     int resultado = 0;
     int multiplicador = 1;
 
@@ -1772,11 +1772,11 @@ int Menu::stringAEnteroME(const std::string &cadena) {
     return resultado * multiplicador;
 }
 
-void Menu::AgregarME(Restaurante & ListaRestaurante){
-	cout<<"agregar ciudades"<<endl;
-	cout<<"A continuacion muestran paises y ciudades disponibles: "<<endl;		
-	ListaRestaurante.MostrarRE();
-	cout<<"para agregar Restaurantes, se debe de verificar la existencia del pais, ciudad y restaurante, agregar sus codigos"<<endl;
+void ArbolMenu::AgregarME(ArbolRestaurante & ListaArbolRestaurante){
+	cout<<"agregar ArbolCiudades"<<endl;
+	cout<<"A continuacion muestran paises y ArbolCiudades disponibles: "<<endl;		
+	ListaArbolRestaurante.MostrarRE();
+	cout<<"para agregar ArbolRestaurantes, se debe de verificar la existencia del pais, ArbolCiudad y ArbolRestaurante, agregar sus codigos"<<endl;
     int codigo12, codigo22,codigo32;
     cout << "Ingrese primer codigo: " << endl;
     cin >> codigo12;
@@ -1799,10 +1799,10 @@ void Menu::AgregarME(Restaurante & ListaRestaurante){
     string codigosBuscados = num1 + ";" + num2 + ";" + num3;
     
     
-	if(ListaRestaurante.ExisteRE(codigosBuscados)){
-		cout<<"el pais, ciudad y restaurante existen, se procede a agregar"<<endl;
+	if(ListaArbolRestaurante.ExisteRE(codigosBuscados)){
+		cout<<"el pais, ArbolCiudad y ArbolRestaurante existen, se procede a agregar"<<endl;
 	    int codigo1a;
-	    cout << "Ingrese el codigo del nuevo menu: " << endl;
+	    cout << "Ingrese el codigo del nuevo ArbolMenu: " << endl;
 	    cin >> codigo1a;
 
 	    std::stringstream ss1a;
@@ -1811,7 +1811,7 @@ void Menu::AgregarME(Restaurante & ListaRestaurante){
 	    string num1a = ss1.str();
 		    
 		string NombreNuevo;
-		cout<<"digite el nombre del menu"<<endl;
+		cout<<"digite el nombre del ArbolMenu"<<endl;
 		cin >> NombreNuevo;
 	
 		string NuevoValor = codigosBuscados + ";" + num1a + ";" + NombreNuevo;
@@ -1819,11 +1819,11 @@ void Menu::AgregarME(Restaurante & ListaRestaurante){
 	
 	}else{
 		cout<<"no existe, No se agrega"<<endl;
-		MenusME(ListaRestaurante);
+		ArbolMenusME(ListaArbolRestaurante);
 	}
 }
 
-void Menu::ModificarNombreME() {
+void ArbolMenu::ModificarNombreME() {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return;
@@ -1880,18 +1880,18 @@ void Menu::ModificarNombreME() {
 
 } 
 
-void Menu::MenusME(Restaurante & ListaRestaurante)
+void ArbolMenu::ArbolMenusME(ArbolRestaurante & ListaArbolRestaurante)
 {
 	bool ejecucion = true;
-	cout<<"bienvenido a Menus"<<endl;
+	cout<<"bienvenido a ArbolMenus"<<endl;
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"consultar Menus digite 1: "<<endl;
-		cout<<"ver Menus digite 2: "<<endl;
-		cout<<"agregar un Menu digite 3:"<<endl;
-		cout<<"borrar un Menu digite 4: "<<endl;
-		cout<<"modificar un menu digite 5"<<endl;
+		cout<<"consultar ArbolMenus digite 1: "<<endl;
+		cout<<"ver ArbolMenus digite 2: "<<endl;
+		cout<<"agregar un ArbolMenu digite 3:"<<endl;
+		cout<<"borrar un ArbolMenu digite 4: "<<endl;
+		cout<<"modificar un ArbolMenu digite 5"<<endl;
 		cout<<"para salir digite 6: "<<endl;
 		int x;
 		
@@ -1902,28 +1902,28 @@ void Menu::MenusME(Restaurante & ListaRestaurante)
 		{
 			case 1:
 				cout<<""<<endl;
-				cout<<"opcion 1, consultar un Menu"<<endl;
-				cout<<"Menus disponibles: "<<endl;
+				cout<<"opcion 1, consultar un ArbolMenu"<<endl;
+				cout<<"ArbolMenus disponibles: "<<endl;
 				MostrarME();
 				ComprobacionME();
 				break;
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2, ver todos los Menus"<<endl;
-				cout<<"se mostraran todos los Menus a continuacion: "<<endl;
+				cout<<"opcion 2, ver todos los ArbolMenus"<<endl;
+				cout<<"se mostraran todos los ArbolMenus a continuacion: "<<endl;
 				MostrarME();
 				break;		
 			case 3:
 				cout<<""<<endl;
-				cout<<"opcion 3, agregar un Menu"<<endl;
-				cout<<"se muestran paises, ciudades y restaurantes disponibles"<<endl;
+				cout<<"opcion 3, agregar un ArbolMenu"<<endl;
+				cout<<"se muestran paises, ArbolCiudades y ArbolRestaurantes disponibles"<<endl;
 				MostrarME();
-				AgregarME(ListaRestaurante);
+				AgregarME(ListaArbolRestaurante);
 				break;			
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, borrar un Menu"<<endl;
-				cout<<"Menus disponibles: "<<endl;
+				cout<<"opcion 4, borrar un ArbolMenu"<<endl;
+				cout<<"ArbolMenus disponibles: "<<endl;
 				MostrarME();
 				BorrarPorCodigosME();
 				break;	
@@ -1936,7 +1936,7 @@ void Menu::MenusME(Restaurante & ListaRestaurante)
 				break;
 			case 6: 
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a menu principal"<<endl;
+				cout<<"opcion 6, salir a ArbolMenu principal"<<endl;
 				ejecucion = false;	
 				break;		
 			default:
@@ -1949,7 +1949,7 @@ void Menu::MenusME(Restaurante & ListaRestaurante)
 }
 
 
-void Menu::BorrarPorCodigosME() {
+void ArbolMenu::BorrarPorCodigosME() {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return;
@@ -2013,7 +2013,7 @@ void Menu::BorrarPorCodigosME() {
 }
 
 
-void Menu::ComprobacionME() {
+void ArbolMenu::ComprobacionME() {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return;
@@ -2085,10 +2085,10 @@ void Menu::ComprobacionME() {
 }
 
 
-void Menu::CargarDesdeArchivoME() {
+void ArbolMenu::CargarDesdeArchivoME() {
     set<string> numero4_set;  
 
-    ifstream archivo("Menu.txt");
+    ifstream archivo("ArbolMenu.txt");
     if (archivo.is_open())
     {
         string linea;
@@ -2122,7 +2122,7 @@ void Menu::CargarDesdeArchivoME() {
     }
 }
                 
-Menu::~Menu()
+ArbolMenu::~ArbolMenu()
 {
    pnodoME aux;
    pnodoME temp;
@@ -2141,7 +2141,7 @@ Menu::~Menu()
    primero= NULL;
 }
                            
-int Menu::largoLista() 
+int ArbolMenu::largoLista() 
 {
     int cont=0;
 
@@ -2162,7 +2162,7 @@ int Menu::largoLista()
     
 }
 
-void Menu::InsertarFinal(string v)
+void ArbolMenu::InsertarFinal(string v)
 {
    if (ListaVacia())
      {
@@ -2181,7 +2181,7 @@ void Menu::InsertarFinal(string v)
     }    
 }
 
-void Menu::BorrarFinal()
+void ArbolMenu::BorrarFinal()
 {
     if (ListaVacia())
       cout << "No hay elementos en la lista:" << endl;
@@ -2206,7 +2206,7 @@ void Menu::BorrarFinal()
     }
 }
 
-void Menu::BorrarInicio()
+void ArbolMenu::BorrarInicio()
 {
     if (ListaVacia())
       cout << "No hay elementos en la lista:" << endl;
@@ -2230,7 +2230,7 @@ void Menu::BorrarInicio()
     }
 }
 
-void Menu::MostrarME()
+void ArbolMenu::MostrarME()
 {
    pnodoME aux=primero;
    while(aux->siguiente!=primero)
@@ -2242,7 +2242,7 @@ void Menu::MostrarME()
      cout<<aux->valor<<"->";
 }   
 
-bool Menu::ExisteME(string codigo) {
+bool ArbolMenu::ExisteME(string codigo) {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return false;
@@ -2306,14 +2306,14 @@ private:
     nodoPRO *siguiente;
     nodoPRO *anterior;
 
-    friend class producto;
+    friend class ArbolProducto;
 };
 typedef nodoPRO *pnodoPRO;
 
-class producto {
+class ArbolProducto {
 public:
-    producto() { primero = NULL; }
-    ~producto();
+    ArbolProducto() { primero = NULL; }
+    ~ArbolProducto();
 
     void InsertarInicio(string v);
     void InsertarFinal(string v);
@@ -2327,10 +2327,10 @@ public:
     void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoPRO();
-    void productosPRO(Menu & ListaMenu);
+    void ArbolProductosPRO(ArbolMenu & ListaArbolMenu);
     void ComprobacionPRO();
     void BorrarPorCodigosPRO();
-    void AgregarPRO(Menu & ListaMenu);
+    void AgregarPRO(ArbolMenu & ListaArbolMenu);
     void ModificarNombrePRO();
     bool ExistePRO(string codigo);
     int stringAEnteroPRO(const std::string &cadena);
@@ -2339,9 +2339,9 @@ private:
     pnodoPRO primero;
 };
 
-string producto::EncontrarValorMayorPedido() {
+string ArbolProducto::EncontrarValorMayorPedido() {
     if (ListaVacia()) {
-        cout << "La lista de menu esta vacia." << endl;
+        cout << "La lista de ArbolMenu esta vacia." << endl;
         return "lista vacia";
     }
 
@@ -2374,13 +2374,13 @@ string producto::EncontrarValorMayorPedido() {
 
     if (nodoMayor != NULL) {
         cout << "Informacion del m: " << nodoMayor->valor << endl;
-        return "Informacion del producto: " + nodoMayor->valor;
+        return "Informacion del ArbolProducto: " + nodoMayor->valor;
     } else {
-        cout << "No se encontr? ning?n restaurante con con consultas." << endl;
+        cout << "No se encontr? ning?n ArbolRestaurante con con consultas." << endl;
     }
 }
 
-int producto::stringAEnteroPRO(const std::string &cadena) {
+int ArbolProducto::stringAEnteroPRO(const std::string &cadena) {
     int resultado = 0;
     int multiplicador = 1;
 
@@ -2407,7 +2407,7 @@ int producto::stringAEnteroPRO(const std::string &cadena) {
     return resultado * multiplicador;
 }
 
-void producto::ModificarNombrePRO() {
+void ArbolProducto::ModificarNombrePRO() {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return;
@@ -2456,10 +2456,10 @@ void producto::ModificarNombrePRO() {
 			cin >> newName;
 			
 			int calorias,precio;
-			cout<<"digite las nuevas calorias del producto"<<endl;
+			cout<<"digite las nuevas calorias del ArbolProducto"<<endl;
 			cin >> calorias;
 			
-			cout<<"digite el nuevo precio del producto"<<endl;
+			cout<<"digite el nuevo precio del ArbolProducto"<<endl;
 			cin >> precio;
 			
 			std::stringstream ss2a,ss2b;
@@ -2482,18 +2482,18 @@ void producto::ModificarNombrePRO() {
 
 }
 
-void producto::productosPRO(Menu & ListaMenu)
+void ArbolProducto::ArbolProductosPRO(ArbolMenu & ListaArbolMenu)
 {
 	bool ejecucion = true;
-	cout<<"bienvenido a productos"<<endl;
+	cout<<"bienvenido a ArbolProductos"<<endl;
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"consultar productos digite 1: "<<endl;
-		cout<<"ver productos digite 2: "<<endl;
-		cout<<"agregar un producto digite 3:"<<endl;
-		cout<<"borrar un producto digite 4: "<<endl;
-		cout<<"modificar un producto digite 5"<<endl;
+		cout<<"consultar ArbolProductos digite 1: "<<endl;
+		cout<<"ver ArbolProductos digite 2: "<<endl;
+		cout<<"agregar un ArbolProducto digite 3:"<<endl;
+		cout<<"borrar un ArbolProducto digite 4: "<<endl;
+		cout<<"modificar un ArbolProducto digite 5"<<endl;
 		cout<<"para salir digite 6: "<<endl;
 		int x;
 		
@@ -2504,26 +2504,26 @@ void producto::productosPRO(Menu & ListaMenu)
 		{
 			case 1:
 				cout<<""<<endl;
-				cout<<"opcion 1, consultar un producto"<<endl;
-				cout<<"productos disponibles: "<<endl;
+				cout<<"opcion 1, consultar un ArbolProducto"<<endl;
+				cout<<"ArbolProductos disponibles: "<<endl;
 				MostrarPRO();
 				ComprobacionPRO();
 				break;
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2, ver todos los productos"<<endl;
-				cout<<"se mostraran todos los productos a continuacion: "<<endl;
+				cout<<"opcion 2, ver todos los ArbolProductos"<<endl;
+				cout<<"se mostraran todos los ArbolProductos a continuacion: "<<endl;
 				MostrarPRO();
 				break;		
 			case 3:
 				cout<<""<<endl;
-				cout<<"opcion 3, agregar un producto"<<endl;
-				AgregarPRO(ListaMenu);
+				cout<<"opcion 3, agregar un ArbolProducto"<<endl;
+				AgregarPRO(ListaArbolMenu);
 				break;			
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, borrar un producto"<<endl;
-				cout<<"productos disponibles: "<<endl;
+				cout<<"opcion 4, borrar un ArbolProducto"<<endl;
+				cout<<"ArbolProductos disponibles: "<<endl;
 				MostrarPRO();
 				BorrarPorCodigosPRO();
 				break;	
@@ -2536,7 +2536,7 @@ void producto::productosPRO(Menu & ListaMenu)
 				break;
 			case 6: 
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a producto principal"<<endl;
+				cout<<"opcion 6, salir a ArbolProducto principal"<<endl;
 				ejecucion = false;	
 				break;
 			default:
@@ -2548,11 +2548,11 @@ void producto::productosPRO(Menu & ListaMenu)
 
 }
 
-void producto::AgregarPRO(Menu & ListaMenu){
-	cout<<"agregar productos"<<endl;
-	cout<<"A continuacion muestran paises, ciudades, restaurantes y menus disponibles: "<<endl;		
-	ListaMenu.MostrarME();
-	cout<<"para agregar productos, se debe de verificar la existencia del pais, ciudad, restaurante y menu, agregar sus codigos"<<endl;
+void ArbolProducto::AgregarPRO(ArbolMenu & ListaArbolMenu){
+	cout<<"agregar ArbolProductos"<<endl;
+	cout<<"A continuacion muestran paises, ArbolCiudades, ArbolRestaurantes y ArbolMenus disponibles: "<<endl;		
+	ListaArbolMenu.MostrarME();
+	cout<<"para agregar ArbolProductos, se debe de verificar la existencia del pais, ArbolCiudad, ArbolRestaurante y ArbolMenu, agregar sus codigos"<<endl;
     int codigo13, codigo23,codigo33,codigo43;
     cout<<""<<endl;
     cout << "Ingrese primer codigo: " << endl;
@@ -2581,10 +2581,10 @@ void producto::AgregarPRO(Menu & ListaMenu){
     string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4;
     
     
-	if(ListaMenu.ExisteME(codigosBuscados)){
-		cout<<"el pais, ciudad, restaurante y menu existen, se procede a agregar"<<endl;
+	if(ListaArbolMenu.ExisteME(codigosBuscados)){
+		cout<<"el pais, ArbolCiudad, ArbolRestaurante y ArbolMenu existen, se procede a agregar"<<endl;
 	    int codigo1a;
-	    cout << "Ingrese el codigo del nuevo menu: " << endl;
+	    cout << "Ingrese el codigo del nuevo ArbolMenu: " << endl;
 	    cin >> codigo1a;
 
 	    std::stringstream ss1a;
@@ -2593,14 +2593,14 @@ void producto::AgregarPRO(Menu & ListaMenu){
 	    string num1a = ss1.str();
 		    
 		string NombreNuevo;
-		cout<<"digite el nombre del menu"<<endl;
+		cout<<"digite el nombre del ArbolMenu"<<endl;
 		cin >> NombreNuevo;
 		
 		int calorias,precio;
-		cout<<"digite las calorias del producto"<<endl;
+		cout<<"digite las calorias del ArbolProducto"<<endl;
 		cin >> calorias;
 		
-		cout<<"digite el precio del producto"<<endl;
+		cout<<"digite el precio del ArbolProducto"<<endl;
 		cin >> precio;
 		
 		std::stringstream ss2a,ss2b;
@@ -2614,11 +2614,11 @@ void producto::AgregarPRO(Menu & ListaMenu){
 	
 	}else{
 		cout<<"no existe, No se agrega"<<endl;
-		productosPRO(ListaMenu);
+		ArbolProductosPRO(ListaArbolMenu);
 	}
 }
 
-void producto::BorrarPorCodigosPRO() {
+void ArbolProducto::BorrarPorCodigosPRO() {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return;
@@ -2687,7 +2687,7 @@ void producto::BorrarPorCodigosPRO() {
 }
 
 
-void producto::ComprobacionPRO() {
+void ArbolProducto::ComprobacionPRO() {
     if (ListaVacia()) {
         cout << "La lista esta vacia." << endl;
         return;
@@ -2784,10 +2784,10 @@ void producto::ComprobacionPRO() {
 }
 
 
-void producto::CargarDesdeArchivoPRO() {
+void ArbolProducto::CargarDesdeArchivoPRO() {
     set<string> numero4_set;  
 
-    ifstream archivo("Productos.txt");
+    ifstream archivo("ArbolProductos.txt");
     if (archivo.is_open())
     {
         string linea;
@@ -2824,7 +2824,7 @@ void producto::CargarDesdeArchivoPRO() {
     }
 }
                 
-producto::~producto()
+ArbolProducto::~ArbolProducto()
 {
    pnodoPRO aux;
    pnodoPRO temp;
@@ -2843,7 +2843,7 @@ producto::~producto()
    primero= NULL;
 }
                           
-int producto::largoLista() 
+int ArbolProducto::largoLista() 
 {
     int cont=0;
 
@@ -2864,7 +2864,7 @@ int producto::largoLista()
     
 }
 
-void producto::InsertarFinal(string v)
+void ArbolProducto::InsertarFinal(string v)
 {
    if (ListaVacia())
      {
@@ -2882,7 +2882,7 @@ void producto::InsertarFinal(string v)
     }    
 }
   
-void producto::BorrarFinal()
+void ArbolProducto::BorrarFinal()
 {
     if (ListaVacia())
       cout << "No hay elementos en la lista:" << endl;
@@ -2907,7 +2907,7 @@ void producto::BorrarFinal()
     }
 }
 
-void producto::BorrarInicio()
+void ArbolProducto::BorrarInicio()
 {
     if (ListaVacia())
       cout << "No hay elementos en la lista:" << endl;
@@ -2931,7 +2931,7 @@ void producto::BorrarInicio()
     }
 }
 
-void producto::MostrarPRO()
+void ArbolProducto::MostrarPRO()
 {
    pnodoPRO aux=primero;
    while(aux->siguiente!=primero)
@@ -2944,7 +2944,7 @@ void producto::MostrarPRO()
      cout<<endl;
 }
 
-bool producto::ExistePRO(string codigo) {
+bool ArbolProducto::ExistePRO(string codigo) {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return false;
@@ -2986,7 +2986,7 @@ bool producto::ExistePRO(string codigo) {
 
 
 
-//clase clientes
+//clase ArbolClientes
 class nodoCl {
 public:
     nodoCl(const string& v) {
@@ -3003,15 +3003,15 @@ private:
     string valor;
     nodoCl* siguiente;
 
-    friend class Clientes;
+    friend class ArbolClientes;
 };
 
 typedef nodoCl* pnodoCl;
 
-class Clientes {
+class ArbolClientes {
 public:
-    Clientes() { primero = NULL; }
-    ~Clientes();
+    ArbolClientes() { primero = NULL; }
+    ~ArbolClientes();
 
     void InsertarFinal(string v);
     bool ListaVacia() { return primero == NULL; }
@@ -3020,7 +3020,7 @@ public:
     void CargarDesdeArchivoCl();
     void ConsultarClientePorCodigoCl();
     void BorrarPorCodigoCl();
-    void clientesCl();
+    void ArbolClientesCl();
     void AgregarClienteCl();
     void ModificarNombreCL();
     bool ExisteCl(int codigo);
@@ -3030,7 +3030,7 @@ private:
     pnodoCl primero;
 };
 
-string Clientes::ObtenerContenidoComoString() {
+string ArbolClientes::ObtenerContenidoComoString() {
         std::stringstream ss;
         nodoCl* aux;
 	   if (primero== NULL)
@@ -3048,7 +3048,7 @@ string Clientes::ObtenerContenidoComoString() {
         return ss.str();
 }
 
-void Clientes::ModificarNombreCL() {
+void ArbolClientes::ModificarNombreCL() {
     int code;
     cout << "Digite el codigo a modificar" << endl;
     cin >> code;
@@ -3083,15 +3083,15 @@ void Clientes::ModificarNombreCL() {
     cout << "No se encontr? un pa?s con el c?digo proporcionado." << endl;
 }
 
-void Clientes::clientesCl()
+void ArbolClientes::ArbolClientesCl()
 {
 	bool ejecucion = true;
-	cout<<"bienvenido a Clientes"<<endl;
+	cout<<"bienvenido a ArbolClientes"<<endl;
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"consultar Clientes digite 1: "<<endl;
-		cout<<"ver clientes digite 2: "<<endl;
+		cout<<"consultar ArbolClientes digite 1: "<<endl;
+		cout<<"ver ArbolClientes digite 2: "<<endl;
 		cout<<"agregar un cliente digite 3:"<<endl;
 		cout<<"borrar un cliente digite 4: "<<endl;
 		cout<<"modificar un cliente digite 5"<<endl;
@@ -3106,14 +3106,14 @@ void Clientes::clientesCl()
 			case 1:
 				cout<<""<<endl;
 				cout<<"opcion 1, consultar un cliente"<<endl;
-				cout<<"clientes disponibles: "<<endl;
+				cout<<"ArbolClientes disponibles: "<<endl;
 				MostrarCl();
 				ConsultarClientePorCodigoCl();
 				break;
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2, ver todos los clientes"<<endl;
-				cout<<"se mostraran todos los clientes a continuacion: "<<endl;
+				cout<<"opcion 2, ver todos los ArbolClientes"<<endl;
+				cout<<"se mostraran todos los ArbolClientes a continuacion: "<<endl;
 				MostrarCl();
 				break;		
 			case 3:
@@ -3125,7 +3125,7 @@ void Clientes::clientesCl()
 			case 4: 
 				cout<<""<<endl;
 				cout<<"opcion 4, borrar un cliente"<<endl;
-				cout<<"clientes disponibles: "<<endl;
+				cout<<"ArbolClientes disponibles: "<<endl;
 				MostrarCl();
 				BorrarPorCodigoCl();
 				MostrarCl();
@@ -3139,7 +3139,7 @@ void Clientes::clientesCl()
 				break;
 			case 6: 
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a menu principal"<<endl;
+				cout<<"opcion 6, salir a ArbolMenu principal"<<endl;
 				ejecucion = false;			
 			default:
 				cout<<""<<endl;
@@ -3150,7 +3150,7 @@ void Clientes::clientesCl()
 
 }
 
-void Clientes::AgregarClienteCl()
+void ArbolClientes::AgregarClienteCl()
 {
     cout << "Ingrese la cedula del cliente (parte entera): ";
     int codigo;
@@ -3191,7 +3191,7 @@ void Clientes::AgregarClienteCl()
     }
 }
 
-void Clientes::BorrarPorCodigoCl(){
+void ArbolClientes::BorrarPorCodigoCl(){
 	long long codigo;
 	cout<<"digite el codigo a borrar: "<<endl;
 	cin >> codigo;
@@ -3238,7 +3238,7 @@ void Clientes::BorrarPorCodigoCl(){
     cout << "No se encontro un cliente con el codigo " << codigo << " en la lista." << endl;
 }
 
-void Clientes::ConsultarClientePorCodigoCl() {
+void ArbolClientes::ConsultarClientePorCodigoCl() {
     if (ListaVacia()) {
         cout << "La lista esta vacia." << endl;
         return;
@@ -3273,9 +3273,9 @@ void Clientes::ConsultarClientePorCodigoCl() {
     }
 }
 
-void Clientes::CargarDesdeArchivoCl()
+void ArbolClientes::CargarDesdeArchivoCl()
 {
-    ifstream archivo("Clientes.txt");
+    ifstream archivo("ArbolClientes.txt");
     if (!archivo.is_open()) {
         cout << "No se pudo abrir el archivo." << endl;
         return;
@@ -3315,7 +3315,7 @@ void Clientes::CargarDesdeArchivoCl()
     archivo.close();
 }
 
-Clientes::~Clientes() {
+ArbolClientes::~ArbolClientes() {
     nodoCl* aux;
 
     while (primero) {
@@ -3326,7 +3326,7 @@ Clientes::~Clientes() {
     primero = NULL;
 }
 
-int Clientes::largoLista(){
+int ArbolClientes::largoLista(){
     int cont=0;
 
     pnodoCl aux= primero;
@@ -3343,7 +3343,7 @@ int Clientes::largoLista(){
     
 }
 
-void Clientes::InsertarFinal(string v)//76
+void ArbolClientes::InsertarFinal(string v)//76
 {
    if (ListaVacia())
      primero = new nodoCl(v);
@@ -3357,7 +3357,7 @@ void Clientes::InsertarFinal(string v)//76
       }    
 }
      
-void Clientes::MostrarCl()
+void ArbolClientes::MostrarCl()
 
 {
    nodoCl *aux;
@@ -3377,7 +3377,7 @@ void Clientes::MostrarCl()
    }
 }
 
-bool Clientes::ExisteCl(int codigo) {
+bool ArbolClientes::ExisteCl(int codigo) {
     if (ListaVacia()) {
         cout << "La lista est? vac?a." << endl;
         return false;
@@ -3444,7 +3444,7 @@ public:
     void MostrarCompra();
     int largoLista();
     void Paises();
-    void AgregarCompra(producto & ListaProducto, string valor);
+    void AgregarCompra(ArbolProducto & ListaArbolProducto, string valor);
     void ConsultarPaisPorCodigo();
     void BorrarPaisPorCodigo(int codigo);
     void ModificarNombre();
@@ -3659,10 +3659,10 @@ void ListaCOM::BorrarPaisPorSeisCodigos() {
 }
 
 
-void ListaCOM::AgregarCompra(producto &ListaProducto, string valor) {
-    cout << "Se muestran los productos disponibles" << endl;
-    ListaProducto.MostrarPRO();
-    cout << "Proceda a digitar el producto que quiere comprar" << endl;
+void ListaCOM::AgregarCompra(ArbolProducto &ListaArbolProducto, string valor) {
+    cout << "Se muestran los ArbolProductos disponibles" << endl;
+    ListaArbolProducto.MostrarPRO();
+    cout << "Proceda a digitar el ArbolProducto que quiere comprar" << endl;
 
     int codigo1, codigo2, codigo3, codigo4, codigo5;
     cout << "Ingrese el primer c?digo: " << endl;
@@ -3694,13 +3694,13 @@ void ListaCOM::AgregarCompra(producto &ListaProducto, string valor) {
 
     string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
 
-    if (ListaProducto.ExistePRO(codigosBuscados)) {
-        cout << "Producto encontrado y agregado de manera exitosa al cliente " << endl;
+    if (ListaArbolProducto.ExistePRO(codigosBuscados)) {
+        cout << "ArbolProducto encontrado y agregado de manera exitosa al cliente " << endl;
         string entrada2 = valor +";"+ codigosBuscados;
         InsertarFinal(entrada2);
         MostrarCompra();
     } else {
-        cout << "Producto no encontrado" << endl;
+        cout << "ArbolProducto no encontrado" << endl;
     }
 }
 
@@ -3870,12 +3870,12 @@ public:
     void insertar(string v);
     void eliminar();
     void imprimir();
-    void Agregar(producto & ListaProducto, Clientes &  ListaClientes, ListaCOM & ListaCompras);
-    void ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM & ListaCompras);
+    void Agregar(ArbolProducto & ListaArbolProducto, ArbolClientes &  ListaArbolClientes, ListaCOM & ListaCompras);
+    void ColaCO(ArbolProducto & ListaArbolProducto, ArbolClientes &  ListaArbolClientes,ListaCOM & ListaCompras);
     bool VerificarNumeroEnCola(string &num1);
     void MostrarCodigoEnPosicion(int posicion);
     void BorrarPorNumeroIdentificacion(ListaCOM & ListaCompras);
-    void ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &ListaClientes);
+    void ModificarPorNumeroIdentificacion(ArbolProducto &ListaArbolProducto, ArbolClientes &ListaArbolClientes);
     string ObtenerValorEntrada();
     void MostrarComprasPorNumeroCliente(ListaCOM &ListaCompras);
    
@@ -3926,7 +3926,7 @@ string cola::ObtenerValorEntrada()
     }
 }
 
-void cola::ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &ListaClientes) {
+void cola::ModificarPorNumeroIdentificacion(ArbolProducto &ListaArbolProducto, ArbolClientes &ListaArbolClientes) {
     int numIdentificacion;
     cout << "Ingrese el n?mero de identificacion que desea modificar: ";
     cin >> numIdentificacion;
@@ -3945,12 +3945,12 @@ void cola::ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &L
                 // El cliente con el n?mero de identificaci?n se encontr? en la cola
                 cout << "Cliente con n?mero de identificacion " << numIdentificacion << " encontrado" << endl;
 
-                // Mostrar los productos actuales del cliente
-                cout << "Productos actuales del cliente: " << endl;
+                // Mostrar los ArbolProductos actuales del cliente
+                cout << "ArbolProductos actuales del cliente: " << endl;
                 MostrarCodigoEnPosicion(i + 1);
-                ListaProducto.MostrarPRO();
+                ListaArbolProducto.MostrarPRO();
 
-                // Solicitar nuevos productos
+                // Solicitar nuevos ArbolProductos
                 int codigo1, codigo2, codigo3, codigo4, codigo5;
                 cout << "Ingrese el primer codigo: " << endl;
                 cin >> codigo1;
@@ -3980,13 +3980,13 @@ void cola::ModificarPorNumeroIdentificacion(producto &ListaProducto, Clientes &L
                 string num4 = ss4.str();
                 string num5 = ss5.str();
 
-                // Crear la nueva cadena de productos
-                string nuevosProductos = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+                // Crear la nueva cadena de ArbolProductos
+                string nuevosArbolProductos = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
 
-                // Actualizar la cola con la nueva cadena de productos
-                Cola[i] = num10 + ";" + nuevosProductos;
+                // Actualizar la cola con la nueva cadena de ArbolProductos
+                Cola[i] = num10 + ";" + nuevosArbolProductos;
 
-                cout << "Productos modificados con ?xito." << endl;
+                cout << "ArbolProductos modificados con ?xito." << endl;
                 return;
             }
         }
@@ -4071,15 +4071,15 @@ bool cola::VerificarNumeroEnCola(string &num1) {
     return false;
 }
 
-void cola::Agregar(producto &ListaProducto, Clientes &ListaClientes, ListaCOM &ListaCompras) {
+void cola::Agregar(ArbolProducto &ListaArbolProducto, ArbolClientes &ListaArbolClientes, ListaCOM &ListaCompras) {
     if (fondo < 5 - 1) {
         cout << "Opciones disponibles de cliente:" << endl;
-        ListaClientes.MostrarCl();
+        ListaArbolClientes.MostrarCl();
         int codigo2;
         cout << "Digite el n?mero de c?dula del cliente: ";
         cin >> codigo2;
 
-        if (ListaClientes.ExisteCl(codigo2)) {
+        if (ListaArbolClientes.ExisteCl(codigo2)) {
             cout << "Cliente encontrado de manera exitosa" << endl;
             std::stringstream ss10;
             ss10 << codigo2;
@@ -4087,29 +4087,29 @@ void cola::Agregar(producto &ListaProducto, Clientes &ListaClientes, ListaCOM &L
 
             if (VerificarNumeroEnCola(num10)) {
                 // El cliente ya existe en la cola, no es necesario insertarlo nuevamente.
-                ListaCompras.AgregarCompra(ListaProducto, num10);
+                ListaCompras.AgregarCompra(ListaArbolProducto, num10);
             } else {
                 // El cliente no est? en la cola, lo insertamos y luego agregamos la compra.
                 string entrada = num10 + ";";
                 int posicion = fondo + 1;  // Siguiente posici?n disponible en la cola
                 insertar(entrada);  // Agregar el cliente en la siguiente posici?n
-                cout << "Se procede a agregar el producto" << endl;
-                ListaCompras.AgregarCompra(ListaProducto, num10);
+                cout << "Se procede a agregar el ArbolProducto" << endl;
+                ListaCompras.AgregarCompra(ListaArbolProducto, num10);
             }
 
         } else {
             cout << "Cliente no encontrado" << endl;
-            ColaCO(ListaProducto, ListaClientes, ListaCompras);
+            ColaCO(ListaArbolProducto, ListaArbolClientes, ListaCompras);
         }
     } else {
         cout << "La cola est? llena" << endl;
-        ColaCO(ListaProducto, ListaClientes, ListaCompras);
+        ColaCO(ListaArbolProducto, ListaArbolClientes, ListaCompras);
     }
-    ColaCO(ListaProducto, ListaClientes, ListaCompras);
+    ColaCO(ListaArbolProducto, ListaArbolClientes, ListaCompras);
 }
 
 
-void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM & ListaCompras ){
+void cola::ColaCO(ArbolProducto & ListaArbolProducto, ArbolClientes &  ListaArbolClientes,ListaCOM & ListaCompras ){
 
 	bool ejecucion = true;
 	cout<<"bienvenido a Compras"<<endl;
@@ -4139,7 +4139,7 @@ void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM &
 			case 2:
 				cout<<""<<endl;
 				cout<<"opcion 2, ver todos las compras"<<endl;
-				cout<<"clientes en cola"<<endl;
+				cout<<"ArbolClientes en cola"<<endl;
 				imprimir();
 				cout<<"compras realizadas"<<endl;
 				ListaCompras.MostrarCompra();
@@ -4147,18 +4147,18 @@ void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM &
 			case 3:
 				cout<<""<<endl;
 				cout<<"opcion 3, agregar una compra"<<endl;
-				Agregar(ListaProducto,ListaClientes,ListaCompras);
+				Agregar(ListaArbolProducto,ListaArbolClientes,ListaCompras);
 				imprimir();
 				break;			
 			case 4: 
 				cout<<""<<endl;
 				cout<<"opcion 4, borrar una compra"<<endl;
-				cout<<"clientes disponibles: "<<endl;
+				cout<<"ArbolClientes disponibles: "<<endl;
 				cout<<"digite 1 borrar todas las compras de un cliente"<<endl;
 				cout<<"digite 2 borrar una compra en especifico"<<endl;
-				int menuborrar;
-				cin >> menuborrar;
-				switch(menuborrar){
+				int ArbolMenuborrar;
+				cin >> ArbolMenuborrar;
+				switch(ArbolMenuborrar){
 					case 1:
 						imprimir();
 						BorrarPorNumeroIdentificacion(ListaCompras);
@@ -4170,7 +4170,7 @@ void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM &
 						break;
 					default:
 						cout<<"error a la hora de digitar"<<endl;
-						ColaCO(ListaProducto, ListaClientes, ListaCompras);
+						ColaCO(ListaArbolProducto, ListaArbolClientes, ListaCompras);
 				}
 				break;	
 			case 5: 
@@ -4178,11 +4178,11 @@ void cola::ColaCO(producto & ListaProducto, Clientes &  ListaClientes,ListaCOM &
 				cout<<"opcion 5, modificar una compra"<<endl;
 				cout<<"nombres disponibles"<<endl;
 				imprimir();
-				ModificarPorNumeroIdentificacion(ListaProducto,ListaClientes);
+				ModificarPorNumeroIdentificacion(ListaArbolProducto,ListaArbolClientes);
 				break;
 			case 6: 
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a menu principal"<<endl;
+				cout<<"opcion 6, salir a ArbolMenu principal"<<endl;
 				ejecucion = false;			
 			default:
 				cout<<""<<endl;
@@ -4238,28 +4238,28 @@ int main()
 {
 	//definicion de todas las listas
 	//lectura de archivos
-   	PyC ListaPyC;
-   	ListaPyC.CargarDesdeArchivo();
+   	ArbolPais ListaArbolPais;
+   	ListaArbolPais.CargarDesdeArchivo();
    	
    	
-   	Ciudad ListaCiudad;
-   	ListaCiudad.CargarDesdeArchivoCIU();
+   	ArbolCiudad ListaArbolCiudad;
+   	ListaArbolCiudad.CargarDesdeArchivoCIU();
    	
    	
-   	Restaurante ListaRestaurante;
-   	ListaRestaurante.CargarDesdeArchivoRE();
+   	ArbolRestaurante ListaArbolRestaurante;
+   	ListaArbolRestaurante.CargarDesdeArchivoRE();
    	
    	
-   	Menu ListaMenu;
-   	ListaMenu.CargarDesdeArchivoME();
+   	ArbolMenu ListaArbolMenu;
+   	ListaArbolMenu.CargarDesdeArchivoME();
    	
    	
-   	producto ListaProducto;
-   	ListaProducto.CargarDesdeArchivoPRO();
+   	ArbolProducto ListaArbolProducto;
+   	ListaArbolProducto.CargarDesdeArchivoPRO();
    	
    	
-   	Clientes ListaClientes;
-   	ListaClientes.CargarDesdeArchivoCl();
+   	ArbolClientes ListaArbolClientes;
+   	ListaArbolClientes.CargarDesdeArchivoCl();
    	
 	cola ColaCompras;
 	
@@ -4272,96 +4272,96 @@ int main()
 	
 	while(ejecucion)
 	{
-		int MenuPrincipal;
+		int ArbolMenuPrincipal;
 		cout<<""<<endl;
 		cout<<"Bienvenido"<<endl;
-		cout<<"para Pais, digite 1"<<endl;
-		cout<<"para ciudad, digite 2"<<endl;
-		cout<<"para restaurantes, digite 3"<<endl;
-		cout<<"para menu, digite 4"<<endl;
-		cout<<"para productos, digite 5"<<endl;
-		cout<<"para clientes, digite 6"<<endl;
-		cout<<"para compras, digite 7"<<endl;
-		cout<<"para generar reporte digite 8"<<endl;
-		cout<<"para salir, digite 9"<<endl;
+		cout<<"Pais, digite 1"<<endl;
+		cout<<"ArbolCiudad, digite 2"<<endl;
+		cout<<"ArbolRestaurantes, digite 3"<<endl;
+		cout<<"ArbolMenu, digite 4"<<endl;
+		cout<<"ArbolProductos, digite 5"<<endl;
+		cout<<"ArbolClientes, digite 6"<<endl;
+		cout<<"compras, digite 7"<<endl;
+		cout<<"generar reporte digite 8"<<endl;
+		cout<<"salir, digite 9"<<endl;
 		
-		cin >> MenuPrincipal;
+		cin >> ArbolMenuPrincipal;
 		
-		switch(MenuPrincipal)
+		switch(ArbolMenuPrincipal)
 		{
 			case 1:
 				cout<<""<<endl;
 				cout<<"opcion 1 paises "<<endl;
-				ListaPyC.Paises();
+				ListaArbolPais.Paises();
 				break;
 				
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2 ciudades"<<endl;
-				ListaCiudad.CiudadsCIU(ListaPyC);
+				cout<<"opcion 2 ArbolCiudades"<<endl;
+				ListaArbolCiudad.ArbolCiudadsCIU(ListaArbolPais);
 				break;
 				
 			case 3:
 				cout<<""<<endl;
-				cout<<"opcion 3 restaurantes"<<endl;
-				ListaRestaurante.restaurantesRE(ListaCiudad);
+				cout<<"opcion 3 ArbolRestaurantes"<<endl;
+				ListaArbolRestaurante.ArbolRestaurantesRE(ListaArbolCiudad);
 				break;
 				
 			case 4:
 				cout<<""<<endl;
-				cout<<"opcion 4 menu"<<endl;
-				ListaMenu.MenusME(ListaRestaurante);
+				cout<<"opcion 4 ArbolMenu"<<endl;
+				ListaArbolMenu.ArbolMenusME(ListaArbolRestaurante);
 				break;
 					
 			case 5:
 				cout<<""<<endl;
-				cout<<"opcion 5 productos"<<endl;
-				ListaProducto.productosPRO(ListaMenu);
+				cout<<"opcion 5 ArbolProductos"<<endl;
+				ListaArbolProducto.ArbolProductosPRO(ListaArbolMenu);
 				break;
 				
 			case 6:
 				cout<<""<<endl;
-				cout<<"opcion 6 clientes"<<endl;
-				ListaClientes.clientesCl();
+				cout<<"opcion 6 ArbolClientes"<<endl;
+				ListaArbolClientes.ArbolClientesCl();
 				break;
 			case 7:
 				cout<<""<<endl;
 				cout<<"opcion 7 compras"<<endl;
-				ColaCompras.ColaCO(ListaProducto, ListaClientes, ListaCompras);
+				ColaCompras.ColaCO(ListaArbolProducto, ListaArbolClientes, ListaCompras);
 				break;
 			case 8: 
 				cout<<""<<endl;
 				cout<<"opcion 8 generar reportes"<<endl;
 				
 				cout<<"reportes de pais:"<<endl;
-				ListaPyC.Mostrar();
+				ListaArbolPais.Mostrar();
 				cout<<""<<endl;
 				
-				cout<<"reportes de ciudad:"<<endl;
+				cout<<"reportes de ArbolCiudad:"<<endl;
 				cout<<"paises disponibles"<<endl;
-				ListaPyC.Mostrar();
-				ListaCiudad.MostrarCiudadesPorPais();
+				ListaArbolPais.Mostrar();
+				ListaArbolCiudad.MostrarArbolCiudadesPorPais();
 				cout<<""<<endl;
 				
-				cout<<"reportes de restaurantes:"<<endl;
-				cout<<"paises y ciudades disponibles"<<endl;
-				ListaCiudad.MostrarCIU();
-				ListaRestaurante.MostrarRestaurantesPorCiudad();
+				cout<<"reportes de ArbolRestaurantes:"<<endl;
+				cout<<"paises y ArbolCiudades disponibles"<<endl;
+				ListaArbolCiudad.MostrarCIU();
+				ListaArbolRestaurante.MostrarArbolRestaurantesPorArbolCiudad();
 				cout<<""<<endl;
 				
-				cout<<"reportes de clientes:"<<endl;
-				ListaClientes.MostrarCl();
+				cout<<"reportes de ArbolClientes:"<<endl;
+				ListaArbolClientes.MostrarCl();
 				cout<<""<<endl;
 				
-				cout<<"restaurante mas buscado:"<<endl;
-				ListaRestaurante.EncontrarValorMayorPedido();
+				cout<<"ArbolRestaurante mas buscado:"<<endl;
+				ListaArbolRestaurante.EncontrarValorMayorPedido();
 				cout<<""<<endl;
-				cout<<"menu mas buscado:"<<endl;
-				ListaMenu.EncontrarValorMayorPedido();
+				cout<<"ArbolMenu mas buscado:"<<endl;
+				ListaArbolMenu.EncontrarValorMayorPedido();
 				cout<<""<<endl;
 				
-				cout<<"producto mas buscado:"<<endl;
-				ListaProducto.EncontrarValorMayorPedido();
+				cout<<"ArbolProducto mas buscado:"<<endl;
+				ListaArbolProducto.EncontrarValorMayorPedido();
 				cout<<""<<endl;
 				
 				
@@ -4388,41 +4388,41 @@ int main()
     }
 
     archivo << "Reporte de paises: " << endl;
-    string RepPais = ListaPyC.ObtenerContenidoComoString();
+    string RepPais = ListaArbolPais.ObtenerContenidoComoString();
     archivo << RepPais <<endl;
     archivo<<""<<endl;
     
-    archivo<< "Reporte de ciudades"<<endl;
+    archivo<< "Reporte de ArbolCiudades"<<endl;
     cout<<"paises disponibles"<<endl;
-    ListaPyC.Mostrar();
-    string RepCiu = ListaCiudad.MostrarCiudadesPorPais();
+    ListaArbolPais.Mostrar();
+    string RepCiu = ListaArbolCiudad.MostrarArbolCiudadesPorPais();
     archivo<<RepCiu<<endl;
     archivo<<""<<endl;
     
-    archivo<<"Reporte de restaurantes"<<endl;
-    cout<<"paises y ciudades disponibles"<<endl;
-    ListaCiudad.MostrarCIU();
-    string RepRes = ListaRestaurante.MostrarRestaurantesPorCiudad();
+    archivo<<"Reporte de ArbolRestaurantes"<<endl;
+    cout<<"paises y ArbolCiudades disponibles"<<endl;
+    ListaArbolCiudad.MostrarCIU();
+    string RepRes = ListaArbolRestaurante.MostrarArbolRestaurantesPorArbolCiudad();
     archivo<<RepRes<<endl;
     archivo<<""<<endl;
     
-    archivo<<"Reporte de Clientes"<<endl;
-    string RepClientes = ListaClientes.ObtenerContenidoComoString();
-    archivo<<RepClientes<<endl;
+    archivo<<"Reporte de ArbolClientes"<<endl;
+    string RepArbolClientes = ListaArbolClientes.ObtenerContenidoComoString();
+    archivo<<RepArbolClientes<<endl;
     archivo<<""<<endl;
     
-    archivo<< "Reporte de Restaurante mas buscado"<<endl;
-    string RepRestMas = ListaRestaurante.EncontrarValorMayorPedido();
+    archivo<< "Reporte de ArbolRestaurante mas buscado"<<endl;
+    string RepRestMas = ListaArbolRestaurante.EncontrarValorMayorPedido();
     archivo<<RepRestMas<<endl;
     archivo<<""<<endl;
     
-    archivo<<"Reporte de menu mas buscado"<<endl;
-    string RepMeMas = ListaMenu.EncontrarValorMayorPedido();
+    archivo<<"Reporte de ArbolMenu mas buscado"<<endl;
+    string RepMeMas = ListaArbolMenu.EncontrarValorMayorPedido();
     archivo<<RepMeMas<<endl;
     archivo<<""<<endl;
     
-    archivo<<"Reporte de producto mas buscado"<<endl;
-    string RepProMas = ListaProducto.EncontrarValorMayorPedido();
+    archivo<<"Reporte de ArbolProducto mas buscado"<<endl;
+    string RepProMas = ListaArbolProducto.EncontrarValorMayorPedido();
     archivo<<RepProMas<<endl;
 
 
