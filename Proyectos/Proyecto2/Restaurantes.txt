@@ -1,0 +1,5 @@
+1;19;112;Heladeria Morataya
+1;22;123;Tortilleria Sancho
+1;22;125;Mangos Bendicion
+2;35;130;Panaderia Jesus
+3;55;135;Chifa Juan
