@@ -274,9 +274,8 @@ void ArbolPais::Paises()
 		cout<<"consultar pais digite 1: "<<endl;
 		cout<<"ver paises digite 2: "<<endl;
 		cout<<"agregar un pais digite 3:"<<endl;
-		cout<<"borrar un pais digite 4: "<<endl;
-		cout<<"modificar nombre digite 5: "<<endl;
-		cout<<"salir digite 6: "<<endl;
+		cout<<"modificar nombre digite 4: "<<endl;
+		cout<<"salir digite 5: "<<endl;
 		
 		int x;
 		
@@ -306,22 +305,12 @@ void ArbolPais::Paises()
 				break;			
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, borrar un pais"<<endl;
-				cout<<"paises disponibles: "<<endl;
-				Mostrar();
-				cout<<"registrar codigo: "<<endl;
-				int codigo;
-				cin >> codigo;
-				BorrarPaisPorCodigo(codigo);
-				break;		
-			case 5: 
-				cout<<""<<endl;
 				cout<<"opcion 5 modoficar nombre"<<endl;
 				cout<<"paises disponibles: "<<endl;
 				Mostrar();
 				ModificarNombre();
-				break;
-			case 6:
+				break;		
+			case 5: 
 				cout<<""<<endl;
 				cout<<"opcion 6, salir a ArbolMenu principal"<<endl;
 				ejecucion = false;	
@@ -822,7 +811,7 @@ void ArbolCiudad::ComprobacionCIU() {
 void ArbolCiudad::CargarDesdeArchivoCIU() {
     set<string> numero2_set;  
 
-    ifstream archivo("ArbolCiudades.txt");
+    ifstream archivo("Ciudades.txt");
     if (archivo.is_open())
     {
         string linea;
@@ -1461,7 +1450,7 @@ void ArbolRestaurante::ComprobacionRE() {
 void ArbolRestaurante::CargarDesdeArchivoRE() {
     set<string> numero3_set;  
 
-    ifstream archivo("ArbolRestaurantes.txt");
+    ifstream archivo("Restaurantes.txt");
     if (archivo.is_open())
     {
         string linea;
@@ -2088,7 +2077,7 @@ void ArbolMenu::ComprobacionME() {
 void ArbolMenu::CargarDesdeArchivoME() {
     set<string> numero4_set;  
 
-    ifstream archivo("ArbolMenu.txt");
+    ifstream archivo("Menu.txt");
     if (archivo.is_open())
     {
         string linea;
@@ -2787,7 +2776,7 @@ void ArbolProducto::ComprobacionPRO() {
 void ArbolProducto::CargarDesdeArchivoPRO() {
     set<string> numero4_set;  
 
-    ifstream archivo("ArbolProductos.txt");
+    ifstream archivo("Productos.txt");
     if (archivo.is_open())
     {
         string linea;
@@ -3275,7 +3264,7 @@ void ArbolClientes::ConsultarClientePorCodigoCl() {
 
 void ArbolClientes::CargarDesdeArchivoCl()
 {
-    ifstream archivo("ArbolClientes.txt");
+    ifstream archivo("Clientes.txt");
     if (!archivo.is_open()) {
         cout << "No se pudo abrir el archivo." << endl;
         return;
@@ -4276,11 +4265,11 @@ int main()
 		cout<<""<<endl;
 		cout<<"Bienvenido"<<endl;
 		cout<<"Pais, digite 1"<<endl;
-		cout<<"ArbolCiudad, digite 2"<<endl;
-		cout<<"ArbolRestaurantes, digite 3"<<endl;
-		cout<<"ArbolMenu, digite 4"<<endl;
-		cout<<"ArbolProductos, digite 5"<<endl;
-		cout<<"ArbolClientes, digite 6"<<endl;
+		cout<<"Ciudad, digite 2"<<endl;
+		cout<<"Restaurantes, digite 3"<<endl;
+		cout<<"Menu, digite 4"<<endl;
+		cout<<"Productos, digite 5"<<endl;
+		cout<<"Clientes, digite 6"<<endl;
 		cout<<"compras, digite 7"<<endl;
 		cout<<"generar reporte digite 8"<<endl;
 		cout<<"salir, digite 9"<<endl;
