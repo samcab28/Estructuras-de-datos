@@ -262,14 +262,14 @@ void ArbolPais::Paises()
 				break;			
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 5 modoficar nombre"<<endl;
+				cout<<"opcion 4 modoficar nombre:"<<endl;
 				cout<<"paises disponibles: "<<endl;
 				Mostrar();
 				ModificarNombre();
 				break;		
 			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 6, salir a ArbolMenu principal"<<endl;
+				cout<<"opcion 5, salir a ArbolMenu principal"<<endl;
 				ejecucion = false;	
 				break;			
 			default:
@@ -387,7 +387,7 @@ bool ArbolPais::Existe(int codigo) {
 
 
 
-
+// CIUDADES
 class nodoCIU {
 public:
     nodoCIU(const string &v)
@@ -422,9 +422,7 @@ public:
     void InsertarPos(string v, int pos);
     bool ListaVacia() { return primero == NULL; }
     void Imprimir();
-    void Borrar(string v);
     void MostrarCIU();
-    void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoCIU();
     void ArbolCiudadsCIU(ArbolPais & ListaArbolPais);
@@ -834,9 +832,7 @@ public:
     void InsertarPos(string v, int pos);
     bool ListaVacia() { return primero == NULL; }
     void Imprimir();
-    void Borrar(string v);
     void MostrarRE();
-    void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoRE();
     void ArbolRestaurantesRE(ArbolCiudad & ListaArbolCiudad);
@@ -1358,9 +1354,7 @@ public:
     void InsertarPos(string v, int pos);
     bool ListaVacia() { return primero == NULL; }
     void Imprimir();
-    void Borrar(string v);
     void MostrarME();
-    void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoME();
     void ArbolMenusME(ArbolRestaurante & ListaArbolRestaurante);
@@ -1876,9 +1870,7 @@ public:
     void InsertarPos(string v, int pos);
     bool ListaVacia() { return primero == NULL; }
     void Imprimir();
-    void Borrar(string v);
     void MostrarPRO();
-    void BorrarPosicion(int pos);
     int largoLista();
     void CargarDesdeArchivoPRO();
     void ArbolProductosPRO(ArbolMenu & ListaArbolMenu);
