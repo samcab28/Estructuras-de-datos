@@ -103,7 +103,7 @@ void ArbolPais::ModificarNombre() {
 
 void ArbolPais::ConsultarPaisPorCodigo() {
     if (ListaVacia()) {
-        cout << "La arbol esta vacia." << endl;
+        cout << "El arbol esta vacio." << endl;
         return;
     }
 
@@ -200,7 +200,7 @@ void ArbolPais::CargarDesdeArchivo()
                     
                     if (codigoenArbola == codigo) {
                         existe = true;
-                        cout << "Pais con codigo " << codigo << " ya existe en la lista." << endl;
+                        cout << "Pais con codigo " << codigo << " ya existe en el arbol." << endl;
                         break;
                     }
                 }
@@ -338,7 +338,7 @@ void ArbolPais::Mostrar()
 
 bool ArbolPais::Existe(int codigo) {
     if (ListaVacia()) {
-        cout << "La arbol est? vac?a." << endl;
+        cout << "El arbol esta vacia." << endl;
         return false;
     }
 
@@ -437,7 +437,7 @@ string ArbolCiudad::MostrarArbolCiudadesPorPais() {
 	cin >> codigoPais;
 	string memoria;
     if (ListaVacia()) {
-        cout << "La arbol de ArbolCiudades esta vacia." << endl;
+        cout << "El arbol de ArbolCiudades esta vacio." << endl;
         return "arbol vacia";
     }
 
@@ -459,7 +459,7 @@ string ArbolCiudad::MostrarArbolCiudadesPorPais() {
 
 void ArbolCiudad::ModificarNombreCIU() {
     if (ListaVacia()) {
-        cout << "La arbol est? vac?a." << endl;
+        cout << "El arbol esta vacio." << endl;
         return;
     }
 
@@ -599,7 +599,7 @@ void ArbolCiudad::ArbolCiudadsCIU(ArbolPais & arbolPais)
 
 void ArbolCiudad::ComprobacionCIU() {
     if (ListaVacia()) {
-        cout << "La arbol est? vac?a." << endl;
+        cout << "El arbol esta vacio." << endl;
         return;
     }
 
@@ -638,7 +638,7 @@ void ArbolCiudad::ComprobacionCIU() {
     }
 
     if (encontrado == false) {
-        cout << "No se encontraron los codigos en la lista." << endl;
+        cout << "No se encontraron los codigos ." << endl;
     }
 }
 
@@ -846,8 +846,8 @@ private:
 
 string ArbolRestaurante::EncontrarValorMayorPedido() {
     if (ListaVacia()) {
-        cout << "La arbol de ArbolRestaurantes est? vac?a." << endl;
-        return "arbol vacia";
+        cout << "El arbol de ArbolRestaurantes esta vacio." << endl;
+        return "arbol vacio";
     }
 
     pnodoRE aux = primero;
@@ -881,7 +881,7 @@ string ArbolRestaurante::EncontrarValorMayorPedido() {
         cout << "Informacion del ArbolRestaurante: " << nodoMayor->valor << endl;
         return "Informacion del ArbolRestaurante: " + nodoMayor->valor;
     } else {
-        cout << "No se encontr? ning?n ArbolRestaurante con con consultas." << endl;
+        cout << "No se encontr? ning?n ArbolRestaurante  con consultas." << endl;
     }
 }
 
@@ -898,7 +898,7 @@ string ArbolRestaurante::MostrarArbolRestaurantesPorArbolCiudad() {
     
     string memoria;
     if (ListaVacia()) {
-        cout << "La arbol de ArbolRestaurantes esta vacia." << endl;
+        cout << "El arbol de ArbolRestaurantes esta vacio." << endl;
         return "arbol vacia";
     }
 
@@ -939,7 +939,7 @@ void ArbolRestaurante::agregarRE(ArbolCiudad & arbolCiudad){
     
     
 	if(arbolCiudad.ExisteCIU(codigosBuscados)){
-		cout<<"el pais y ArbolCiudad si existes, se procede a agregar"<<endl;
+		cout<<"el pais y ArbolCiudad si existen, se procede a agregar"<<endl;
 	    int codigo1a;
 	    cout << "Ingrese el codigo del nuevo ArbolRestaurante3: " << endl;
 	    cin >> codigo1a;
@@ -964,7 +964,7 @@ void ArbolRestaurante::agregarRE(ArbolCiudad & arbolCiudad){
 
 void ArbolRestaurante::ModificarNombreRE() {
     if (ListaVacia()) {
-        cout << "La arbol est? vac?a." << endl;
+        cout << "El arbol esta vacio." << endl;
         return;
     }
 
@@ -1096,7 +1096,7 @@ int ArbolRestaurante::stringAEnteroRE(const std::string &cadena) {
             resultado = resultado * 10 + valorDigito;
         } else {
             // Manejo de error si la cadena contiene caracteres no num?ricos
-            std::cerr << "Error: La cadena contiene caracteres no num?ricos." << std::endl;
+            std::cerr << "Error: La cadena contiene caracteres no numericos." << std::endl;
             return 0;
         }
     }
@@ -1106,7 +1106,7 @@ int ArbolRestaurante::stringAEnteroRE(const std::string &cadena) {
 
 void ArbolRestaurante::ComprobacionRE() {
     if (ListaVacia()) {
-        cout << "La arbol est? vac?a" << endl;
+        cout << "Ek arbol esta vacio" << endl;
         return;
     }
 
@@ -1154,10 +1154,10 @@ void ArbolRestaurante::ComprobacionRE() {
                 string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
                 aux->valor = nuevoValor;
 
-                cout << "Codigos encontrados en la lista: " << codigosBuscados << endl;
+                cout << "Codigos encontrados en El Arbol: " << codigosBuscados << endl;
                 cout << "Nuevo valor asociado: " << nuevoValor << endl;
             } else {
-                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
+                cout << "No se encontro el ultimo punto y coma en el valor." << endl;
             }
             break;
         }
@@ -1166,7 +1166,7 @@ void ArbolRestaurante::ComprobacionRE() {
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los c?digos en la lista." << endl;
+        cout << "No se encontraron los codigos." << endl;
     }
 }
 
@@ -1283,7 +1283,7 @@ void ArbolRestaurante::MostrarRE()
 
 bool ArbolRestaurante::ExisteRE(string codigo) {
     if (ListaVacia()) {
-        cout << "La arbol est? vac?a." << endl;
+        cout << "El arbol esta vacio." << endl;
         return false;
     }
     
@@ -1354,7 +1354,7 @@ int main()
 		{
 			case 1:
 				cout<<""<<endl;
-				cout<<"opcion 1 paises "<<endl;
+				cout<<"opcion 1 Paises "<<endl;
 				arbolPais.Paises();
 				break;
 				
@@ -1386,7 +1386,7 @@ int main()
 				break;
 			case 7:
 				cout<<""<<endl;
-				cout<<"opcion 7 compras"<<endl;
+				cout<<"opcion 7 Compras"<<endl;
 				break;
 			case 8: 
 				cout<<""<<endl;
