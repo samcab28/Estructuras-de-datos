@@ -1,0 +1,6 @@
+1;19;112;223;Helados
+1;19;112;227;Hamburguesas
+2;35;130;245;Frescos
+2;35;130;246;Pan Salado
+2;35;130;247;Pan Dulce
+2;35;130;248;Queques
