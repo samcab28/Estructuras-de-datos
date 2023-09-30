@@ -390,14 +390,14 @@ int main()
 
     // Ejemplo de cómo usar la inserción de nodos
     miArbol.insertarNodo(12,raizArbolPtr);
-    miArbol.insertarNodo(9,raizArbolPtr);
-    miArbol.insertarNodo(7,raizArbolPtr);
+    miArbol.insertarNodo(1,raizArbolPtr);
+    miArbol.insertarNodo(2,raizArbolPtr);
+    miArbol.insertarNodo(3,raizArbolPtr);
+    miArbol.insertarNodo(12,raizArbolPtr);
     miArbol.insertarNodo(10,raizArbolPtr);
-    miArbol.insertarNodo(25,raizArbolPtr);
-    miArbol.insertarNodo(15,raizArbolPtr);
-    miArbol.insertarNodo(30,raizArbolPtr);
-    miArbol.insertarNodo(35,raizArbolPtr);
-    miArbol.insertarNodo(30,raizArbolPtr);
+    miArbol.insertarNodo(54,raizArbolPtr);
+    miArbol.insertarNodo(67,raizArbolPtr);
+    miArbol.insertarNodo(9,raizArbolPtr);
 
     cout<<""<<endl;
     cout<<"muestra de acostado"<<endl;
