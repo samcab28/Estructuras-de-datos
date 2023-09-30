@@ -2236,6 +2236,9 @@ void ArbolProducto::ComprobacionPRO() {
 						        	if(j == 7){
 						        		cout<<"precio: "<<dato<<endl;
 									}
+									if(j==8){
+										cout<<"cantidad de productos: "<<dato<<endl;
+									}
 						            j++;
 						        }
 						    }
@@ -2279,7 +2282,7 @@ void ArbolProducto::CargarDesdeArchivoPRO() {
             if (numero4_set.find(numero4) == numero4_set.end())
             {
                 numero4_set.insert(numero4);  // Agregar a conjunto de NUPRORO3
-                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4+ ";"+ numero5+ ";" + nombre +";" + numero6 + ";" + numero7 +";" + "0";
+                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4+ ";"+ numero5+ ";" + nombre +";" + numero6 + ";" + numero7 +";" + "20" + ";"  + "0";
                 InsertarFinal(nuevo_valor);
             }
             else
