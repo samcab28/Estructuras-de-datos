@@ -1866,7 +1866,7 @@ public:
     int stringAEnteroPRO(const std::string &cadena);
     string EncontrarValorMayorPedido();
     string muestraCantidad(string codigo);
-    void ModificarCantidadPro(string codigosBuscados, int resta);
+    bool ModificarCantidadPro(string codigosBuscados, int resta);
 private:
     pnodoPRO primero;
 };
@@ -2437,7 +2437,7 @@ string ArbolProducto::muestraCantidad(string codigosBuscados) {
     }
 }
 
-void ArbolProducto::ModificarCantidadPro(string codigosBuscados, int resta){
+bool ArbolProducto::ModificarCantidadPro(string codigosBuscados, int resta){
     pnodoPRO aux = primero;
     bool encontrado = false;
     int i = 0;
@@ -2477,24 +2477,31 @@ void ArbolProducto::ModificarCantidadPro(string codigosBuscados, int resta){
 									}
 									if(j==8){
 										int valor = stringAEnteroPRO(dato);
+										cout<<"cantidad: "<<valor<<endl;
+										cout<<"a restar: "<<resta<<endl;
+										if(resta > valor){
+											cout<<"error la cantidad de compra es mayor que la disponible"<<endl;
+											return false;
+										}
 										int nuevaCantidad = valor - resta;
 										std::stringstream ss1;
 										ss1 << nuevaCantidad;
 										StrnuevaCantidad = ss1.str();
-										
 									}
 									if(j==9){
 										busquedas = dato;
 									}
 						            j++;
 						        }
-						        nuevo = codigosBuscados + ";" + producto + ";" + caloria + ";" + precio + ";" + StrnuevaCantidad + ";" + busquedas;
-						        cout<<nuevo<<endl;
-						        aux -> valor = nuevo;
 						    }
+						    nuevo = codigosBuscados + ";" + producto + ";" + caloria + ";" + precio + ";" + StrnuevaCantidad + ";" + busquedas;
+						    cout<<nuevo<<endl;
+						    aux -> valor = nuevo;
+						    return true;
 				            break;	            
             } else {
                 cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
+                return false;
             }
             break;
         }
@@ -2504,6 +2511,7 @@ void ArbolProducto::ModificarCantidadPro(string codigosBuscados, int resta){
 
     if (!encontrado) {
         cout << "No se encontraron los c?digos en la lista." << endl;
+        return false;
     }
 }
 
@@ -3176,11 +3184,13 @@ void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor) {
     	cout<<"cantidad disponible: "<<arbolProducto.muestraCantidad(codigosBuscados)<<endl; 
     	int cantidad;
     	cin >> cantidad; 
-    	arbolProducto.ModificarCantidadPro(codigosBuscados,cantidad);
-        cout << "ArbolProducto encontrado y agregado de manera exitosa al cliente " << endl;
-        string entrada2 = valor +";"+ codigosBuscados;
-        InsertarFinal(entrada2);
-        MostrarCompra();
+    	if(arbolProducto.ModificarCantidadPro(codigosBuscados,cantidad)){
+	        cout << "ArbolProducto encontrado y agregado de manera exitosa al cliente " << endl;
+	        string entrada2 = valor +";"+ codigosBuscados;
+	        InsertarFinal(entrada2);
+	        MostrarCompra();	
+		}
+
     } else {
         cout << "ArbolProducto no encontrado" << endl;
     }
