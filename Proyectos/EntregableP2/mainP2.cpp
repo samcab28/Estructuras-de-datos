@@ -1866,6 +1866,7 @@ public:
     int stringAEnteroPRO(const std::string &cadena);
     string EncontrarValorMayorPedido();
     string muestraCantidad(string codigo);
+    void ModificarCantidadPro(string codigosBuscados, int resta);
 private:
     pnodoPRO primero;
 };
@@ -2342,9 +2343,6 @@ void ArbolProducto::InsertarFinal(string v)
     }    
 }
   
-
-
-
 void ArbolProducto::MostrarPRO()
 {
    pnodoPRO aux=primero;
@@ -2440,7 +2438,49 @@ string ArbolProducto::muestraCantidad(string codigosBuscados) {
     }
 }
 
+void ArbolProducto::ModificarCantidadPro(string codigosBuscados, int resta){
+    if (ArbolVacio()) {
+        cout << "La lista est? vac?a." << endl;
+        return;
+    }
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
 
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+			cout<<"codigo encontrado"<<endl;
+			string newName;
+			cout<<"digite el nuevo nombre"<<endl;
+			cin >> newName;
+			
+			int calorias,precio;
+			cout<<"digite las nuevas calorias del ArbolProducto"<<endl;
+			cin >> calorias;
+			
+			cout<<"digite el nuevo precio del ArbolProducto"<<endl;
+			cin >> precio;
+			
+			std::stringstream ss2a,ss2b;
+			ss2a << calorias;
+			ss2b << precio;
+			string caloriaString =  ss2a.str();
+			string precioString = ss2b.str();
+			
+			string modificar = codigosBuscados + ";" + newName + ";" + caloriaString + ";" + precioString;
+			aux -> valor = modificar;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (encontrado == false) {
+        cout << "No se encontraron los codigos en la lista." << endl;
+    }
+
+}
 
 
 
