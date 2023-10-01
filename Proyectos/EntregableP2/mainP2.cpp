@@ -1865,6 +1865,7 @@ public:
     bool ExistePRO(string codigo);
     int stringAEnteroPRO(const std::string &cadena);
     string EncontrarValorMayorPedido();
+    string muestraCantidad(string codigo);
 private:
     pnodoPRO primero;
 };
@@ -2384,7 +2385,60 @@ bool ArbolProducto::ExistePRO(string codigo) {
     }
 }
 
+string ArbolProducto::muestraCantidad(string codigosBuscados) {
+    if (ArbolVacio()) {
+        cout << "La lista esta vacia." << endl;
+        return "lista vacia";
+    }
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
 
+	while (i <= largoLista()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            if (posicionUltimoPuntoComa != string::npos) {
+                size_t posicionNumero = posicionUltimoPuntoComa + 1;
+                std::string numeroStr = aux->valor.substr(posicionNumero);
+                int numero = stringAEnteroPRO(numeroStr);
+                numero++;
+                
+				std::stringstream ss1;
+    			ss1 << numero;
+
+				string num1 = ss1.str();
+    
+    
+                
+                string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
+                aux->valor = nuevoValor;
+			    std::string cadena = aux -> valor ;
+			    std::istringstream stream(cadena);
+			    std::string dato;
+				int j = 0;
+				while (std::getline(stream, dato, ';')) {
+						        if (!dato.empty()) {
+									if(j==8){
+										return dato;
+									}
+						            j++;
+						        }
+						    }
+				            break;
+            } else {
+                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
+            }
+            break;
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+
+    if (!encontrado) {
+        return "no se encontro codigo en la lista";
+    }
+}
 
 
 
@@ -3054,7 +3108,9 @@ void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor) {
 
     if (arbolProducto.ExistePRO(codigosBuscados)) {
     	cout<<"Producto encontrado, digite la cantidad a comprar: "<<endl;
+    	cout<<"cantidad disponible: "<<arbolProducto.muestraCantidad(codigosBuscados)<<endl; 
     	int cantidad;
+    	
     	cin >> cantidad; 
     	
         cout << "ArbolProducto encontrado y agregado de manera exitosa al cliente " << endl;
@@ -3598,8 +3654,6 @@ void cola::imprimir()
 	
 int main()
 {
-	//definicion de todas las listas
-	//lectura de archivos
    	ArbolPais arbolPais;
    	arbolPais.CargarDesdeArchivo();
    	
