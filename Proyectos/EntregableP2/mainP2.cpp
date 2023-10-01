@@ -2222,6 +2222,9 @@ void ArbolProducto::ComprobacionPRO() {
 									if(j==8){
 										cout<<"cantidad de productos: "<<dato<<endl;
 									}
+									if(j==9){
+										cout<<"cantidad de busquedas: "<<dato<<endl;
+									}
 						            j++;
 						        }
 						    }
@@ -2435,48 +2438,73 @@ string ArbolProducto::muestraCantidad(string codigosBuscados) {
 }
 
 void ArbolProducto::ModificarCantidadPro(string codigosBuscados, int resta){
-    if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
-        return;
-    }
-    
     pnodoPRO aux = primero;
     bool encontrado = false;
     int i = 0;
-
-    while (i <= largoLista()) {
+	string nuevo;
+	while (i <= largoLista()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
-			cout<<"codigo encontrado"<<endl;
-			string newName;
-			cout<<"digite el nuevo nombre"<<endl;
-			cin >> newName;
-			
-			int calorias,precio;
-			cout<<"digite las nuevas calorias del ArbolProducto"<<endl;
-			cin >> calorias;
-			
-			cout<<"digite el nuevo precio del ArbolProducto"<<endl;
-			cin >> precio;
-			
-			std::stringstream ss2a,ss2b;
-			ss2a << calorias;
-			ss2b << precio;
-			string caloriaString =  ss2a.str();
-			string precioString = ss2b.str();
-			
-			string modificar = codigosBuscados + ";" + newName + ";" + caloriaString + ";" + precioString;
-			aux -> valor = modificar;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            if (posicionUltimoPuntoComa != string::npos) {
+                size_t posicionNumero = posicionUltimoPuntoComa + 1;
+                std::string numeroStr = aux->valor.substr(posicionNumero);
+                int numero = stringAEnteroPRO(numeroStr);
+                numero++;
+                
+				std::stringstream ss1;
+    			ss1 << numero;
+
+				string num1 = ss1.str();
+                string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
+                aux->valor = nuevoValor;
+			    std::string cadena = aux -> valor ;
+			    std::istringstream stream(cadena);
+			    std::string dato;
+				int j = 0;
+				string producto, caloria, precio, busquedas, StrnuevaCantidad ;
+				while (std::getline(stream, dato, ';')) {
+						        if (!dato.empty()) {
+						        	
+						        	if(j == 5){
+						        		producto = dato;
+									}
+						        	if(j == 6){
+						        		caloria = dato;
+									}
+						        	if(j == 7){
+						        		precio = dato;
+									}
+									if(j==8){
+										int valor = stringAEnteroPRO(dato);
+										int nuevaCantidad = valor - resta;
+										std::stringstream ss1;
+										ss1 << nuevaCantidad;
+										StrnuevaCantidad = ss1.str();
+										
+									}
+									if(j==9){
+										busquedas = dato;
+									}
+						            j++;
+						        }
+						        nuevo = codigosBuscados + ";" + producto + ";" + caloria + ";" + precio + ";" + StrnuevaCantidad + ";" + busquedas;
+						        cout<<nuevo<<endl;
+						        aux -> valor = nuevo;
+						    }
+				            break;	            
+            } else {
+                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
+            }
             break;
         }
         aux = aux->siguiente;
-        i ++;
+        i++;
     }
 
-    if (encontrado == false) {
-        cout << "No se encontraron los codigos en la lista." << endl;
+    if (!encontrado) {
+        cout << "No se encontraron los c?digos en la lista." << endl;
     }
-
 }
 
 
@@ -3147,9 +3175,8 @@ void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor) {
     	cout<<"Producto encontrado, digite la cantidad a comprar: "<<endl;
     	cout<<"cantidad disponible: "<<arbolProducto.muestraCantidad(codigosBuscados)<<endl; 
     	int cantidad;
-    	
     	cin >> cantidad; 
-    	
+    	arbolProducto.ModificarCantidadPro(codigosBuscados,cantidad);
         cout << "ArbolProducto encontrado y agregado de manera exitosa al cliente " << endl;
         string entrada2 = valor +";"+ codigosBuscados;
         InsertarFinal(entrada2);
