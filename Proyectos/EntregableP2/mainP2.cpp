@@ -2108,14 +2108,10 @@ void ArbolProducto::AgregarPRO(ArbolMenu & arbolMenu){
     
 	if(arbolMenu.ExisteME(codigosBuscados)){
 		cout<<"el pais, ArbolCiudad, ArbolRestaurante y ArbolMenu existen, se procede a agregar"<<endl;
-	    int codigo1a;
+	    string codigo1a;
 	    cout << "Ingrese el codigo del nuevo ArbolMenu: " << endl;
 	    cin >> codigo1a;
 
-	    std::stringstream ss1a;
-	    ss1a << codigo1a;
-
-	    string num1a = ss1.str();
 		    
 		string NombreNuevo;
 		cout<<"digite el nombre del ArbolMenu"<<endl;
@@ -2134,7 +2130,7 @@ void ArbolProducto::AgregarPRO(ArbolMenu & arbolMenu){
 		string caloriaString =  ss2a.str();
 		string precioString = ss2b.str();
 	
-		string NuevoValor = codigosBuscados + ";" + num1a + ";" + NombreNuevo + ";" + caloriaString + ";" + precioString;
+		string NuevoValor = codigosBuscados + ";" + codigo1a + ";" + NombreNuevo + ";" + caloriaString + ";" + precioString + ";" + "20" + ";" + "0";
 		InsertarFinal(NuevoValor);
 	
 	}else{
@@ -2443,6 +2439,7 @@ void ArbolProducto::ModificarCantidadPro(string codigosBuscados, int resta){
         cout << "La lista est? vac?a." << endl;
         return;
     }
+    
     pnodoPRO aux = primero;
     bool encontrado = false;
     int i = 0;
