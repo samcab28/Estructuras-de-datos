@@ -2562,7 +2562,7 @@ public:
     void ArbolClientesCl();
     void AgregarClienteCl();
     void ModificarNombreCL();
-    bool ExisteCl(int codigo);
+    bool ExisteCl(string codigo);
     string ObtenerContenidoComoString();
 
 private:
@@ -2862,31 +2862,33 @@ void ArbolClientes::MostrarCl()
    }
 }
 
-bool ArbolClientes::ExisteCl(int codigo) {
+bool ArbolClientes::ExisteCl(string codigo) {
     if (ArbolVacio()) {
         cout << "La lista est? vac?a." << endl;
         return false;
     }
-
-    std::stringstream ss1;
-    ss1 << codigo;
-    string num1 = ss1.str();
-    string codigosBuscados = num1 + ";";
+    
     pnodoCl aux = primero;
     bool encontrado = false;
+    int i = 0;
 
-    while (aux != NULL) {
-        if (aux->valor.find(codigosBuscados) != string::npos) {
+    while (i < largoLista()) {
+        if (aux->valor.find(codigo) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
             string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
             return true;
+            break;
         }
         aux = aux->siguiente;
+        i ++;
     }
 
-    return false;
+    if (!encontrado) {
+        return false;
+    }
 }
+
 
 
 
@@ -3570,8 +3572,13 @@ void cola::Agregar(ArbolProducto &arbolProducto, ArbolClientes &arbolClientes, L
         int codigo2;
         cout << "Digite el n?mero de c?dula del cliente: ";
         cin >> codigo2;
+		std::stringstream ss1;
+		ss1 << codigo2;
+		
+		string num1 = ss1.str();
+        
 
-        if (arbolClientes.ExisteCl(codigo2)) {
+        if (arbolClientes.ExisteCl(num1)) {
             cout << "Cliente encontrado de manera exitosa" << endl;
             std::stringstream ss10;
             ss10 << codigo2;
@@ -3580,11 +3587,12 @@ void cola::Agregar(ArbolProducto &arbolProducto, ArbolClientes &arbolClientes, L
             if (VerificarNumeroEnCola(num10)) {
                 // El cliente ya existe en la cola, no es necesario insertarlo nuevamente.
                 ListaCompras.AgregarCompra(arbolProducto, num10);
+                ListaCompras.AgregarCompra(arbolProducto, num10);
             } else {
                 // El cliente no est? en la cola, lo insertamos y luego agregamos la compra.
                 string entrada = num10 + ";";
-                int posicion = fondo + 1;  // Siguiente posici?n disponible en la cola
-                insertar(entrada);  // Agregar el cliente en la siguiente posici?n
+                int posicion = fondo + 1;  
+                insertar(entrada);  
                 cout << "Se procede a agregar el ArbolProducto" << endl;
                 ListaCompras.AgregarCompra(arbolProducto, num10);
             }
