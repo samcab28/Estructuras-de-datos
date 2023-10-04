@@ -40,10 +40,10 @@ public:
     ArbolPais() { primero = NULL; }
     ~ArbolPais();
 
-    void InsertarFinal(string v);
+    void agregarNodo(string v);
     bool ArbolVacio() { return primero == NULL; }
     void Mostrar();
-    int largoLista();
+    int cantNodos();
     void Paises();
     void CargarDesdeArchivo();
     void AgregarPais();
@@ -75,7 +75,7 @@ void ArbolPais::ModificarNombre() {
 
     string newName;
     cout << "Digite el nuevo nombre" << endl;
-    cin.ignore();  // Clear the newline character from the buffer
+    cin.ignore();  
     getline(cin, newName);
 
     pnodo aux = primero;
@@ -83,10 +83,10 @@ void ArbolPais::ModificarNombre() {
     while (aux) {
         size_t pos = aux->valor.find(';');
         if (pos != string::npos) {
-            int codigoEnLista;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+            int codigoEnArbol;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
 
-            if (codigoEnLista == code) {
+            if (codigoEnArbol == code) {
 			    std::stringstream sscode;
 			    sscode << code;
 			
@@ -119,13 +119,13 @@ void ArbolPais::ConsultarPaisPorCodigo() {
     while (aux) {
         size_t pos = aux->valor.find(';');
         if (pos != string::npos) {
-            int codigoEnLista;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+            int codigoEnArbol;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
 
-            if (codigoEnLista == codigo) {
+            if (codigoEnArbol == codigo) {
                 encontrado = true;
                 string nombre = aux->valor.substr(pos + 1);
-                cout << "Codigo: " << codigoEnLista << endl;
+                cout << "Codigo: " << codigoEnArbol << endl;
                 cout << "Nombre: " << nombre << endl;
                 break;
             }
@@ -155,10 +155,10 @@ void ArbolPais::AgregarPais()
     while (aux) {
         size_t pos = aux->valor.find(';');
         if (pos != string::npos) {
-            int codigoEnLista;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+            int codigoEnArbol;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
 
-            if (codigoEnLista == codigo) {
+            if (codigoEnArbol == codigo) {
                 codigoExistente = true;
                 cout << "Error: Ya existe un pais con el codigo " << codigo << "." << endl;
                 break;
@@ -174,7 +174,7 @@ void ArbolPais::AgregarPais()
         string codigoStr = ss.str();
 
         string pais = codigoStr + ";" + nombre;
-        InsertarFinal(pais);
+        agregarNodo(pais);
         cout << "Pais agregado exitosamente." << endl;
     }
 }
@@ -200,9 +200,9 @@ void ArbolPais::CargarDesdeArchivo()
             while (aux) {
                 size_t posAux = aux->valor.find(';');
                 if (posAux != string::npos) {
-                    string codigoEnLista = aux->valor.substr(0, posAux);
+                    string codigoEnArbol = aux->valor.substr(0, posAux);
                     
-                    if (codigoEnLista == codigo) {
+                    if (codigoEnArbol == codigo) {
                         existe = true;
                         cout << "Pais con codigo " << codigo << " ya existe en el arbol." << endl;
                         break;
@@ -212,7 +212,7 @@ void ArbolPais::CargarDesdeArchivo()
             }
             
             if (!existe) {
-                InsertarFinal(codigo + ";" + nombre);
+                agregarNodo(codigo + ";" + nombre);
             }
         }
     }
@@ -293,7 +293,7 @@ ArbolPais::~ArbolPais()
    primero=NULL;
 }
 
-int ArbolPais::largoLista(){
+int ArbolPais::cantNodos(){
     int cont=0;
 
     pnodo aux;
@@ -310,7 +310,7 @@ int ArbolPais::largoLista(){
     
 }
 
-void ArbolPais::InsertarFinal(string v)
+void ArbolPais::agregarNodo(string v)
 {
    if (ArbolVacio())
    {
@@ -354,7 +354,7 @@ bool ArbolPais::Existe(int codigo) {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -417,13 +417,13 @@ public:
     ArbolCiudad() { primero = NULL; }
     ~ArbolCiudad();
 
-    void InsertarInicio(string v);
-    void InsertarFinal(string v);
+    void agregarNodoIn(string v);
+    void agregarNodo(string v);
     void InsertarPos(string v, int pos);
     bool ArbolVacio() { return primero == NULL; }
     void Imprimir();
     void MostrarCIU();
-    int largoLista();
+    int cantNodos();
     void CargarDesdeArchivoCIU();
     void ArbolCiudadsCIU(ArbolPais & arbolPais);
     void ComprobacionCIU();
@@ -441,14 +441,14 @@ string ArbolCiudad::MostrarArbolCiudadesPorPais() {
 	cin >> codigoPais;
 	string memoria;
     if (ArbolVacio()) {
-        cout << "El arbol de ArbolCiudades esta vacio." << endl;
+        cout << "El arbol de Ciudades esta vacio." << endl;
         return "Arbol vacio";
     }
 
     pnodoCIU aux = primero;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigoPais) != string::npos) {
             cout << aux->valor << endl;
             memoria += aux -> valor + "; // ";
@@ -486,7 +486,7 @@ void ArbolCiudad::ModificarNombreCIU() {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
 			cout<<"codigo encontrado"<<endl;
@@ -513,12 +513,12 @@ void ArbolCiudad::AgregarCIU(ArbolPais & arbolPais){
 	cout<<"agregar ArbolCiudades"<<endl;
 	cout<<"A continuacion se muestran los paises disponibles: "<<endl;		
 	arbolPais.Mostrar();
-	cout<<"para agregar ArbolCiudades, se debe de verificar la existencia del pais, digite el numero de pais"<<endl;
+	cout<<"para agregar Ciudades, se debe de verificar la existencia del pais, digite el numero de pais"<<endl;
 	cin>>NumPais;
 	if(arbolPais.Existe(NumPais)){
 		cout<<"el pais si existe, se procede a agregar"<<endl;
 		int codigoArbolCiudad;
-		cout<<"digite el codigo de la ArbolCiudad"<<endl;
+		cout<<"digite el codigo de la Ciudad"<<endl;
 		cin >> codigoArbolCiudad;
 		
 	    std::stringstream ss1,ss2;
@@ -528,11 +528,11 @@ void ArbolCiudad::AgregarCIU(ArbolPais & arbolPais){
 	    string num2 = ss2.str();
 	    
 		string NombreNuevo;
-		cout<<"digite el nombre de la ArbolCiudad"<<endl;
+		cout<<"digite el nombre de la Ciudad"<<endl;
 		cin >> NombreNuevo;
 	
 		string NuevoValor = num1 + ";" + num2 + ";" + NombreNuevo;
-		InsertarFinal(NuevoValor);
+		agregarNodo(NuevoValor);
 	
 	}else{
 		cout<<"el pais no existe, No se agrega"<<endl;
@@ -544,14 +544,14 @@ void ArbolCiudad::AgregarCIU(ArbolPais & arbolPais){
 void ArbolCiudad::ArbolCiudadsCIU(ArbolPais & arbolPais)
 {
 	bool ejecucion = true;
-	cout<<"bienvenido a ArbolCiudades"<<endl;
+	cout<<"bienvenido a Ciudades"<<endl;
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"consultar ArbolCiudades digite 1: "<<endl;
-		cout<<"ver ArbolCiudades digite 2: "<<endl;
-		cout<<"agregar un ArbolCiudad digite 3:"<<endl;
-		cout<<"modificar una ArbolCiudad digite 4:"<<endl;
+		cout<<"consultar Ciudades digite 1: "<<endl;
+		cout<<"ver Ciudades digite 2: "<<endl;
+		cout<<"agregar un Ciudad digite 3:"<<endl;
+		cout<<"modificar una Ciudad digite 4:"<<endl;
 		cout<<"salir digite 5: "<<endl;
 		int x;
 		
@@ -562,33 +562,33 @@ void ArbolCiudad::ArbolCiudadsCIU(ArbolPais & arbolPais)
 		{
 			case 1:
 				cout<<""<<endl;
-				cout<<"opcion 1, consultar un ArbolCiudad"<<endl;
-				cout<<"ArbolCiudads disponibles: "<<endl;
+				cout<<"opcion 1, consultar un Ciudad"<<endl;
+				cout<<"Ciudads disponibles: "<<endl;
 				MostrarCIU();
 				ComprobacionCIU();
 				break;
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2, ver todos los ArbolCiudads"<<endl;
-				cout<<"se mostraran todos los ArbolCiudads a continuacion: "<<endl;
+				cout<<"opcion 2, ver todos los Ciudads"<<endl;
+				cout<<"se mostraran todos los Ciudads a continuacion: "<<endl;
 				MostrarCIU();
 				break;		
 			case 3:
 				cout<<""<<endl;
-				cout<<"opcion 3, agregar un ArbolCiudad"<<endl;
+				cout<<"opcion 3, agregar un Ciudad"<<endl;
 				AgregarCIU(arbolPais);
 
 				break;			
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, modificar nombre ArbolCiudad"<<endl;
-				cout<<"ArbolCiudades disponibles"<<endl;
+				cout<<"opcion 4, modificar nombre Ciudad"<<endl;
+				cout<<"Ciudades disponibles"<<endl;
 				MostrarCIU();
 				ModificarNombreCIU();	
 				break;
 			case 5:
 				cout<<""<<endl;
-				cout<<"opcion 5, salir a ArbolMenu principal"<<endl;
+				cout<<"opcion 5, salir a Menu principal"<<endl;
 				ejecucion = false;	
 				break;				
 			default:
@@ -626,7 +626,7 @@ void ArbolCiudad::ComprobacionCIU() {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
 
@@ -667,11 +667,11 @@ void ArbolCiudad::CargarDesdeArchivoCIU() {
             {
                 numero2_set.insert(numero2);  // Agregar a conjunto de NUMERO3
                 string nuevo_valor = numero1 + ";" + numero2 +  ";" + nombre;
-                InsertarFinal(nuevo_valor);
+                agregarNodo(nuevo_valor);
             }
             else
             {
-                cout << "Advertencia: NUMERO2 debe ser diferente a los otros NUMERO2 anteriores." << endl;
+                cout << "Advertencia: NUMERO debe ser diferente a los otros NUMERO anteriores." << endl;
             }
         }
         archivo.close();
@@ -701,7 +701,7 @@ ArbolCiudad::~ArbolCiudad()
    primero= NULL;
 }
                         
-int ArbolCiudad::largoLista() 
+int ArbolCiudad::cantNodos() 
 {
     int cont=0;
 
@@ -722,7 +722,7 @@ int ArbolCiudad::largoLista()
     
 }
 
-void ArbolCiudad::InsertarFinal(string v)
+void ArbolCiudad::agregarNodo(string v)
 {
    if (ArbolVacio())
      {
@@ -766,7 +766,7 @@ bool ArbolCiudad::ExisteCIU(string codigo) {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigo) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -827,13 +827,13 @@ public:
     ArbolRestaurante() { primero = NULL; }
     ~ArbolRestaurante();
 
-    void InsertarInicio(string v);
-    void InsertarFinal(string v);
+    void agregarNodoIn(string v);
+    void agregarNodo(string v);
     void InsertarPos(string v, int pos);
     bool ArbolVacio() { return primero == NULL; }
     void Imprimir();
     void MostrarRE();
-    int largoLista();
+    int cantNodos();
     void CargarDesdeArchivoRE();
     void ArbolRestaurantesRE(ArbolCiudad & arbolCiudad);
     void ComprobacionRE();
@@ -909,7 +909,7 @@ string ArbolRestaurante::MostrarArbolRestaurantesPorArbolCiudad() {
     pnodoRE aux = primero;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
         	memoria += aux -> valor + "; // ";
             cout << aux->valor << endl;
@@ -958,7 +958,7 @@ void ArbolRestaurante::agregarRE(ArbolCiudad & arbolCiudad){
 		cin >> NombreNuevo;
 	
 		string NuevoValor = codigosBuscados + ";" + num1a + ";" + NombreNuevo;
-		InsertarFinal(NuevoValor);
+		agregarNodo(NuevoValor);
 	
 	}else{
 		cout<<"el pais no existe, No se agrega"<<endl;
@@ -996,7 +996,7 @@ void ArbolRestaurante::ModificarNombreRE() {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
 			cout<<"codigo encontrado"<<endl;
@@ -1138,7 +1138,7 @@ void ArbolRestaurante::ComprobacionRE() {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -1195,7 +1195,7 @@ void ArbolRestaurante::CargarDesdeArchivoRE() {
             {
                 numero3_set.insert(numero3);  // Agregar a conjunto de NUMERO3
                 string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + nombre + +";"+"0";
-                InsertarFinal(nuevo_valor);
+                agregarNodo(nuevo_valor);
             }
             else
             {
@@ -1229,7 +1229,7 @@ ArbolRestaurante::~ArbolRestaurante()
    primero= NULL;
 }
                            
-int ArbolRestaurante::largoLista() 
+int ArbolRestaurante::cantNodos() 
 {
     int cont=0;
 
@@ -1250,7 +1250,7 @@ int ArbolRestaurante::largoLista()
     
 }
  
-void ArbolRestaurante::InsertarFinal(string v)
+void ArbolRestaurante::agregarNodo(string v)
 {
    if (ArbolVacio())
      {
@@ -1295,7 +1295,7 @@ bool ArbolRestaurante::ExisteRE(string codigo) {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigo) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -1349,13 +1349,13 @@ public:
     ArbolMenu() { primero = NULL; }
     ~ArbolMenu();
 
-    void InsertarInicio(string v);
-    void InsertarFinal(string v);
+    void agregarNodoIn(string v);
+    void agregarNodo(string v);
     void InsertarPos(string v, int pos);
     bool ArbolVacio() { return primero == NULL; }
     void Imprimir();
     void MostrarME();
-    int largoLista();
+    int cantNodos();
     void CargarDesdeArchivoME();
     void ArbolMenusME(ArbolRestaurante & arbolRestaurante);
     void ComprobacionME();
@@ -1479,7 +1479,7 @@ void ArbolMenu::AgregarME(ArbolRestaurante & arbolRestaurante){
 		cin >> NombreNuevo;
 	
 		string NuevoValor = codigosBuscados + ";" + num1a + ";" + NombreNuevo;
-		InsertarFinal(NuevoValor);
+		agregarNodo(NuevoValor);
 	
 	}else{
 		cout<<"no existe, No se agrega"<<endl;
@@ -1522,7 +1522,7 @@ void ArbolMenu::ModificarNombreME() {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
 			cout<<"codigo encontrado"<<endl;
@@ -1644,7 +1644,7 @@ void ArbolMenu::ComprobacionME() {
     bool encontrado = false;
     int i =0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -1703,7 +1703,7 @@ void ArbolMenu::CargarDesdeArchivoME() {
             {
                 numero4_set.insert(numero4);  // Agregar a conjunto de NUMERO3
                 string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4+ ";" + nombre + ";" + "0";
-                InsertarFinal(nuevo_valor);
+                agregarNodo(nuevo_valor);
             }
             else
             {
@@ -1737,7 +1737,7 @@ ArbolMenu::~ArbolMenu()
    primero= NULL;
 }
                            
-int ArbolMenu::largoLista() 
+int ArbolMenu::cantNodos() 
 {
     int cont=0;
 
@@ -1758,7 +1758,7 @@ int ArbolMenu::largoLista()
     
 }
 
-void ArbolMenu::InsertarFinal(string v)
+void ArbolMenu::agregarNodo(string v)
 {
    if (ArbolVacio())
      {
@@ -1802,7 +1802,7 @@ bool ArbolMenu::ExisteME(string codigo) {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigo) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -1850,13 +1850,13 @@ public:
     ArbolProducto() { primero = NULL; }
     ~ArbolProducto();
 
-    void InsertarInicio(string v);
-    void InsertarFinal(string v);
+    void agregarNodoIn(string v);
+    void agregarNodo(string v);
     void InsertarPos(string v, int pos);
     bool ArbolVacio() { return primero == NULL; }
     void Imprimir();
     void MostrarPRO();
-    int largoLista();
+    int cantNodos();
     void CargarDesdeArchivoPRO();
     void ArbolProductosPRO(ArbolMenu & arbolMenu);
     void ComprobacionPRO();
@@ -1979,7 +1979,7 @@ void ArbolProducto::ModificarNombrePRO() {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
 			cout<<"codigo encontrado"<<endl;
@@ -2131,7 +2131,7 @@ void ArbolProducto::AgregarPRO(ArbolMenu & arbolMenu){
 		string precioString = ss2b.str();
 	
 		string NuevoValor = codigosBuscados + ";" + codigo1a + ";" + NombreNuevo + ";" + caloriaString + ";" + precioString + ";" + "20" + ";" + "0";
-		InsertarFinal(NuevoValor);
+		agregarNodo(NuevoValor);
 	
 	}else{
 		cout<<"no existe, No se agrega"<<endl;
@@ -2181,7 +2181,7 @@ void ArbolProducto::ComprobacionPRO() {
     bool encontrado = false;
     int i = 0;
 
-	while (i <= largoLista()) {
+	while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -2269,7 +2269,7 @@ void ArbolProducto::CargarDesdeArchivoPRO() {
             {
                 numero4_set.insert(numero4);  // Agregar a conjunto de NUPRORO3
                 string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4+ ";"+ numero5+ ";" + nombre +";" + numero6 + ";" + numero7 +";" + "20" + ";"  + "0";
-                InsertarFinal(nuevo_valor);
+                agregarNodo(nuevo_valor);
             }
             else
             {
@@ -2303,7 +2303,7 @@ ArbolProducto::~ArbolProducto()
    primero= NULL;
 }
                           
-int ArbolProducto::largoLista() 
+int ArbolProducto::cantNodos() 
 {
     int cont=0;
 
@@ -2324,7 +2324,7 @@ int ArbolProducto::largoLista()
     
 }
 
-void ArbolProducto::InsertarFinal(string v)
+void ArbolProducto::agregarNodo(string v)
 {
    if (ArbolVacio())
      {
@@ -2365,7 +2365,7 @@ bool ArbolProducto::ExistePRO(string codigo) {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigo) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -2391,7 +2391,7 @@ string ArbolProducto::muestraCantidad(string codigosBuscados) {
     bool encontrado = false;
     int i = 0;
 
-	while (i <= largoLista()) {
+	while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -2442,7 +2442,7 @@ bool ArbolProducto::ModificarCantidadPro(string codigosBuscados, int resta){
     bool encontrado = false;
     int i = 0;
 	string nuevo;
-	while (i <= largoLista()) {
+	while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -2553,10 +2553,10 @@ public:
     ArbolClientes() { primero = NULL; }
     ~ArbolClientes();
 
-    void InsertarFinal(string v);
+    void agregarNodo(string v);
     bool ArbolVacio() { return primero == NULL; }
     void MostrarCl();
-    int largoLista();
+    int cantNodos();
     void CargarDesdeArchivoCl();
     void ConsultarClientePorCodigoCl();
     void ArbolClientesCl();
@@ -2602,10 +2602,10 @@ void ArbolClientes::ModificarNombreCL() {
     while (aux) {
         size_t pos = aux->valor.find(';');
         if (pos != string::npos) {
-            int codigoEnLista;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+            int codigoEnArbol;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
 
-            if (codigoEnLista == code) {
+            if (codigoEnArbol == code) {
 			    std::stringstream sscode;
 			    sscode << code;
 			
@@ -2698,10 +2698,10 @@ void ArbolClientes::AgregarClienteCl()
     while (aux) {
         size_t pos = aux->valor.find(';');
         if (pos != string::npos) {
-            int codigoEnLista;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+            int codigoEnArbol;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
 
-            if (codigoEnLista == codigo) {
+            if (codigoEnArbol == codigo) {
                 codigoExistente = true;
                 cout << "Error: Ya existe un cliente con la misma cedula " << codigo << "." << endl;
                 break;
@@ -2717,7 +2717,7 @@ void ArbolClientes::AgregarClienteCl()
         string codigoStr = ss.str();
 
         string pais = codigoStr + ";" + nombre;
-        InsertarFinal(pais);
+        agregarNodo(pais);
         cout << "cliente agregado exitosamente." << endl;
     }
 }
@@ -2739,13 +2739,13 @@ void ArbolClientes::ConsultarClientePorCodigoCl() {
     while (aux) {
         size_t pos = aux->valor.find(';');
         if (pos != string::npos) {
-            int codigoEnLista;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+            int codigoEnArbol;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
 
-            if (codigoEnLista == codigo) {
+            if (codigoEnArbol == codigo) {
                 encontrado = true;
                 string nombre = aux->valor.substr(pos + 1);
-                cout << "Codigo: " << codigoEnLista << endl;
+                cout << "Codigo: " << codigoEnArbol << endl;
                 cout << "Nombre: " << nombre << endl;
                 break;
             }
@@ -2779,9 +2779,9 @@ void ArbolClientes::CargarDesdeArchivoCl()
             while (aux) {
                 size_t posAux = aux->valor.find(';');
                 if (posAux != string::npos) {
-                    string codigoEnLista = aux->valor.substr(0, posAux);
+                    string codigoEnArbol = aux->valor.substr(0, posAux);
                     
-                    if (codigoEnLista == codigo) {
+                    if (codigoEnArbol == codigo) {
                         existe = true;
                         cout << "Cliente con cedula:  " << codigo << " ya existe en el arbol." << endl;
                         break;
@@ -2791,7 +2791,7 @@ void ArbolClientes::CargarDesdeArchivoCl()
             }
             
             if (!existe) {
-                InsertarFinal(codigo + ";" + nombre);
+                agregarNodo(codigo + ";" + nombre);
                 cout << "Cliente con cedula: " << codigo << " agregado exitosamente." << endl;
             }
         }
@@ -2811,7 +2811,7 @@ ArbolClientes::~ArbolClientes() {
     primero = NULL;
 }
 
-int ArbolClientes::largoLista(){
+int ArbolClientes::cantNodos(){
     int cont=0;
 
     pnodoCl aux= primero;
@@ -2828,7 +2828,7 @@ int ArbolClientes::largoLista(){
     
 }
 
-void ArbolClientes::InsertarFinal(string v)//76
+void ArbolClientes::agregarNodo(string v)//76
 {
    if (ArbolVacio())
      primero = new nodoCl(v);
@@ -2872,7 +2872,7 @@ bool ArbolClientes::ExisteCl(string codigo) {
     bool encontrado = false;
     int i = 0;
 
-    while (i < largoLista()) {
+    while (i < cantNodos()) {
         if (aux->valor.find(codigo) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -2924,12 +2924,12 @@ public:
     ListaCOM() { primero = NULL; }
     ~ListaCOM();
 
-    void InsertarFinal(string v);
+    void agregarNodo(string v);
     bool ArbolVacio() { return primero == NULL; }
     void BorrarFinal();
     void BorrarInicio();
     void MostrarCompra();
-    int largoLista();
+    int cantNodos();
     void Paises();
     void AgregarCompra(ArbolProducto & arbolProducto, string valor);
     void ConsultarPaisPorCodigo();
@@ -2997,10 +2997,10 @@ void ListaCOM::ModificarNombre() {
     while (aux) {
         size_t pos = aux->valor.find(';');
         if (pos != string::npos) {
-            int codigoEnLista;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+            int codigoEnArbol;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
 
-            if (codigoEnLista == code) {
+            if (codigoEnArbol == code) {
 			    std::stringstream sscode;
 			    sscode << code;
 			
@@ -3033,13 +3033,13 @@ void ListaCOM::ConsultarPaisPorCodigo() {
     while (aux) {
         size_t pos = aux->valor.find(';');
         if (pos != string::npos) {
-            int codigoEnLista;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+            int codigoEnArbol;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
 
-            if (codigoEnLista == codigo) {
+            if (codigoEnArbol == codigo) {
                 encontrado = true;
                 string nombre = aux->valor.substr(pos + 1);
-                cout << "Codigo: " << codigoEnLista << endl;
+                cout << "Codigo: " << codigoEnArbol << endl;
                 cout << "Nombre: " << nombre << endl;
                 break;
             }
@@ -3064,10 +3064,10 @@ void ListaCOM::BorrarPaisPorCodigo(int codigo) {
     while (aux) {
         size_t pos = aux->valor.find(';');
         if (pos != string::npos) {
-            int codigoEnLista;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
+            int codigoEnArbol;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
 
-            if (codigoEnLista == codigo) {
+            if (codigoEnArbol == codigo) {
                 encontrado = true;
                 if (aux == primero) {
                     BorrarInicio();
@@ -3189,7 +3189,7 @@ void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor) {
     	if(arbolProducto.ModificarCantidadPro(codigosBuscados,cantidad)){
 	        cout << "ArbolProducto encontrado y agregado de manera exitosa al cliente " << endl;
 	        string entrada2 = valor +";"+ codigosBuscados;
-	        InsertarFinal(entrada2);
+	        agregarNodo(entrada2);
 	        MostrarCompra();	
 		}
 
@@ -3210,7 +3210,7 @@ ListaCOM::~ListaCOM()
    primero=NULL;
 }
 
-int ListaCOM::largoLista(){
+int ListaCOM::cantNodos(){
     int cont=0;
 
     pnodoCOM aux;
@@ -3227,7 +3227,7 @@ int ListaCOM::largoLista(){
     
 }
 
-void ListaCOM::InsertarFinal(string v)
+void ListaCOM::agregarNodo(string v)
 {
    if (ArbolVacio())
    {
@@ -3321,7 +3321,7 @@ bool ListaCOM::Existe(int codigo) {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= largoLista()) {
+    while (i <= cantNodos()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
