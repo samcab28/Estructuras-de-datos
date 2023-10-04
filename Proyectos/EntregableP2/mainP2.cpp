@@ -105,7 +105,7 @@ void ArbolPais::ModificarNombre() {
 
 void ArbolPais::ConsultarPaisPorCodigo() {
     if (ArbolVacio()) {
-        cout << "La lista esta vacia." << endl;
+        cout << "El arbol esta vacio" << endl;
         return;
     }
 
@@ -134,7 +134,7 @@ void ArbolPais::ConsultarPaisPorCodigo() {
     }
 
     if (!encontrado) {
-        cout << "No se encontro un pais con el codigo " << codigo << " en la lista." << endl;
+        cout << "No se encontro un pais con el codigo " << codigo << " en el arbol." << endl;
     }
 }
 
@@ -204,7 +204,7 @@ void ArbolPais::CargarDesdeArchivo()
                     
                     if (codigoEnLista == codigo) {
                         existe = true;
-                        cout << "Pais con codigo " << codigo << " ya existe en la lista." << endl;
+                        cout << "Pais con codigo " << codigo << " ya existe en el arbol." << endl;
                         break;
                     }
                 }
@@ -262,7 +262,7 @@ void ArbolPais::Paises()
 				break;			
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4 modoficar nombre:"<<endl;
+				cout<<"opcion 4 modificar nombre:"<<endl;
 				cout<<"paises disponibles: "<<endl;
 				Mostrar();
 				ModificarNombre();
@@ -342,7 +342,7 @@ void ArbolPais::Mostrar()
 
 bool ArbolPais::Existe(int codigo) {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "El arbol ABB esta vacio" << endl;
         return false;
     }
 
@@ -441,8 +441,8 @@ string ArbolCiudad::MostrarArbolCiudadesPorPais() {
 	cin >> codigoPais;
 	string memoria;
     if (ArbolVacio()) {
-        cout << "La lista de ArbolCiudades esta vacia." << endl;
-        return "lista vacia";
+        cout << "El arbol de ArbolCiudades esta vacio." << endl;
+        return "Arbol vacio";
     }
 
     pnodoCIU aux = primero;
@@ -463,7 +463,7 @@ string ArbolCiudad::MostrarArbolCiudadesPorPais() {
 
 void ArbolCiudad::ModificarNombreCIU() {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "El arbol AVL esta vacio" << endl;
         return;
     }
 
@@ -503,7 +503,7 @@ void ArbolCiudad::ModificarNombreCIU() {
     }
 
     if (encontrado == false) {
-        cout << "No se encontraron los codigos en la lista." << endl;
+        cout << "No se encontraron los codigos en el arbol" << endl;
     }
 
 }
@@ -603,7 +603,7 @@ void ArbolCiudad::ArbolCiudadsCIU(ArbolPais & arbolPais)
 
 void ArbolCiudad::ComprobacionCIU() {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "El arbol AVL esta vacio" << endl;
         return;
     }
 
@@ -633,7 +633,7 @@ void ArbolCiudad::ComprobacionCIU() {
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
             string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
 
-            cout << "Codigos encontrados en la lista: " << codigosBuscados << endl;
+            cout << "Codigos encontrados en el arbol: " << codigosBuscados << endl;
             cout << "Nombre asociado: " << nombre << endl;
             break;
         }
@@ -642,7 +642,7 @@ void ArbolCiudad::ComprobacionCIU() {
     }
 
     if (encontrado == false) {
-        cout << "No se encontraron los codigos en la lista." << endl;
+        cout << "No se encontraron los codigos en el arbol." << endl;
     }
 }
 
@@ -758,7 +758,7 @@ void ArbolCiudad::MostrarCIU()
 
 bool ArbolCiudad::ExisteCIU(string codigo) {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "El arbol esta vacio" << endl;
         return false;
     }
     
@@ -850,7 +850,7 @@ private:
 
 string ArbolRestaurante::EncontrarValorMayorPedido() {
     if (ArbolVacio()) {
-        cout << "La lista de ArbolRestaurantes est? vac?a." << endl;
+        cout << "El arbol de ArbolRestaurantes esta vacio." << endl;
         return "lista vacia";
     }
 
@@ -902,7 +902,7 @@ string ArbolRestaurante::MostrarArbolRestaurantesPorArbolCiudad() {
     
     string memoria;
     if (ArbolVacio()) {
-        cout << "La lista de ArbolRestaurantes esta vacia." << endl;
+        cout << "El arbol de ArbolRestaurantes esta vacio." << endl;
         return "lista vacia";
     }
 
@@ -968,7 +968,7 @@ void ArbolRestaurante::agregarRE(ArbolCiudad & arbolCiudad){
 
 void ArbolRestaurante::ModificarNombreRE() {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "El arbol esta vacio" << endl;
         return;
     }
 
@@ -1013,7 +1013,7 @@ void ArbolRestaurante::ModificarNombreRE() {
     }
 
     if (encontrado == false) {
-        cout << "No se encontraron los codigos en la lista." << endl;
+        cout << "No se encontraron los codigos en el arbol." << endl;
     }
 
 }
@@ -1110,7 +1110,7 @@ int ArbolRestaurante::stringAEnteroRE(const std::string &cadena) {
 
 void ArbolRestaurante::ComprobacionRE() {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a" << endl;
+        cout << "El arbol esta vacio" << endl;
         return;
     }
 
@@ -1158,7 +1158,7 @@ void ArbolRestaurante::ComprobacionRE() {
                 string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
                 aux->valor = nuevoValor;
 
-                cout << "Codigos encontrados en la lista: " << codigosBuscados << endl;
+                cout << "Codigos encontrados en el arbol: " << codigosBuscados << endl;
                 cout << "Nuevo valor asociado: " << nuevoValor << endl;
             } else {
                 cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
@@ -1170,7 +1170,7 @@ void ArbolRestaurante::ComprobacionRE() {
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los c?digos en la lista." << endl;
+        cout << "No se encontraron los c?digos en el arbol." << endl;
     }
 }
 
@@ -1287,7 +1287,7 @@ void ArbolRestaurante::MostrarRE()
 
 bool ArbolRestaurante::ExisteRE(string codigo) {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "El arbol esta vacio" << endl;
         return false;
     }
     
@@ -1370,8 +1370,8 @@ private:
 
 string ArbolMenu::EncontrarValorMayorPedido() {
     if (ArbolVacio()) {
-        cout << "La lista de ArbolMenu esta vacia." << endl;
-        return "lista vacia";
+        cout << "El arbol de ArbolMenu esta vacio." << endl;
+        return "Arbol vacio";
     }
 
     pnodoME aux = primero;
@@ -1489,7 +1489,7 @@ void ArbolMenu::AgregarME(ArbolRestaurante & arbolRestaurante){
 
 void ArbolMenu::ModificarNombreME() {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "El arbol esta vacio" << endl;
         return;
     }
 
@@ -1539,7 +1539,7 @@ void ArbolMenu::ModificarNombreME() {
     }
 
     if (encontrado == false) {
-        cout << "No se encontraron los codigos en la lista." << endl;
+        cout << "No se encontraron los codigos en el arbol" << endl;
     }
 
 } 
@@ -1611,7 +1611,7 @@ void ArbolMenu::ArbolMenusME(ArbolRestaurante & arbolRestaurante)
 
 void ArbolMenu::ComprobacionME() {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "El arbol esta vacio" << endl;
         return;
     }
 
@@ -1664,7 +1664,7 @@ void ArbolMenu::ComprobacionME() {
                 string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
                 aux->valor = nuevoValor;
 
-                cout << "Codigos encontrados en la lista: " << codigosBuscados << endl;
+                cout << "Codigos encontrados en el arbol: " << codigosBuscados << endl;
                 cout << "Nuevo valor asociado: " << nuevoValor << endl;
             } else {
                 cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
@@ -1676,7 +1676,7 @@ void ArbolMenu::ComprobacionME() {
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los c?digos en la lista." << endl;
+        cout << "No se encontraron los c?digos en el arbol." << endl;
     }
 }
 
@@ -1794,7 +1794,7 @@ void ArbolMenu::MostrarME()
 
 bool ArbolMenu::ExisteME(string codigo) {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "El arbol esta vacio" << endl;
         return false;
     }
     
@@ -1873,8 +1873,8 @@ private:
 
 string ArbolProducto::EncontrarValorMayorPedido() {
     if (ArbolVacio()) {
-        cout << "La lista de ArbolMenu esta vacia." << endl;
-        return "lista vacia";
+        cout << "El arbol de ArbolMenu esta vacio." << endl;
+        return "arbol vacio";
     }
 
     pnodoPRO aux = primero;
@@ -1941,7 +1941,7 @@ int ArbolProducto::stringAEnteroPRO(const std::string &cadena) {
 
 void ArbolProducto::ModificarNombrePRO() {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "El arbol esta vacio" << endl;
         return;
     }
 
@@ -2009,7 +2009,7 @@ void ArbolProducto::ModificarNombrePRO() {
     }
 
     if (encontrado == false) {
-        cout << "No se encontraron los codigos en la lista." << endl;
+        cout << "No se encontraron los codigos en el arbol." << endl;
     }
 
 }
@@ -2143,7 +2143,7 @@ void ArbolProducto::AgregarPRO(ArbolMenu & arbolMenu){
 
 void ArbolProducto::ComprobacionPRO() {
     if (ArbolVacio()) {
-        cout << "La lista esta vacia." << endl;
+        cout << "El arbol esta vacio" << endl;
         return;
     }
 
@@ -2201,7 +2201,7 @@ void ArbolProducto::ComprobacionPRO() {
                 string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
                 aux->valor = nuevoValor;
 
-                cout << "Codigos encontrados en la lista: " << codigosBuscados << endl;
+                cout << "Codigos encontrados en el arbol: " << codigosBuscados << endl;
                 cout << "Nuevo valor asociado: " << nuevoValor << endl;
 			    std::string cadena = aux -> valor ;
 			    std::istringstream stream(cadena);
@@ -2239,7 +2239,7 @@ void ArbolProducto::ComprobacionPRO() {
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los c?digos en la lista." << endl;
+        cout << "No se encontraron los c?digos en el arbol." << endl;
     }
 }
 
@@ -2357,7 +2357,7 @@ void ArbolProducto::MostrarPRO()
 
 bool ArbolProducto::ExistePRO(string codigo) {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "El arbol esta vacio" << endl;
         return false;
     }
     
@@ -2384,8 +2384,8 @@ bool ArbolProducto::ExistePRO(string codigo) {
 
 string ArbolProducto::muestraCantidad(string codigosBuscados) {
     if (ArbolVacio()) {
-        cout << "La lista esta vacia." << endl;
-        return "lista vacia";
+        cout << "El arbol esta vacio" << endl;
+        return "ARBOL VACIO";
     }
     pnodoPRO aux = primero;
     bool encontrado = false;
@@ -2433,7 +2433,7 @@ string ArbolProducto::muestraCantidad(string codigosBuscados) {
     }
 
     if (!encontrado) {
-        return "no se encontro codigo en la lista";
+        return "no se encontro codigo en el arbol";
     }
 }
 
@@ -2510,7 +2510,7 @@ bool ArbolProducto::ModificarCantidadPro(string codigosBuscados, int resta){
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los c?digos en la lista." << endl;
+        cout << "No se encontraron los c?digos en el arbol." << endl;
         return false;
     }
 }
@@ -2725,7 +2725,7 @@ void ArbolClientes::AgregarClienteCl()
 
 void ArbolClientes::ConsultarClientePorCodigoCl() {
     if (ArbolVacio()) {
-        cout << "La lista esta vacia." << endl;
+        cout << "El arbol esta vacio" << endl;
         return;
     }
 
@@ -2754,7 +2754,7 @@ void ArbolClientes::ConsultarClientePorCodigoCl() {
     }
 
     if (!encontrado) {
-        cout << "No se encontro un pais con el codigo " << codigo << " en la lista." << endl;
+        cout << "No se encontro un pais con el codigo " << codigo << " en el codigo." << endl;
     }
 }
 
@@ -2783,7 +2783,7 @@ void ArbolClientes::CargarDesdeArchivoCl()
                     
                     if (codigoEnLista == codigo) {
                         existe = true;
-                        cout << "Cliente con cedula:  " << codigo << " ya existe en la lista." << endl;
+                        cout << "Cliente con cedula:  " << codigo << " ya existe en el arbol." << endl;
                         break;
                     }
                 }
@@ -2864,7 +2864,7 @@ void ArbolClientes::MostrarCl()
 
 bool ArbolClientes::ExisteCl(string codigo) {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
+        cout << "El arbol esta vacio" << endl;
         return false;
     }
     
