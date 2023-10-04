@@ -850,13 +850,13 @@ private:
 
 string ArbolRestaurante::EncontrarValorMayorPedido() {
     if (ArbolVacio()) {
-        cout << "El arbol de ArbolRestaurantes esta vacio." << endl;
+        cout << "El arbol de Restaurantes esta vacio." << endl;
         return "lista vacia";
     }
 
     pnodoRE aux = primero;
-    int valorMayor = -1;  // Inicializamos con un valor menor al m?nimo posible
-    pnodoRE nodoMayor = NULL;  // Nodo correspondiente al valor m?s alto
+    int valorMayor = -1;  
+    pnodoRE nodoMayor = NULL;  
 
     while (aux->siguiente != primero) {
         size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -882,10 +882,10 @@ string ArbolRestaurante::EncontrarValorMayorPedido() {
     }
 
     if (nodoMayor != NULL) {
-        cout << "Informacion del ArbolRestaurante: " << nodoMayor->valor << endl;
-        return "Informacion del ArbolRestaurante: " + nodoMayor->valor;
+        cout << "Informacion del Restaurante: " << nodoMayor->valor << endl;
+        return "Informacion del Restaurante: " + nodoMayor->valor;
     } else {
-        cout << "No se encontr? ning?n ArbolRestaurante con con consultas." << endl;
+        cout << "No se encontr? ning?n Restaurante con con consultas." << endl;
     }
 }
 
@@ -894,7 +894,7 @@ string ArbolRestaurante::MostrarArbolRestaurantesPorArbolCiudad() {
     string codigoPais;
     cin >> codigoPais;
 
-    cout << "Digite el codigo de ArbolCiudad: ";
+    cout << "Digite el codigo de Ciudad: ";
     string codigoArbolCiudad;
     cin >> codigoArbolCiudad;
 
@@ -902,8 +902,8 @@ string ArbolRestaurante::MostrarArbolRestaurantesPorArbolCiudad() {
     
     string memoria;
     if (ArbolVacio()) {
-        cout << "El arbol de ArbolRestaurantes esta vacio." << endl;
-        return "lista vacia";
+        cout << "El arbol de Restaurantes esta vacio." << endl;
+        return "arbol vacia";
     }
 
     pnodoRE aux = primero;
@@ -921,10 +921,10 @@ string ArbolRestaurante::MostrarArbolRestaurantesPorArbolCiudad() {
 }
 
 void ArbolRestaurante::agregarRE(ArbolCiudad & arbolCiudad){
-	cout<<"agregar ArbolCiudades"<<endl;
-	cout<<"A continuacion muestran paises y ArbolCiudades disponibles: "<<endl;		
+	cout<<"agregar Ciudades"<<endl;
+	cout<<"A continuacion muestran paises y Ciudades disponibles: "<<endl;		
 	arbolCiudad.MostrarCIU();
-	cout<<"para agregar ArbolRestaurantes, se debe de verificar la existencia del pais y ArbolCiudad, agregar sus codigos"<<endl;
+	cout<<"para agregar Restaurantes, se debe de verificar la existencia del pais y Ciudad, agregar sus codigos"<<endl;
     int codigo11, codigo21;
     cout << "Ingrese primer codigo: " << endl;
     cin >> codigo11;
@@ -943,9 +943,9 @@ void ArbolRestaurante::agregarRE(ArbolCiudad & arbolCiudad){
     
     
 	if(arbolCiudad.ExisteCIU(codigosBuscados)){
-		cout<<"el pais y ArbolCiudad si existes, se procede a agregar"<<endl;
+		cout<<"el pais y Ciudad si existes, se procede a agregar"<<endl;
 	    int codigo1a;
-	    cout << "Ingrese el codigo del nuevo ArbolRestaurante3: " << endl;
+	    cout << "Ingrese el codigo del nuevo Restaurante3: " << endl;
 	    cin >> codigo1a;
 
 	    std::stringstream ss1a;
@@ -954,7 +954,7 @@ void ArbolRestaurante::agregarRE(ArbolCiudad & arbolCiudad){
 	    string num1a = ss1.str();
 		    
 		string NombreNuevo;
-		cout<<"digite el nombre del ArbolRestaurante"<<endl;
+		cout<<"digite el nombre del Restaurante"<<endl;
 		cin >> NombreNuevo;
 	
 		string NuevoValor = codigosBuscados + ";" + num1a + ";" + NombreNuevo;
@@ -1021,14 +1021,14 @@ void ArbolRestaurante::ModificarNombreRE() {
 void ArbolRestaurante::ArbolRestaurantesRE(ArbolCiudad & listaArbolCiudad2)
 {
 	bool ejecucion = true;
-	cout<<"bienvenido a ArbolRestaurantes"<<endl;
+	cout<<"bienvenido a Restaurantes"<<endl;
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"consultar ArbolRestaurantes digite 1: "<<endl;
-		cout<<"ver ArbolRestaurantes digite 2: "<<endl;
-		cout<<"agregar un ArbolRestaurante digite 3:"<<endl;
-		cout<<"modificar un ArbolRestaurante digite 4:"<<endl;
+		cout<<"consultar Restaurantes digite 1: "<<endl;
+		cout<<"ver Restaurantes digite 2: "<<endl;
+		cout<<"agregar un Restaurante digite 3:"<<endl;
+		cout<<"modificar un Restaurante digite 4:"<<endl;
 		cout<<"para salir digite 5: "<<endl;
 		int x;
 		
@@ -1039,33 +1039,33 @@ void ArbolRestaurante::ArbolRestaurantesRE(ArbolCiudad & listaArbolCiudad2)
 		{
 			case 1:
 				cout<<""<<endl;
-				cout<<"opcion 1, consultar un ArbolRestaurante"<<endl;
-				cout<<"ArbolRestaurantes disponibles: "<<endl;
+				cout<<"opcion 1, consultar un Restaurante"<<endl;
+				cout<<"Restaurantes disponibles: "<<endl;
 				MostrarRE();
 				ComprobacionRE();
 				break;
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2, ver todos los ArbolRestaurantes"<<endl;
-				cout<<"se mostraran todos los ArbolRestaurantes a continuacion: "<<endl;
+				cout<<"opcion 2, ver todos los Restaurantes"<<endl;
+				cout<<"se mostraran todos los Restaurantes a continuacion: "<<endl;
 				MostrarRE();
 				break;		
 			case 3:
 				cout<<""<<endl;
-				cout<<"opcion 3, agregar un ArbolRestaurante"<<endl;
+				cout<<"opcion 3, agregar un Restaurante"<<endl;
 				agregarRE(listaArbolCiudad2);
 				break;			
 
 			case 4: 
 				cout<<""<<endl;
-				cout<<"opcion 4, modificar nombre ArbolRestaurante"<<endl;
+				cout<<"opcion 4, modificar nombre Restaurante"<<endl;
 				cout<<"codigos disponibles"<<endl;
 				MostrarRE();
 				ModificarNombreRE();	
 				break;
 			case 5:
 				cout<<""<<endl;
-				cout<<"opcion 5, salir a ArbolMenu principal"<<endl;
+				cout<<"opcion 5, salir a Menu principal"<<endl;
 				ejecucion = false;	
 				break;
 			default:
@@ -1085,14 +1085,12 @@ int ArbolRestaurante::stringAEnteroRE(const std::string &cadena) {
     int resultado = 0;
     int multiplicador = 1;
 
-    // Comprueba si la cadena representa un n?mero negativo
     size_t indice = 0;
     if (cadena[0] == '-') {
         multiplicador = -1;
         indice = 1; // Saltar el signo negativo
     }
 
-    // Recorre la cadena y construye el n?mero entero
     for (; indice < cadena.length(); ++indice) {
         char digito = cadena[indice];
         if (isdigit(digito)) {
@@ -1370,7 +1368,7 @@ private:
 
 string ArbolMenu::EncontrarValorMayorPedido() {
     if (ArbolVacio()) {
-        cout << "El arbol de ArbolMenu esta vacio." << endl;
+        cout << "El arbol de Menu esta vacio." << endl;
         return "Arbol vacio";
     }
 
@@ -1403,9 +1401,9 @@ string ArbolMenu::EncontrarValorMayorPedido() {
 
     if (nodoMayor != NULL) {
         cout << "Informacion del m: " << nodoMayor->valor << endl;
-        return "Informacion del ArbolMenu: " + nodoMayor->valor;
+        return "Informacion del Menu: " + nodoMayor->valor;
     } else {
-        cout << "No se encontr? ning?n ArbolRestaurante con con consultas." << endl;
+        cout << "No se encontr? ning?n Restaurante con con consultas." << endl;
     }
 }
 
@@ -1437,10 +1435,10 @@ int ArbolMenu::stringAEnteroME(const std::string &cadena) {
 }
 
 void ArbolMenu::AgregarME(ArbolRestaurante & arbolRestaurante){
-	cout<<"agregar ArbolCiudades"<<endl;
-	cout<<"A continuacion muestran paises y ArbolCiudades disponibles: "<<endl;		
+	cout<<"agregar Ciudades"<<endl;
+	cout<<"A continuacion muestran paises y Ciudades disponibles: "<<endl;		
 	arbolRestaurante.MostrarRE();
-	cout<<"para agregar ArbolRestaurantes, se debe de verificar la existencia del pais, ArbolCiudad y ArbolRestaurante, agregar sus codigos"<<endl;
+	cout<<"para agregar Restaurantes, se debe de verificar la existencia del pais, Ciudad y Restaurante, agregar sus codigos"<<endl;
     int codigo12, codigo22,codigo32;
     cout << "Ingrese primer codigo: " << endl;
     cin >> codigo12;
@@ -1464,9 +1462,9 @@ void ArbolMenu::AgregarME(ArbolRestaurante & arbolRestaurante){
     
     
 	if(arbolRestaurante.ExisteRE(codigosBuscados)){
-		cout<<"el pais, ArbolCiudad y ArbolRestaurante existen, se procede a agregar"<<endl;
+		cout<<"el pais, Ciudad y Restaurante existen, se procede a agregar"<<endl;
 	    int codigo1a;
-	    cout << "Ingrese el codigo del nuevo ArbolMenu: " << endl;
+	    cout << "Ingrese el codigo del nuevo Menu: " << endl;
 	    cin >> codigo1a;
 
 	    std::stringstream ss1a;
@@ -1475,7 +1473,7 @@ void ArbolMenu::AgregarME(ArbolRestaurante & arbolRestaurante){
 	    string num1a = ss1.str();
 		    
 		string NombreNuevo;
-		cout<<"digite el nombre del ArbolMenu"<<endl;
+		cout<<"digite el nombre del Menu"<<endl;
 		cin >> NombreNuevo;
 	
 		string NuevoValor = codigosBuscados + ";" + num1a + ";" + NombreNuevo;
@@ -1547,13 +1545,13 @@ void ArbolMenu::ModificarNombreME() {
 void ArbolMenu::ArbolMenusME(ArbolRestaurante & arbolRestaurante)
 {
 	bool ejecucion = true;
-	cout<<"bienvenido a ArbolMenus"<<endl;
+	cout<<"bienvenido a Menus"<<endl;
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"consultar ArbolMenus digite 1: "<<endl;
-		cout<<"ver ArbolMenus digite 2: "<<endl;
-		cout<<"agregar un ArbolMenu digite 3:"<<endl;
+		cout<<"consultar Menus digite 1: "<<endl;
+		cout<<"ver Menus digite 2: "<<endl;
+		cout<<"agregar un Menu digite 3:"<<endl;
 		cout<<"modificar un ArbolMenu digite 4:"<<endl;
 		cout<<"para salir digite 5: "<<endl;
 		int x;
@@ -1565,21 +1563,21 @@ void ArbolMenu::ArbolMenusME(ArbolRestaurante & arbolRestaurante)
 		{
 			case 1:
 				cout<<""<<endl;
-				cout<<"opcion 1, consultar un ArbolMenu"<<endl;
-				cout<<"ArbolMenus disponibles: "<<endl;
+				cout<<"opcion 1, consultar un Menu"<<endl;
+				cout<<"Menus disponibles: "<<endl;
 				MostrarME();
 				ComprobacionME();
 				break;
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2, ver todos los ArbolMenus"<<endl;
-				cout<<"se mostraran todos los ArbolMenus a continuacion: "<<endl;
+				cout<<"opcion 2, ver todos los Menus"<<endl;
+				cout<<"se mostraran todos los Menus a continuacion: "<<endl;
 				MostrarME();
 				break;		
 			case 3:
 				cout<<""<<endl;
-				cout<<"opcion 3, agregar un ArbolMenu"<<endl;
-				cout<<"se muestran paises, ArbolCiudades y ArbolRestaurantes disponibles"<<endl;
+				cout<<"opcion 3, agregar un Menu"<<endl;
+				cout<<"se muestran paises, Ciudades y Restaurantes disponibles"<<endl;
 				MostrarME();
 				AgregarME(arbolRestaurante);
 				break;			
@@ -1593,7 +1591,7 @@ void ArbolMenu::ArbolMenusME(ArbolRestaurante & arbolRestaurante)
 				break;
 			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 5, salir a ArbolMenu principal"<<endl;
+				cout<<"opcion 5, salir a Menu principal"<<endl;
 				ejecucion = false;	
 				break;		
 			default:
@@ -1821,6 +1819,9 @@ bool ArbolMenu::ExisteME(string codigo) {
 
 
 
+
+
+
 class nodoPRO {
 public:
     nodoPRO(const string &v)
@@ -1873,7 +1874,7 @@ private:
 
 string ArbolProducto::EncontrarValorMayorPedido() {
     if (ArbolVacio()) {
-        cout << "El arbol de ArbolMenu esta vacio." << endl;
+        cout << "El arbol de Menu esta vacio." << endl;
         return "arbol vacio";
     }
 
@@ -1906,9 +1907,9 @@ string ArbolProducto::EncontrarValorMayorPedido() {
 
     if (nodoMayor != NULL) {
         cout << "Informacion del m: " << nodoMayor->valor << endl;
-        return "Informacion del ArbolProducto: " + nodoMayor->valor;
+        return "Informacion del Producto: " + nodoMayor->valor;
     } else {
-        cout << "No se encontr? ning?n ArbolRestaurante con con consultas." << endl;
+        cout << "No se encontr? ning?n Restaurante con con consultas." << endl;
     }
 }
 
@@ -1988,10 +1989,10 @@ void ArbolProducto::ModificarNombrePRO() {
 			cin >> newName;
 			
 			int calorias,precio;
-			cout<<"digite las nuevas calorias del ArbolProducto"<<endl;
+			cout<<"digite las nuevas calorias del Producto"<<endl;
 			cin >> calorias;
 			
-			cout<<"digite el nuevo precio del ArbolProducto"<<endl;
+			cout<<"digite el nuevo precio del Producto"<<endl;
 			cin >> precio;
 			
 			std::stringstream ss2a,ss2b;
@@ -2021,8 +2022,8 @@ void ArbolProducto::ArbolProductosPRO(ArbolMenu & arbolMenu)
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"consultar ArbolProductos digite 1: "<<endl;
-		cout<<"ver ArbolProductos digite 2: "<<endl;
+		cout<<"consultar Productos digite 1: "<<endl;
+		cout<<"ver Productos digite 2: "<<endl;
 		cout<<"agregar un ArbolProducto digite 3:"<<endl;
 		cout<<"modificar un ArbolProducto digite 4:"<<endl;
 		cout<<"para salir digite 5: "<<endl;
@@ -2035,20 +2036,20 @@ void ArbolProducto::ArbolProductosPRO(ArbolMenu & arbolMenu)
 		{
 			case 1:
 				cout<<""<<endl;
-				cout<<"opcion 1, consultar un ArbolProducto"<<endl;
-				cout<<"ArbolProductos disponibles: "<<endl;
+				cout<<"opcion 1, consultar un Producto"<<endl;
+				cout<<"Productos disponibles: "<<endl;
 				MostrarPRO();
 				ComprobacionPRO();
 				break;
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2, ver todos los ArbolProductos"<<endl;
-				cout<<"se mostraran todos los ArbolProductos a continuacion: "<<endl;
+				cout<<"opcion 2, ver todos los Productos"<<endl;
+				cout<<"se mostraran todos los Productos a continuacion: "<<endl;
 				MostrarPRO();
 				break;		
 			case 3:
 				cout<<""<<endl;
-				cout<<"opcion 3, agregar un ArbolProducto"<<endl;
+				cout<<"opcion 3, agregar un Producto"<<endl;
 				AgregarPRO(arbolMenu);
 				break;			
 
@@ -2061,7 +2062,7 @@ void ArbolProducto::ArbolProductosPRO(ArbolMenu & arbolMenu)
 				break;
 			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 5, salir a ArbolProducto principal"<<endl;
+				cout<<"opcion 5, salir a Producto principal"<<endl;
 				ejecucion = false;	
 				break;
 			default:
@@ -2075,9 +2076,9 @@ void ArbolProducto::ArbolProductosPRO(ArbolMenu & arbolMenu)
 
 void ArbolProducto::AgregarPRO(ArbolMenu & arbolMenu){
 	cout<<"agregar ArbolProductos"<<endl;
-	cout<<"A continuacion muestran paises, ArbolCiudades, ArbolRestaurantes y ArbolMenus disponibles: "<<endl;		
+	cout<<"A continuacion muestran paises, Ciudades, Restaurantes y Menus disponibles: "<<endl;		
 	arbolMenu.MostrarME();
-	cout<<"para agregar ArbolProductos, se debe de verificar la existencia del pais, ArbolCiudad, ArbolRestaurante y ArbolMenu, agregar sus codigos"<<endl;
+	cout<<"para agregar Productos, se debe de verificar la existencia del pais, Ciudad, Restaurante y Menu, agregar sus codigos"<<endl;
     int codigo13, codigo23,codigo33,codigo43;
     cout<<""<<endl;
     cout << "Ingrese primer codigo: " << endl;
@@ -2107,21 +2108,21 @@ void ArbolProducto::AgregarPRO(ArbolMenu & arbolMenu){
     
     
 	if(arbolMenu.ExisteME(codigosBuscados)){
-		cout<<"el pais, ArbolCiudad, ArbolRestaurante y ArbolMenu existen, se procede a agregar"<<endl;
+		cout<<"el pais, Ciudad, Restaurante y Menu existen, se procede a agregar"<<endl;
 	    string codigo1a;
-	    cout << "Ingrese el codigo del nuevo ArbolMenu: " << endl;
+	    cout << "Ingrese el codigo del nuevo Menu: " << endl;
 	    cin >> codigo1a;
 
 		    
 		string NombreNuevo;
-		cout<<"digite el nombre del ArbolMenu"<<endl;
+		cout<<"digite el nombre del Menu"<<endl;
 		cin >> NombreNuevo;
 		
 		int calorias,precio;
-		cout<<"digite las calorias del ArbolProducto"<<endl;
+		cout<<"digite las calorias del Producto"<<endl;
 		cin >> calorias;
 		
-		cout<<"digite el precio del ArbolProducto"<<endl;
+		cout<<"digite el precio del Producto"<<endl;
 		cin >> precio;
 		
 		std::stringstream ss2a,ss2b;
@@ -2629,8 +2630,8 @@ void ArbolClientes::ArbolClientesCl()
 	
 	while(ejecucion){
 		cout<<""<<endl;
-		cout<<"consultar ArbolClientes digite 1: "<<endl;
-		cout<<"ver ArbolClientes digite 2: "<<endl;
+		cout<<"consultar Clientes digite 1: "<<endl;
+		cout<<"ver Clientes digite 2: "<<endl;
 		cout<<"agregar un cliente digite 3:"<<endl;
 		cout<<"modificar un cliente digite 4:"<<endl;
 		cout<<"para salir digite 5: "<<endl;
@@ -2651,7 +2652,7 @@ void ArbolClientes::ArbolClientesCl()
 			case 2:
 				cout<<""<<endl;
 				cout<<"opcion 2, ver todos los ArbolClientes"<<endl;
-				cout<<"se mostraran todos los ArbolClientes a continuacion: "<<endl;
+				cout<<"se mostraran todos los Clientes a continuacion: "<<endl;
 				MostrarCl();
 				break;		
 			case 3:
@@ -2670,7 +2671,7 @@ void ArbolClientes::ArbolClientesCl()
 				break;
 			case 5: 
 				cout<<""<<endl;
-				cout<<"opcion 5, salir a ArbolMenu principal"<<endl;
+				cout<<"opcion 5, salir a Menu principal"<<endl;
 				ejecucion = false;			
 			default:
 				cout<<""<<endl;
@@ -2924,12 +2925,12 @@ public:
     ListaCOM() { primero = NULL; }
     ~ListaCOM();
 
-    void agregarNodo(string v);
+    void InsertarFinal(string v);
     bool ArbolVacio() { return primero == NULL; }
     void BorrarFinal();
     void BorrarInicio();
     void MostrarCompra();
-    int cantNodos();
+    int largoLista();
     void Paises();
     void AgregarCompra(ArbolProducto & arbolProducto, string valor);
     void ConsultarPaisPorCodigo();
@@ -2997,10 +2998,10 @@ void ListaCOM::ModificarNombre() {
     while (aux) {
         size_t pos = aux->valor.find(';');
         if (pos != string::npos) {
-            int codigoEnArbol;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
 
-            if (codigoEnArbol == code) {
+            if (codigoEnLista == code) {
 			    std::stringstream sscode;
 			    sscode << code;
 			
@@ -3033,13 +3034,13 @@ void ListaCOM::ConsultarPaisPorCodigo() {
     while (aux) {
         size_t pos = aux->valor.find(';');
         if (pos != string::npos) {
-            int codigoEnArbol;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
 
-            if (codigoEnArbol == codigo) {
+            if (codigoEnLista == codigo) {
                 encontrado = true;
                 string nombre = aux->valor.substr(pos + 1);
-                cout << "Codigo: " << codigoEnArbol << endl;
+                cout << "Codigo: " << codigoEnLista << endl;
                 cout << "Nombre: " << nombre << endl;
                 break;
             }
@@ -3064,10 +3065,10 @@ void ListaCOM::BorrarPaisPorCodigo(int codigo) {
     while (aux) {
         size_t pos = aux->valor.find(';');
         if (pos != string::npos) {
-            int codigoEnArbol;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
+            int codigoEnLista;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnLista;
 
-            if (codigoEnArbol == codigo) {
+            if (codigoEnLista == codigo) {
                 encontrado = true;
                 if (aux == primero) {
                     BorrarInicio();
@@ -3189,7 +3190,7 @@ void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor) {
     	if(arbolProducto.ModificarCantidadPro(codigosBuscados,cantidad)){
 	        cout << "ArbolProducto encontrado y agregado de manera exitosa al cliente " << endl;
 	        string entrada2 = valor +";"+ codigosBuscados;
-	        agregarNodo(entrada2);
+	        InsertarFinal(entrada2);
 	        MostrarCompra();	
 		}
 
@@ -3210,7 +3211,7 @@ ListaCOM::~ListaCOM()
    primero=NULL;
 }
 
-int ListaCOM::cantNodos(){
+int ListaCOM::largoLista(){
     int cont=0;
 
     pnodoCOM aux;
@@ -3227,7 +3228,7 @@ int ListaCOM::cantNodos(){
     
 }
 
-void ListaCOM::agregarNodo(string v)
+void ListaCOM::InsertarFinal(string v)
 {
    if (ArbolVacio())
    {
@@ -3321,7 +3322,7 @@ bool ListaCOM::Existe(int codigo) {
     bool encontrado = false;
     int i = 0;
 
-    while (i <= cantNodos()) {
+    while (i <= largoLista()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
@@ -3795,31 +3796,31 @@ int main()
 				
 			case 2:
 				cout<<""<<endl;
-				cout<<"opcion 2 ArbolCiudades"<<endl;
+				cout<<"opcion 2 Ciudades"<<endl;
 				arbolCiudad.ArbolCiudadsCIU(arbolPais);
 				break;
 				
 			case 3:
 				cout<<""<<endl;
-				cout<<"opcion 3 ArbolRestaurantes"<<endl;
+				cout<<"opcion 3 Restaurantes"<<endl;
 				arbolRestaurante.ArbolRestaurantesRE(arbolCiudad);
 				break;
 				
 			case 4:
 				cout<<""<<endl;
-				cout<<"opcion 4 ArbolMenu"<<endl;
+				cout<<"opcion 4 Menu"<<endl;
 				arbolMenu.ArbolMenusME(arbolRestaurante);
 				break;
 					
 			case 5:
 				cout<<""<<endl;
-				cout<<"opcion 5 ArbolProductos"<<endl;
+				cout<<"opcion 5 Productos"<<endl;
 				arbolProducto.ArbolProductosPRO(arbolMenu);
 				break;
 				
 			case 6:
 				cout<<""<<endl;
-				cout<<"opcion 6 ArbolClientes"<<endl;
+				cout<<"opcion 6 Clientes"<<endl;
 				arbolClientes.ArbolClientesCl();
 				break;
 			case 7:
@@ -3830,39 +3831,6 @@ int main()
 			case 8: 
 				cout<<""<<endl;
 				cout<<"opcion 8 generar reportes"<<endl;
-				
-				cout<<"reportes de pais:"<<endl;
-				arbolPais.Mostrar();
-				cout<<""<<endl;
-				
-				cout<<"reportes de ArbolCiudad:"<<endl;
-				cout<<"paises disponibles"<<endl;
-				arbolPais.Mostrar();
-				arbolCiudad.MostrarArbolCiudadesPorPais();
-				cout<<""<<endl;
-				
-				cout<<"reportes de ArbolRestaurantes:"<<endl;
-				cout<<"paises y ArbolCiudades disponibles"<<endl;
-				arbolCiudad.MostrarCIU();
-				arbolRestaurante.MostrarArbolRestaurantesPorArbolCiudad();
-				cout<<""<<endl;
-				
-				cout<<"reportes de ArbolClientes:"<<endl;
-				arbolClientes.MostrarCl();
-				cout<<""<<endl;
-				
-				cout<<"ArbolRestaurante mas buscado:"<<endl;
-				arbolRestaurante.EncontrarValorMayorPedido();
-				cout<<""<<endl;
-				cout<<"ArbolMenu mas buscado:"<<endl;
-				arbolMenu.EncontrarValorMayorPedido();
-				cout<<""<<endl;
-				
-				cout<<"ArbolProducto mas buscado:"<<endl;
-				arbolProducto.EncontrarValorMayorPedido();
-				cout<<""<<endl;
-				
-				
 				break;
 			case 9: 
 				cout<<""<<endl;
@@ -3876,57 +3844,6 @@ int main()
 		}		
 	}
 
-
-	cout<<"generacion de reporte en txt"<<endl;
-    ofstream archivo("reportes.txt");
-
-    if (!archivo.is_open()) {
-        cerr << "No se pudo abrir el archivo." << endl;
-        return 1;
-    }
-
-    archivo << "Reporte de paises: " << endl;
-    string RepPais = arbolPais.ObtenerContenidoComoString();
-    archivo << RepPais <<endl;
-    archivo<<""<<endl;
-    
-    archivo<< "Reporte de ArbolCiudades"<<endl;
-    cout<<"paises disponibles"<<endl;
-    arbolPais.Mostrar();
-    string RepCiu = arbolCiudad.MostrarArbolCiudadesPorPais();
-    archivo<<RepCiu<<endl;
-    archivo<<""<<endl;
-    
-    archivo<<"Reporte de ArbolRestaurantes"<<endl;
-    cout<<"paises y ArbolCiudades disponibles"<<endl;
-    arbolCiudad.MostrarCIU();
-    string RepRes = arbolRestaurante.MostrarArbolRestaurantesPorArbolCiudad();
-    archivo<<RepRes<<endl;
-    archivo<<""<<endl;
-    
-    archivo<<"Reporte de ArbolClientes"<<endl;
-    string RepArbolClientes = arbolClientes.ObtenerContenidoComoString();
-    archivo<<RepArbolClientes<<endl;
-    archivo<<""<<endl;
-    
-    archivo<< "Reporte de ArbolRestaurante mas buscado"<<endl;
-    string RepRestMas = arbolRestaurante.EncontrarValorMayorPedido();
-    archivo<<RepRestMas<<endl;
-    archivo<<""<<endl;
-    
-    archivo<<"Reporte de ArbolMenu mas buscado"<<endl;
-    string RepMeMas = arbolMenu.EncontrarValorMayorPedido();
-    archivo<<RepMeMas<<endl;
-    archivo<<""<<endl;
-    
-    archivo<<"Reporte de ArbolProducto mas buscado"<<endl;
-    string RepProMas = arbolProducto.EncontrarValorMayorPedido();
-    archivo<<RepProMas<<endl;
-
-
-    archivo.close();
-
-    cout << "La informacion se ha guardado en archivo.txt." << endl;
    cin.get();
    return 0;
 }
