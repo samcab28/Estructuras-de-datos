@@ -2255,7 +2255,7 @@ void ArbolProducto::CargarDesdeArchivoPRO() {
         while (getline(archivo, linea))
         {
             istringstream iss(linea);
-            string numero1, numero2, numero3,numero4,numero5, nombre,numero6,numero7;
+            string numero1, numero2, numero3,numero4,numero5, nombre,numero6,numero7,numero8;
             getline(iss, numero1, ';');
             getline(iss, numero2, ';');
             getline(iss, numero3, ';');
@@ -2264,12 +2264,13 @@ void ArbolProducto::CargarDesdeArchivoPRO() {
             getline(iss, nombre);
             getline(iss, numero6, ';');
             getline(iss, numero7, ';');
+            getline(iss, numero8, ';');
 
             // Verificar si NUPRORO3 es diferente de los anteriores
             if (numero4_set.find(numero4) == numero4_set.end())
             {
                 numero4_set.insert(numero4);  // Agregar a conjunto de NUPRORO3
-                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4+ ";"+ numero5+ ";" + nombre +";" + numero6 + ";" + numero7 +";" + "20" + ";"  + "0";
+                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4+ ";"+ numero5+ ";" + nombre +";" + numero6 + ";" + numero7 +";" + numero8 + ";"  + "0";
                 agregarNodo(nuevo_valor);
             }
             else

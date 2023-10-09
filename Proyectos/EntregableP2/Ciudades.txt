@@ -1,9 +1,5 @@
-1;19;Hojancha
-1;22;Alajuela
-1;33;Heredia
-2;35;Bogota
-2;43;Medellin
-2;46;Cartagena
-3;55;Lima
-3;59;Arequipa
-3;89;Trujillo
+123;345;David
+345;987;Orlando
+4567;234;Guadalajara
+12;34;Bocas del Toro
+123;345;X
