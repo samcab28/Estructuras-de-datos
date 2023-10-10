@@ -3430,17 +3430,18 @@ void ListaCOM::facturar() {
 		
 		int precioTotal = resultado.first;
 		std::string info = resultado.second;
-
         
-        ofstream archivo("Factura.txt",ios::app);
+        std::stringstream ss;
+		ss << contadorFacturas;
+        string nombre = "Factura"+ss.str()+".txt";
+        ofstream archivo(nombre.c_str(),ios::app);
 
         if (!archivo.is_open()) {
             cerr << "No se pudo abrir el archivo." << endl;
             return;
         }
-        archivo<<""<<endl;
-        std::stringstream ss;
-		ss << contadorFacturas;
+		archivo<<""<<endl;
+
 		std::string facturaID = "factura numero: " + ss.str();
         archivo <<facturaID<< endl;
         
