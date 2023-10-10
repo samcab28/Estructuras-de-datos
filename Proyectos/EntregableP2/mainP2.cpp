@@ -3008,11 +3008,13 @@ public:
     void BorrarComprasPorInicio(string valor);
     void MostrarComprasPorInicio(string valor);
     void facturar();
-    string CarritoCliente(int cliente);
+    int CarritoCliente(int cliente);
+    
 
 private:
     pnodoCOM primero;
 };
+
 
 void ListaCOM::MostrarComprasPorInicio(string valor) {
     pnodoCOM aux = primero;
@@ -3423,7 +3425,7 @@ void ListaCOM:: facturar(){
 		//extraer la cantidad
 		//extrar el precio
 		cout<<"cola del cliente: "<<endl;
-		CarritoCliente(cliente);
+		cout<<"monto a pagar: "<<CarritoCliente(cliente)<<endl;
 		cout<<"si paga con efectivo digite 1 y si paga con tarjeta 2"<<endl;
 		int metodoPago;
 		cin >> metodoPago;
@@ -3447,12 +3449,12 @@ void ListaCOM:: facturar(){
 	
 }
 
-string ListaCOM::CarritoCliente(int codigo) {
+int ListaCOM::CarritoCliente(int codigo) {
     if (ArbolVacio()) {
-        cout << "La lista est? vac?a." << endl;
-        return "compra no encontrada";
+        cout << "La lista está vacía." << endl;
+        return 0;
     }
-	
+
     std::stringstream ss1;
     ss1 << codigo;
     string num1 = ss1.str();
@@ -3460,27 +3462,60 @@ string ListaCOM::CarritoCliente(int codigo) {
     pnodoCOM aux = primero;
     bool encontrado = false;
     int i = 0;
-	string compras;
+    string compras;
+
+    int precioTotal = 0; // Inicializa el precio total a 0
+
     while (i <= largoLista()) {
         if (aux->valor.find(codigosBuscados) != string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
-            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
-            cout<<aux->valor<<endl;
-            compras += aux -> valor ;
+            size_t posicionPenultimoPuntoComa = aux->valor.find_last_of(';', posicionUltimoPuntoComa - 1);
+            if (posicionUltimoPuntoComa != string::npos && posicionPenultimoPuntoComa != string::npos) {
+                string cantidadStr = aux->valor.substr(posicionPenultimoPuntoComa + 1, posicionUltimoPuntoComa - posicionPenultimoPuntoComa - 1);
+                string precioStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
+                int intCantidad = 0, intPrecio = 0;
+
+                if (!cantidadStr.empty()) {
+                    int potencia = 1;
+                    for (int j = cantidadStr.length() - 1; j >= 0; j--) {
+                        intCantidad += (cantidadStr[j] - '0') * potencia;
+                        potencia *= 10;
+                    }
+                }
+
+                if (!precioStr.empty()) {
+                    int potencia = 1;
+                    for (int j = precioStr.length() - 1; j >= 0; j--) {
+                        intPrecio += (precioStr[j] - '0') * potencia;
+                        potencia *= 10;
+                    }
+                }
+
+                cout << "Cantidad: " << intCantidad << ", Precio: " << intPrecio << endl;
+                precioTotal += intCantidad * intPrecio;
+                cout << "Precio total: " << precioTotal << endl;
+
+                // Agrega la compra al string compras
+                compras += aux->valor + "\n";
+            }
         }
         aux = aux->siguiente;
-        i ++;
+        i++;
     }
-	return compras;
-    if (encontrado == false) {
-        return "compra no encontrada";
+
+    if (!encontrado) {
+        return 0;
     }
+
+
+    return precioTotal;
 }
 
 
 
 
+// 7 cantidad y 8 precio 
 class cola
 {
 private:
