@@ -4070,7 +4070,60 @@ int main()
 				break;
 		}		
 	}
+	
+	cout<<""<<endl;
+	cout<<"REPORTES"<<endl;
+	
+	ofstream archivo("reportes.txt");
 
+    if (!archivo.is_open()) {
+        cerr << "No se pudo abrir el archivo." << endl;
+    }
+	archivo<<""<<endl;
+	
+	string reporte1 = "paises preOrden";
+	archivo<<reporte1<<endl;
+	
+	string reporte2 = "ciudades preOrden";
+	archivo<<reporte2<<endl;
+
+	string reporte3 = "restaurantes preOrden";
+	archivo<<reporte3<<endl;
+	
+	string reporte4 = "cliente preOrden";
+	archivo<<reporte4<<endl;
+	
+	
+//hacer reportes 
+/*
+paises preOrden
+
+ciudades preOrden
+
+restaurantes preOrden
+
+clientes preOrden
+
+compras de un cliente
+
+restaurante mas buscado
+
+menu mas buscado
+
+producto mas comprado
+
+factura de mayor monto
+
+factura de menor monto
+
+consultar precio de producto
+
+imprimir descuento de pagar con tarjeta
+
+consultar cantidad de producto 
+
+
+*/
    cin.get();
    return 0;
 }
