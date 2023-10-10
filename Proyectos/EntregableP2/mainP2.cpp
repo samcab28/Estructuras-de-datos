@@ -3430,30 +3430,15 @@ void ListaCOM::facturar() {
 		
 		int precioTotal = resultado.first;
 		std::string info = resultado.second;
-		
-		if (precioTotal != 0) {
-		    cout << "Precio total: " << precioTotal << endl;
-		} else {
-		    cout << "La lista está vacía o no se encontraron elementos con el código especificado." << endl;
-		}
-		
-		if (!info.empty()) {
-		    cout << "Información: " << info << endl;
-		}
-        // Generar el nombre del archivo con el contador actual
-        /*std::stringstream ss1;
-	    ss1 << contadorFacturas;
-	    string contaFactSTR = ss1.str();
-        string nombreArchivo = "factura" + contaFactSTR + ".txt";
 
-        ofstream archivo(nombreArchivo.c_str());*/
         
-        ofstream archivo("Factura.txt");
+        ofstream archivo("Factura.txt",ios::app);
 
         if (!archivo.is_open()) {
             cerr << "No se pudo abrir el archivo." << endl;
             return;
         }
+        archivo<<""<<endl;
         std::stringstream ss;
 		ss << contadorFacturas;
 		std::string facturaID = "factura numero: " + ss.str();
@@ -3465,11 +3450,11 @@ void ListaCOM::facturar() {
 		std::string numCliente = "cliente: " + ss2.str();
         archivo <<numCliente<<endl;
         
-        string infoCompra = "Compra: ";
+        string infoCompra = "Compra: " + info;
         archivo<<infoCompra<<endl;
         
         std::stringstream ss3;
-        //ss3 << CarritoCliente(cliente);
+        ss3 << precioTotal;
         string precioCompra = "monto a pagar: " + ss3.str();
         archivo<<precioCompra<<endl;
         
@@ -3543,13 +3528,13 @@ std::pair<int, std::string> ListaCOM::CarritoCliente(int codigo) {
                 std::cout << "decision: " << intDecision << std::endl;
                 switch (intDecision) {
                 case 1:
-                    info = "Cantidad: " + cantidadStr + ", Precio: " + precioStr + " descuento 0%";
+                    info += "|| Cantidad: " + cantidadStr + ", Precio: " + precioStr + " descuento 0%";
                     std::cout << info << std::endl;
                     precioTotal += intCantidad * intPrecio;
                     std::cout << "Precio total: " << precioTotal << std::endl;
                     break;
                 case 2:
-                    info = "Cantidad: " + cantidadStr + ", Precio: " + precioStr + " descuento 3%";
+                    info += "||Cantidad: " + cantidadStr + ", Precio: " + precioStr + " descuento 3%";
                     std::cout << info << std::endl;
                     DescuentoCant = (3 * (intCantidad * intPrecio)) / 100;
                     precioTotal += (intCantidad * intPrecio) - DescuentoCant;

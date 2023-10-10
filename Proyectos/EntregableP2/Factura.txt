@@ -1,4 +1,15 @@
+
 factura numero: 1
 cliente: 123456
-Compra: 
-monto a pagar: 
+Compra: Cantidad: 6, Precio: 2300 descuento 0%
+monto a pagar: 18262
+
+factura numero: 2
+cliente: 6578
+Compra: Cantidad: 1, Precio: 2300 descuento 0%
+monto a pagar: 2300
+
+factura numero: 1
+cliente: 123456
+Compra: ||Cantidad: 8, Precio: 2300 descuento 3%||Cantidad: 17, Precio: 1200 descuento 3%
+monto a pagar: 37636
