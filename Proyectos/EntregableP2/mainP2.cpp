@@ -2941,6 +2941,8 @@ public:
     void BorrarPaisPorSeisCodigos();
     void BorrarComprasPorInicio(string valor);
     void MostrarComprasPorInicio(string valor);
+    void facturar();
+    string CarritoCliente(int cliente);
 
 private:
     pnodoCOM primero;
@@ -3339,7 +3341,73 @@ bool ListaCOM::Existe(int codigo) {
     }
 }
 
+void ListaCOM:: facturar(){
+	cout<<"facturacion de compra"<<endl;
+	cout<<"Lista de clientes: "<<endl;
+	MostrarCompra();
+	cout<<"seleccione el cliente a facturar"<<endl;
+	int cliente;
+	cin >> cliente;
+	if(Existe(cliente)){
+		cout<<"cliente encontrado"<<endl;
+		//mostrar las compras del cliente
+		//extraer la cantidad
+		//extrar el precio
+		cout<<"cola del cliente: "<<endl;
+		CarritoCliente(cliente);
+		cout<<"si paga con efectivo digite 1 y si paga con tarjeta 2"<<endl;
+		int metodoPago;
+		cin >> metodoPago;
+		switch(metodoPago){
+			case 1: 
+				cout<<"efectivo"<<endl;
+				break;
+			case 2: 
+				cout<<"tarjeta"<<endl;
+				break;
+			default:
+				cout<<"error a la hora de digitar"<<endl;
+				break;	
+		}
+	}
+	else{
+		cout<<"cliente NO encontrado"<<endl;
+	
+	}
 
+	
+}
+
+string ListaCOM::CarritoCliente(int codigo) {
+    if (ArbolVacio()) {
+        cout << "La lista est? vac?a." << endl;
+        return "compra no encontrada";
+    }
+	
+    std::stringstream ss1;
+    ss1 << codigo;
+    string num1 = ss1.str();
+    string codigosBuscados = num1 + ";";
+    pnodoCOM aux = primero;
+    bool encontrado = false;
+    int i = 0;
+	string compras;
+    while (i <= largoLista()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+            cout<<aux->valor<<endl;
+            compras += aux -> valor ;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+	return compras;
+    if (encontrado == false) {
+        return "compra no encontrada";
+    }
+}
 
 
 
@@ -3782,7 +3850,7 @@ int main()
 		cout<<"Productos, digite 5"<<endl;
 		cout<<"Clientes, digite 6"<<endl;
 		cout<<"compras, digite 7"<<endl;
-		cout<<"generar reporte digite 8"<<endl;
+		cout<<"generar factura digite 8"<<endl;
 		cout<<"salir, digite 9"<<endl;
 		
 		cin >> ArbolMenuPrincipal;
@@ -3831,7 +3899,8 @@ int main()
 				break;
 			case 8: 
 				cout<<""<<endl;
-				cout<<"opcion 8 generar reportes"<<endl;
+				cout<<"opcion 8 generar factura"<<endl;
+				ListaCompras.facturar();
 				break;
 			case 9: 
 				cout<<""<<endl;
