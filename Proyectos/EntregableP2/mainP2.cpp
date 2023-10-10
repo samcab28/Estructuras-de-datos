@@ -1868,6 +1868,7 @@ public:
     string EncontrarValorMayorPedido();
     string muestraCantidad(string codigo);
     bool ModificarCantidadPro(string codigosBuscados, int resta);
+    string getPrecio(string codigosBuscados);
 private:
     pnodoPRO primero;
 };
@@ -2517,7 +2518,73 @@ bool ArbolProducto::ModificarCantidadPro(string codigosBuscados, int resta){
     }
 }
 
+string ArbolProducto::getPrecio(string codigosBuscados){
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
 
+	while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            if (posicionUltimoPuntoComa != string::npos) {
+                size_t posicionNumero = posicionUltimoPuntoComa + 1;
+                std::string numeroStr = aux->valor.substr(posicionNumero);
+                int numero = stringAEnteroPRO(numeroStr);
+                numero++;
+                
+				std::stringstream ss1;
+    			ss1 << numero;
+
+				string num1 = ss1.str();
+    
+    
+                
+                string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
+                aux->valor = nuevoValor;
+
+                cout << "Codigos encontrados en el arbol: " << codigosBuscados << endl;
+                cout << "Nuevo valor asociado: " << nuevoValor << endl;
+			    std::string cadena = aux -> valor ;
+			    std::istringstream stream(cadena);
+			    std::string dato;
+				int j = 0;
+				while (std::getline(stream, dato, ';')) {
+						        if (!dato.empty()) {
+						        	
+						        	if(j == 5){
+						        		cout<<"pruducto: "<<dato<<endl;
+									}
+						        	if(j == 6){
+						        		cout<<"calorias: "<<dato<<endl;
+									}
+						        	if(j == 7){
+						        		cout<<"precio: "<<dato<<endl;
+						        		return dato;
+									}
+									if(j==8){
+										cout<<"cantidad de productos: "<<dato<<endl;
+									}
+									if(j==9){
+										cout<<"cantidad de busquedas: "<<dato<<endl;
+									}
+						            j++;
+						        }
+						    }
+				            break;
+            } else {
+                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
+            }
+            break;
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los c?digos en el arbol." << endl;
+    }
+}
 
 
 
@@ -2895,7 +2962,6 @@ bool ArbolClientes::ExisteCl(string codigo) {
 
 
 
-
 class nodoCOM {
 public:
     nodoCOM(string v)
@@ -3171,7 +3237,7 @@ void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor) {
     cout << "Ingrese el quinto c?digo: " << endl;
     cin >> codigo5;
 
-    std::stringstream ss1, ss2, ss3, ss4, ss5;
+    std::stringstream ss1, ss2, ss3, ss4, ss5,ss10;
     ss1 << codigo1;
     ss2 << codigo2;
     ss3 << codigo3;
@@ -3189,10 +3255,12 @@ void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor) {
     	cout<<"Producto encontrado, digite la cantidad a comprar: "<<endl;
     	cout<<"cantidad disponible: "<<arbolProducto.muestraCantidad(codigosBuscados)<<endl; 
     	int cantidad;
-    	cin >> cantidad; 
+    	cin >> cantidad;
+		ss10 << cantidad;
+		string cantidadStr = ss10.str(); 
     	if(arbolProducto.ModificarCantidadPro(codigosBuscados,cantidad)){
 	        cout << "ArbolProducto encontrado y agregado de manera exitosa al cliente " << endl;
-	        string entrada2 = valor +";"+ codigosBuscados;
+	        string entrada2 = valor +";"+ codigosBuscados + ";" + cantidadStr + ";" + arbolProducto.getPrecio(codigosBuscados);
 	        InsertarFinal(entrada2);
 	        MostrarCompra();	
 		}
@@ -3351,6 +3419,7 @@ void ListaCOM:: facturar(){
 	if(Existe(cliente)){
 		cout<<"cliente encontrado"<<endl;
 		//mostrar las compras del cliente
+		//agregar cantidad a la listadeCompras  
 		//extraer la cantidad
 		//extrar el precio
 		cout<<"cola del cliente: "<<endl;
