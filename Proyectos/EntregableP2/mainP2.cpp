@@ -9,6 +9,8 @@
 using namespace std;
 class ListaCOM;
 class cola;
+int contadorFacturas = 1; // Variable global para el contador de facturas
+
 
 class nodo {
 public:
@@ -3008,7 +3010,7 @@ public:
     void BorrarComprasPorInicio(string valor);
     void MostrarComprasPorInicio(string valor);
     void facturar();
-    int CarritoCliente(int cliente);
+    std::pair<int, std::string> CarritoCliente(int codigo);
     
 
 private:
@@ -3414,56 +3416,105 @@ bool ListaCOM::Existe(int codigo) {
     }
 }
 
-void ListaCOM:: facturar(){
-	cout<<"facturacion de compra"<<endl;
-	cout<<"Lista de clientes: "<<endl;
-	MostrarCompra();
-	cout<<"seleccione el cliente a facturar"<<endl;
-	int cliente;
-	cin >> cliente;
-	if(Existe(cliente)){
-		cout<<"cliente encontrado"<<endl;
-		cout<<"cola del cliente: "<<endl;
-		cout<<"monto a pagar: "<<CarritoCliente(cliente)<<endl;
-		return;
-	}
-	else{
-		cout<<"cliente NO encontrado"<<endl;
-	
-	}
+void ListaCOM::facturar() {
+    cout << "facturacion de compra" << endl;
+    cout << "Lista de clientes: " << endl;
+    MostrarCompra();
+    cout << "seleccione el cliente a facturar" << endl;
+    int cliente;
+    cin >> cliente;
+    
+    if (Existe(cliente)) {
+        cout << "cliente encontrado" << endl;
+		std::pair<int, std::string> resultado = CarritoCliente(cliente); 
+		
+		int precioTotal = resultado.first;
+		std::string info = resultado.second;
+		
+		if (precioTotal != 0) {
+		    cout << "Precio total: " << precioTotal << endl;
+		} else {
+		    cout << "La lista está vacía o no se encontraron elementos con el código especificado." << endl;
+		}
+		
+		if (!info.empty()) {
+		    cout << "Información: " << info << endl;
+		}
+        // Generar el nombre del archivo con el contador actual
+        /*std::stringstream ss1;
+	    ss1 << contadorFacturas;
+	    string contaFactSTR = ss1.str();
+        string nombreArchivo = "factura" + contaFactSTR + ".txt";
 
-	
+        ofstream archivo(nombreArchivo.c_str());*/
+        
+        ofstream archivo("Factura.txt");
+
+        if (!archivo.is_open()) {
+            cerr << "No se pudo abrir el archivo." << endl;
+            return;
+        }
+        std::stringstream ss;
+		ss << contadorFacturas;
+		std::string facturaID = "factura numero: " + ss.str();
+        archivo <<facturaID<< endl;
+        
+        
+        std::stringstream ss2;
+		ss2 << cliente;
+		std::string numCliente = "cliente: " + ss2.str();
+        archivo <<numCliente<<endl;
+        
+        string infoCompra = "Compra: ";
+        archivo<<infoCompra<<endl;
+        
+        std::stringstream ss3;
+        //ss3 << CarritoCliente(cliente);
+        string precioCompra = "monto a pagar: " + ss3.str();
+        archivo<<precioCompra<<endl;
+        
+
+        // Incrementar el contador de facturas para el próximo archivo
+        contadorFacturas++;
+
+        return;
+    }
+    else {
+        cout << "cliente NO encontrado" << endl;
+        return;
+    }
 }
 
-int ListaCOM::CarritoCliente(int codigo) {
+
+std::pair<int, std::string> ListaCOM::CarritoCliente(int codigo) {
     if (ArbolVacio()) {
         cout << "La lista está vacía." << endl;
-        return 0;
+        return std::make_pair(0, ""); // Devuelve un par (0, "") en caso de lista vacía
     }
-
+    std::string info;
     std::stringstream ss1;
     ss1 << codigo;
-    string num1 = ss1.str();
-    string codigosBuscados = num1 + ";";
+    std::string num1 = ss1.str();
+    std::string codigosBuscados = num1 + ";";
     pnodoCOM aux = primero;
     bool encontrado = false;
     int i = 0;
-    string compras;
+    std::string compras;
 
     int precioTotal = 0; // Inicializa el precio total a 0
 
     while (i <= largoLista()) {
-        if (aux->valor.find(codigosBuscados) != string::npos) {
+        if (aux->valor.find(codigosBuscados) != std::string::npos) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
             size_t posicionPenultimoPuntoComa = aux->valor.find_last_of(';', posicionUltimoPuntoComa - 1);
             size_t posicionAntepenultimoPuntoComa = aux->valor.find_last_of(';', posicionPenultimoPuntoComa - 2);
 
-            if (posicionUltimoPuntoComa != string::npos && posicionPenultimoPuntoComa != string::npos && posicionAntepenultimoPuntoComa != string::npos) {
-                string cantidadStr = aux->valor.substr(posicionAntepenultimoPuntoComa + 1, posicionPenultimoPuntoComa - posicionAntepenultimoPuntoComa - 1);
-                string precioStr = aux->valor.substr(posicionPenultimoPuntoComa + 1, posicionUltimoPuntoComa - posicionPenultimoPuntoComa - 1);
-                string decisionStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
-                int intCantidad = 0, intPrecio = 0, intDecision = 0 ,DescuentoCant = 0;
+            if (posicionUltimoPuntoComa != std::string::npos && posicionPenultimoPuntoComa != std::string::npos && posicionAntepenultimoPuntoComa != std::string::npos) {
+                std::string cantidadStr = aux->valor.substr(posicionAntepenultimoPuntoComa + 1, posicionPenultimoPuntoComa - posicionAntepenultimoPuntoComa - 1);
+                std::string precioStr = aux->valor.substr(posicionPenultimoPuntoComa + 1, posicionUltimoPuntoComa - posicionPenultimoPuntoComa - 1);
+                std::string decisionStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
+                int intCantidad = 0, intPrecio = 0, intDecision = 0, DescuentoCant = 0;
 
                 if (!cantidadStr.empty()) {
                     int potencia = 1;
@@ -3480,7 +3531,7 @@ int ListaCOM::CarritoCliente(int codigo) {
                         potencia *= 10;
                     }
                 }
-                
+
                 if (!decisionStr.empty()) {
                     int potencia = 1;
                     for (int j = decisionStr.length() - 1; j >= 0; j--) {
@@ -3489,24 +3540,25 @@ int ListaCOM::CarritoCliente(int codigo) {
                     }
                 }
 
-                cout<<"decision: "<<intDecision<<endl;
-                switch(intDecision){
-                	case 1: 
-                	    cout << "Cantidad: " << intCantidad << ", Precio: " << intPrecio <<" descuento 0%"<< endl;
-		                precioTotal += intCantidad * intPrecio;
-		                cout << "Precio total: " << precioTotal << endl;
-		                break;
-		            case 2: 
-		            	cout << "Cantidad: " << intCantidad << ", Precio: " << intPrecio <<" descuento 3%"<< endl;
-		                
-		                DescuentoCant = (3*(intCantidad * intPrecio))/100;
-		                precioTotal += (intCantidad * intPrecio) - DescuentoCant;
-		                cout << "Precio total: " << precioTotal << endl;
-		                break;
-		            default:
-		            	cout<<"error"<<endl;
-		            	break;
-				}
+                std::cout << "decision: " << intDecision << std::endl;
+                switch (intDecision) {
+                case 1:
+                    info = "Cantidad: " + cantidadStr + ", Precio: " + precioStr + " descuento 0%";
+                    std::cout << info << std::endl;
+                    precioTotal += intCantidad * intPrecio;
+                    std::cout << "Precio total: " << precioTotal << std::endl;
+                    break;
+                case 2:
+                    info = "Cantidad: " + cantidadStr + ", Precio: " + precioStr + " descuento 3%";
+                    std::cout << info << std::endl;
+                    DescuentoCant = (3 * (intCantidad * intPrecio)) / 100;
+                    precioTotal += (intCantidad * intPrecio) - DescuentoCant;
+                    std::cout << "Precio total: " << precioTotal << std::endl;
+                    break;
+                default:
+                    std::cout << "error" << std::endl;
+                    break;
+                }
 
                 compras += aux->valor + "\n";
                 BorrarInicio();
@@ -3517,10 +3569,13 @@ int ListaCOM::CarritoCliente(int codigo) {
     }
 
     if (!encontrado) {
-        return 0;
+        return std::make_pair(0, ""); // Devuelve un par (0, "") si no se encontraron elementos con el código especificado.
     }
 
-    return precioTotal;
+    std::stringstream ss2;
+    ss2 << precioTotal;
+    std::string precioTotalStr = ss2.str();
+    return std::make_pair(precioTotal, info); // Devuelve un par con precioTotal e info
 }
 
 

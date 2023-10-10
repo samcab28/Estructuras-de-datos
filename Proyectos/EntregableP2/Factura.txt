@@ -1,0 +1,4 @@
+factura numero: 1
+cliente: 123456
+Compra: 
+monto a pagar: 
