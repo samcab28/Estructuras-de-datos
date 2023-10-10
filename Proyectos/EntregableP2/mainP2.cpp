@@ -3262,7 +3262,10 @@ void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor) {
 		string cantidadStr = ss10.str(); 
     	if(arbolProducto.ModificarCantidadPro(codigosBuscados,cantidad)){
 	        cout << "ArbolProducto encontrado y agregado de manera exitosa al cliente " << endl;
-	        string entrada2 = valor +";"+ codigosBuscados + ";" + cantidadStr + ";" + arbolProducto.getPrecio(codigosBuscados);
+	        cout<<"comer en restaurante = 1, llevar = 2"<<endl;
+	        string ubi;
+	        cin>>ubi;
+	        string entrada2 = valor +";"+ codigosBuscados + ";" + cantidadStr + ";" + arbolProducto.getPrecio(codigosBuscados) + ";" + ubi;
 	        InsertarFinal(entrada2);
 	        MostrarCompra();	
 		}
@@ -3420,26 +3423,9 @@ void ListaCOM:: facturar(){
 	cin >> cliente;
 	if(Existe(cliente)){
 		cout<<"cliente encontrado"<<endl;
-		//mostrar las compras del cliente
-		//agregar cantidad a la listadeCompras  
-		//extraer la cantidad
-		//extrar el precio
 		cout<<"cola del cliente: "<<endl;
 		cout<<"monto a pagar: "<<CarritoCliente(cliente)<<endl;
-		cout<<"si paga con efectivo digite 1 y si paga con tarjeta 2"<<endl;
-		int metodoPago;
-		cin >> metodoPago;
-		switch(metodoPago){
-			case 1: 
-				cout<<"efectivo"<<endl;
-				break;
-			case 2: 
-				cout<<"tarjeta"<<endl;
-				break;
-			default:
-				cout<<"error a la hora de digitar"<<endl;
-				break;	
-		}
+		return;
 	}
 	else{
 		cout<<"cliente NO encontrado"<<endl;
@@ -3471,10 +3457,13 @@ int ListaCOM::CarritoCliente(int codigo) {
             encontrado = true;
             size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
             size_t posicionPenultimoPuntoComa = aux->valor.find_last_of(';', posicionUltimoPuntoComa - 1);
-            if (posicionUltimoPuntoComa != string::npos && posicionPenultimoPuntoComa != string::npos) {
-                string cantidadStr = aux->valor.substr(posicionPenultimoPuntoComa + 1, posicionUltimoPuntoComa - posicionPenultimoPuntoComa - 1);
-                string precioStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
-                int intCantidad = 0, intPrecio = 0;
+            size_t posicionAntepenultimoPuntoComa = aux->valor.find_last_of(';', posicionPenultimoPuntoComa - 2);
+
+            if (posicionUltimoPuntoComa != string::npos && posicionPenultimoPuntoComa != string::npos && posicionAntepenultimoPuntoComa != string::npos) {
+                string cantidadStr = aux->valor.substr(posicionAntepenultimoPuntoComa + 1, posicionPenultimoPuntoComa - posicionAntepenultimoPuntoComa - 1);
+                string precioStr = aux->valor.substr(posicionPenultimoPuntoComa + 1, posicionUltimoPuntoComa - posicionPenultimoPuntoComa - 1);
+                string decisionStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
+                int intCantidad = 0, intPrecio = 0, intDecision = 0 ,DescuentoCant = 0;
 
                 if (!cantidadStr.empty()) {
                     int potencia = 1;
@@ -3491,13 +3480,36 @@ int ListaCOM::CarritoCliente(int codigo) {
                         potencia *= 10;
                     }
                 }
+                
+                if (!decisionStr.empty()) {
+                    int potencia = 1;
+                    for (int j = decisionStr.length() - 1; j >= 0; j--) {
+                        intDecision += (decisionStr[j] - '0') * potencia;
+                        potencia *= 10;
+                    }
+                }
 
-                cout << "Cantidad: " << intCantidad << ", Precio: " << intPrecio << endl;
-                precioTotal += intCantidad * intPrecio;
-                cout << "Precio total: " << precioTotal << endl;
+                cout<<"decision: "<<intDecision<<endl;
+                switch(intDecision){
+                	case 1: 
+                	    cout << "Cantidad: " << intCantidad << ", Precio: " << intPrecio <<" descuento 0%"<< endl;
+		                precioTotal += intCantidad * intPrecio;
+		                cout << "Precio total: " << precioTotal << endl;
+		                break;
+		            case 2: 
+		            	cout << "Cantidad: " << intCantidad << ", Precio: " << intPrecio <<" descuento 3%"<< endl;
+		                
+		                DescuentoCant = (3*(intCantidad * intPrecio))/100;
+		                precioTotal += (intCantidad * intPrecio) - DescuentoCant;
+		                cout << "Precio total: " << precioTotal << endl;
+		                break;
+		            default:
+		            	cout<<"error"<<endl;
+		            	break;
+				}
 
-                // Agrega la compra al string compras
                 compras += aux->valor + "\n";
+                BorrarInicio();
             }
         }
         aux = aux->siguiente;
@@ -3508,9 +3520,9 @@ int ListaCOM::CarritoCliente(int codigo) {
         return 0;
     }
 
-
     return precioTotal;
 }
+
 
 
 
