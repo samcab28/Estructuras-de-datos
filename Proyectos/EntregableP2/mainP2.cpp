@@ -1871,6 +1871,7 @@ public:
     string muestraCantidad(string codigo);
     bool ModificarCantidadPro(string codigosBuscados, int resta);
     string getPrecio(string codigosBuscados);
+    string getCantProd(string codigosBuscados);
 private:
     pnodoPRO primero;
 };
@@ -2603,6 +2604,7 @@ public:
     nodoCl(const string& v) {
         valor = v;
         siguiente = NULL;
+        numCompras = 0; // Inicialmente, el cliente no tiene compras.
     }
 
     nodoCl(const string& v, nodoCl* signodoCl) {
@@ -2610,12 +2612,15 @@ public:
         siguiente = signodoCl;
     }
 
+    int numCompras; // Agrega un campo para el número de compras.
+
 private:
     string valor;
     nodoCl* siguiente;
 
     friend class ArbolClientes;
 };
+
 
 typedef nodoCl* pnodoCl;
 
@@ -2635,10 +2640,40 @@ public:
     void ModificarNombreCL();
     bool ExisteCl(string codigo);
     string ObtenerContenidoComoString();
+    void agregarComprar(string code);
+    int stringAEnteroCl(const std::string &cadena);
+    string muestraCompradores();
 
 private:
     pnodoCl primero;
 };
+
+int ArbolClientes::stringAEnteroCl(const std::string &cadena) {
+    int resultado = 0;
+    int multiplicador = 1;
+
+    // Comprueba si la cadena representa un n?mero negativo
+    size_t indice = 0;
+    if (cadena[0] == '-') {
+        multiplicador = -1;
+        indice = 1; // Saltar el signo negativo
+    }
+
+    // Recorre la cadena y construye el n?mero entero
+    for (; indice < cadena.length(); ++indice) {
+        char digito = cadena[indice];
+        if (isdigit(digito)) {
+            int valorDigito = digito - '0';
+            resultado = resultado * 10 + valorDigito;
+        } else {
+            // Manejo de error si la cadena contiene caracteres no num?ricos
+            std::cerr << "Error: La cadena contiene caracteres no num?ricos." << std::endl;
+            return 0;
+        }
+    }
+
+    return resultado * multiplicador;
+}
 
 string ArbolClientes::ObtenerContenidoComoString() {
         std::stringstream ss;
@@ -2752,18 +2787,17 @@ void ArbolClientes::ArbolClientesCl()
 
 }
 
-void ArbolClientes::AgregarClienteCl()
-{
-    cout << "Ingrese la cedula del cliente (parte entera): ";
+void ArbolClientes::AgregarClienteCl() {
+    cout << "Ingrese la cédula del cliente (parte entera): ";
     int codigo;
     cin >> codigo;
-    cin.ignore();  // Limpia el buffer del salto de linea
+    cin.ignore();  // Limpia el buffer del salto de línea
 
     cout << "Ingrese el nombre del cliente: ";
     string nombre;
     getline(cin, nombre);
 
-    // Verificar si el codigo ya existe en la lista
+    // Verificar si el código ya existe en la lista
     bool codigoExistente = false;
     pnodoCl aux = primero;
     while (aux) {
@@ -2774,7 +2808,7 @@ void ArbolClientes::AgregarClienteCl()
 
             if (codigoEnArbol == codigo) {
                 codigoExistente = true;
-                cout << "Error: Ya existe un cliente con la misma cedula " << codigo << "." << endl;
+                cout << "Error: Ya existe un cliente con la misma cédula " << codigo << "." << endl;
                 break;
             }
         }
@@ -2789,7 +2823,7 @@ void ArbolClientes::AgregarClienteCl()
 
         string pais = codigoStr + ";" + nombre;
         agregarNodo(pais);
-        cout << "cliente agregado exitosamente." << endl;
+        cout << "Cliente agregado exitosamente." << endl;
     }
 }
 
@@ -2862,7 +2896,7 @@ void ArbolClientes::CargarDesdeArchivoCl()
             }
             
             if (!existe) {
-                agregarNodo(codigo + ";" + nombre);
+                agregarNodo(codigo + ";" + nombre + ";" + "0");
                 cout << "Cliente con cedula: " << codigo << " agregado exitosamente." << endl;
             }
         }
@@ -2921,8 +2955,6 @@ void ArbolClientes::MostrarCl()
        cout << "No hay elementos AQUI";  
    else
    {
-   
-       
    		aux = primero;
 		while(aux) 
 		{
@@ -2959,6 +2991,87 @@ bool ArbolClientes::ExisteCl(string codigo) {
         return false;
     }
 }
+
+void ArbolClientes::agregarComprar(string code) {
+    string codigosBuscados = code;
+    pnodoCl aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+	while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            if (posicionUltimoPuntoComa != string::npos) {
+                size_t posicionNumero = posicionUltimoPuntoComa + 1;
+                std::string numeroStr = aux->valor.substr(posicionNumero);
+                int numero = stringAEnteroCl(numeroStr);
+                numero++;
+                
+				std::stringstream ss1;
+    			ss1 << numero;
+
+				string num1 = ss1.str();
+    
+    
+                
+                string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
+                aux->valor = nuevoValor;
+            } else {
+                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
+            }
+            break;
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los c?digos en el arbol." << endl;
+    }
+}
+
+string ArbolClientes::muestraCompradores() {
+    string compradores = "";
+    pnodoCl aux = primero;
+
+    while (aux) {
+        size_t pos = aux->valor.find(';');
+        if (pos != string::npos) {
+            int codigoEnArbol;
+            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
+
+            size_t lastPos = aux->valor.find_last_of(';');
+            if (lastPos != string::npos) {
+                string nombre = aux->valor.substr(lastPos + 1);
+                if (codigoEnArbol % 10 != 0) {
+                    stringstream ss;
+                    ss << codigoEnArbol;
+                    compradores += ss.str() + ";" + nombre + "\n";
+                }
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    return compradores;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3001,7 +3114,7 @@ public:
     void MostrarCompra();
     int largoLista();
     void Paises();
-    void AgregarCompra(ArbolProducto & arbolProducto, string valor);
+    void AgregarCompra(ArbolProducto & arbolProducto, string valor, ArbolClientes & arbolClientes);
     void ConsultarPaisPorCodigo();
     void BorrarPaisPorCodigo(int codigo);
     void ModificarNombre();
@@ -3220,7 +3333,7 @@ void ListaCOM::BorrarPaisPorSeisCodigos() {
 }
 
 
-void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor) {
+void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor,ArbolClientes & arbolClientes) {
     cout << "Se muestran los ArbolProductos disponibles" << endl;
     arbolProducto.MostrarPRO();
     cout << "Proceda a digitar el ArbolProducto que quiere comprar" << endl;
@@ -3269,6 +3382,7 @@ void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor) {
 	        cin>>ubi;
 	        string entrada2 = valor +";"+ codigosBuscados + ";" + cantidadStr + ";" + arbolProducto.getPrecio(codigosBuscados) + ";" + ubi;
 	        InsertarFinal(entrada2);
+	        arbolClientes.agregarComprar(valor);
 	        MostrarCompra();	
 		}
 
@@ -3813,15 +3927,15 @@ void cola::Agregar(ArbolProducto &arbolProducto, ArbolClientes &arbolClientes, L
 
             if (VerificarNumeroEnCola(num10)) {
                 // El cliente ya existe en la cola, no es necesario insertarlo nuevamente.
-                ListaCompras.AgregarCompra(arbolProducto, num10);
-                ListaCompras.AgregarCompra(arbolProducto, num10);
+                ListaCompras.AgregarCompra(arbolProducto, num10, arbolClientes);
+                ListaCompras.AgregarCompra(arbolProducto, num10, arbolClientes);
             } else {
                 // El cliente no est? en la cola, lo insertamos y luego agregamos la compra.
                 string entrada = num10 + ";";
                 int posicion = fondo + 1;  
                 insertar(entrada);  
                 cout << "Se procede a agregar el ArbolProducto" << endl;
-                ListaCompras.AgregarCompra(arbolProducto, num10);
+                ListaCompras.AgregarCompra(arbolProducto, num10, arbolClientes);
             }
 
         } else {
@@ -4080,9 +4194,8 @@ int main()
         cerr << "No se pudo abrir el archivo." << endl;
     }
     
-	
+    
 	string reporte1 = "paises preOrden";
-	archivo<<""<<endl;
 	archivo<<reporte1<<endl;
 	
 	string reporte2 = "ciudades preOrden";
@@ -4104,15 +4217,18 @@ int main()
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte5<<endl;
-	cout<<"para compras de cliente, digite la cedula del cliente"<<endl;
-	int cliente;
-	cin >> cliente;
+	string ClientesCompras = arbolClientes.muestraCompradores();
+	archivo<<ClientesCompras<<endl;
+
 	
 	
 	string reporte6 = "restaurante mas buscado";
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte6<<endl;
+	string RepRestMas = arbolRestaurante.EncontrarValorMayorPedido();
+    archivo<<RepRestMas<<endl;
+    archivo<<""<<endl;
 	
 	string reporte111 = "restaurante preOrden";
 	archivo<<""<<endl;
@@ -4128,16 +4244,19 @@ int main()
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte7<<endl;
+    archivo<<"Reporte de menu mas buscado"<<endl;
+    string RepMeMas = arbolMenu.EncontrarValorMayorPedido();
+    archivo<<RepMeMas<<endl;
+    archivo<<""<<endl;
 	
-	string reporte8 = "producto mas comprado";
-	archivo<<""<<endl;
-	archivo<<""<<endl;
-	archivo<<reporte8<<endl;
-	
+
 	string reporte9 = "producto mas comprado";
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte9<<endl;
+    archivo<<"Reporte de producto mas buscado"<<endl;
+    string RepProMas = arbolProducto.EncontrarValorMayorPedido();
+    archivo<<RepProMas<<endl;
 	
 	string reporte10 = "factura mas grande";
 	archivo<<""<<endl;
@@ -4153,7 +4272,44 @@ int main()
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte12<<endl;
-	cout<<"digite el producto para el reporte de precio:";
+	cout<<"cantidad de un producto, digite el producto"<<endl;
+	cout<<"productos disponibles"<<endl;
+	arbolProducto.MostrarPRO();
+	int codigo1, codigo2, codigo3,codigo4,codigo5;
+    cout << "Ingrese el primer codigo: " << endl;
+    cin >> codigo1;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo2;
+
+    cout << "Ingrese el tercer codigo: " << endl;
+    cin >> codigo3;
+    
+    cout << "Ingrese el cuarto codigo: " << endl;
+    cin >> codigo4;
+    
+    cout << "Ingrese el quinto codigo: " << endl;
+    cin >> codigo5;
+
+    std::stringstream ss1, ss2, ss3,ss4,ss5;
+    ss1 << codigo1;
+    ss2 << codigo2;
+    ss3 << codigo3;
+    ss4 << codigo4;
+    ss5 << codigo5;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+    string num3 = ss3.str();
+    string num4 = ss4.str();
+    string num5 = ss5.str();
+
+    string codigosBuscados2 = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+    cout<<"producto a buscar: "<<codigosBuscados2;
+    string cantidad2 = arbolProducto.getPrecio(codigosBuscados2);
+    cout<<"cantidad: "<<cantidad2<<endl;
+    string reporteCantidad2 = "producto: " + codigosBuscados2 + " cantidad: " + cantidad2;
+    archivo<<reporteCantidad2<<endl;
 	
 	
 	string reporte13 = "descuento al pagar con tarjeta = 3%";
@@ -4165,38 +4321,47 @@ int main()
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte14<<endl;
+
+	cout<<"cantidad de un producto, digite el producto"<<endl;
+	cout<<"productos disponibles"<<endl;
+	arbolProducto.MostrarPRO();
+	int codigo11, codigo21, codigo31,codigo41,codigo51;
+    cout << "Ingrese el primer codigo: " << endl;
+    cin >> codigo11;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo21;
+
+    cout << "Ingrese el tercer codigo: " << endl;
+    cin >> codigo31;
+    
+    cout << "Ingrese el cuarto codigo: " << endl;
+    cin >> codigo41;
+    
+    cout << "Ingrese el quinto codigo: " << endl;
+    cin >> codigo51;
+
+    std::stringstream ss11, ss21, ss31,ss41,ss51;
+    ss11 << codigo11;
+    ss21 << codigo21;
+    ss31 << codigo31;
+    ss41 << codigo41;
+    ss51 << codigo51;
+
+    string num11 = ss11.str();
+    string num21 = ss21.str();
+    string num31 = ss31.str();
+    string num41 = ss41.str();
+    string num51 = ss51.str();
+
+    string codigosBuscados = num11 + ";" + num21 + ";" + num31 + ";" + num41 + ";" + num51;
+    cout<<"producto a buscar: "<<codigosBuscados;
+    string cantidad = arbolProducto.muestraCantidad(codigosBuscados);
+    cout<<"cantidad: "<<cantidad<<endl;
+    string reporteCantidad = "producto: " + codigosBuscados + " cantidad: " + cantidad;
+    archivo<<reporteCantidad<<endl;
 	
 	
-//hacer reportes 
-/*
-paises preOrden 1
-
-ciudades preOrden 1
-
-restaurantes preOrden 1
-
-clientes preOrden 1
-
-compras de un cliente 1
-
-restaurante mas buscado 1
-
-menu mas buscado 1
-
-producto mas comprado 1
-
-factura de mayor monto 1
-
-factura de menor monto 1
-
-consultar precio de producto 1
-
-imprimir descuento de pagar con tarjeta 1
-
-consultar cantidad de producto  1
-
-
-*/
    cin.get();
    return 0;
 }

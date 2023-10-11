@@ -1,4 +1,3 @@
-
 paises preOrden
 
 
@@ -12,9 +11,15 @@ cliente preOrden
 
 
 compras de cliente
+123456;1
+6578;1
+40193;0
+
 
 
 restaurante mas buscado
+Informacion del Restaurante: 123;345;34;MacPanama;0
+
 
 
 restaurante preOrden
@@ -24,12 +29,14 @@ producto preOrden
 
 
 menu mas buscado
+Reporte de menu mas buscado
+Informacion del Menu: 123;345;34;1;HC;0
+
 
 
 producto mas comprado
-
-
-producto mas comprado
+Reporte de producto mas buscado
+Informacion del Producto: 123;345;34;1;109;BigMac;480;2300;3;6
 
 
 factura mas grande
@@ -39,9 +46,11 @@ factura mas pequena
 
 
 precio de un producto
+producto: 123;345;34;1;109 cantidad: 2300
 
 
 descuento al pagar con tarjeta = 3%
 
 
 cantidad de un producto
+producto: 345;987;456;2;78 cantidad: 20
