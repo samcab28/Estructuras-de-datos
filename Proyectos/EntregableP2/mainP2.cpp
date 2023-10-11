@@ -4292,10 +4292,10 @@ void cola::imprimir()
 	
 int main()
 {
-   	//ArbolPais arbolPais;
-   	//arbolPais.CargarDesdeArchivo();
-   	//string preOrdenPais = FuncionFer(arbolPais.ObtenerContenidoComoString());
-   	//cout<<preOrdenPais<<endl;
+   	ArbolPais arbolPais;
+   	arbolPais.CargarDesdeArchivo();
+   	string preOrdenPais = FuncionFer(arbolPais.ObtenerContenidoComoString());
+   	cout<<preOrdenPais<<endl;
    	
    	
    	
@@ -4305,7 +4305,7 @@ int main()
    	cout<<preOrdenCiudad<<endl;
    	
    	
-   	/*ArbolRestaurante arbolRestaurante;
+   	ArbolRestaurante arbolRestaurante;
    	arbolRestaurante.CargarDesdeArchivoRE();
    	
    	
