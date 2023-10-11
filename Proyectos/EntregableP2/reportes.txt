@@ -12,7 +12,7 @@ cliente preOrden
 
 compras de cliente
 123456;1
-6578;1
+6578;0
 40193;0
 
 
@@ -36,13 +36,15 @@ Informacion del Menu: 123;345;34;1;HC;0
 
 producto mas comprado
 Reporte de producto mas buscado
-Informacion del Producto: 123;345;34;1;109;BigMac;480;2300;3;6
+Informacion del Producto: 123;345;34;1;109;BigMac;480;2300;7;3
 
 
 factura mas grande
+6693;123456
 
 
 factura mas pequena
+6693
 
 
 precio de un producto
@@ -53,4 +55,4 @@ descuento al pagar con tarjeta = 3%
 
 
 cantidad de un producto
-producto: 345;987;456;2;78 cantidad: 20
+producto: 123;345;2341;12;704 cantidad: 4

@@ -9,6 +9,7 @@
 using namespace std;
 class ListaCOM;
 class cola;
+class listComFact;
 int contadorFacturas = 1; // Variable global para el contador de facturas
 
 
@@ -151,7 +152,7 @@ void ArbolPais::AgregarPais()
     string nombre;
     getline(cin, nombre);
 
-    // Verificar si el codigo ya existe en la lista
+
     bool codigoExistente = false;
     pnodo aux = primero;
     while (aux) {
@@ -3064,6 +3065,180 @@ string ArbolClientes::muestraCompradores() {
 
 
 
+class nodoComFact {
+public:
+    nodoComFact(string v)
+    {
+        valor = v;
+        siguiente = NULL;
+    }
+
+    nodoComFact(string v, nodoComFact* signodoComFact)
+    {
+        valor = v;
+        siguiente = signodoComFact;
+    }
+
+private:
+    string valor;
+    nodoComFact* siguiente;
+
+    friend class listComFact;
+};
+
+typedef nodoComFact* pnodoComFact; // Alias
+
+class listComFact {
+public:
+    listComFact() { primero = NULL; }
+    ~listComFact();
+
+    void InsertarInicio(string v);
+    void InsertarFinal(string v);
+    bool ListaVacia() { return primero == NULL; }
+    void Mostrar();
+    int largoLista();
+    string ObtenerMayorValor1();
+    string ObtenerMenorValor1();
+
+private:
+    pnodoComFact primero;
+};
+
+string listComFact::ObtenerMayorValor1()
+{
+    if (ListaVacia())
+    {
+        cout << "La lista está vacía." << endl;
+        return "";
+    }
+
+    pnodoComFact aux = primero;
+    string mayorValor1 = aux->valor;
+
+    while (aux != NULL)
+    {
+        string valor1 = aux->valor;
+        size_t pos = valor1.find(";");
+        if (pos != string::npos)
+        {
+            valor1 = valor1.substr(0, pos);
+            if (valor1 > mayorValor1)
+            {
+                mayorValor1 = valor1;
+            }
+        }
+
+        aux = aux->siguiente;
+    }
+
+    return mayorValor1;
+}
+
+string listComFact::ObtenerMenorValor1()
+{
+    if (ListaVacia())
+    {
+        cout << "La lista está vacía." << endl;
+        return "";
+    }
+
+    pnodoComFact aux = primero;
+    string mayorValor1 = aux->valor;
+
+    while (aux != NULL)
+    {
+        string valor1 = aux->valor;
+        size_t pos = valor1.find(";");
+        if (pos != string::npos)
+        {
+            valor1 = valor1.substr(0, pos);
+            if (valor1 < mayorValor1)
+            {
+                mayorValor1 = valor1;
+            }
+        }
+
+        aux = aux->siguiente;
+    }
+
+    return mayorValor1;
+}
+
+listComFact::~listComFact()
+{
+    pnodoComFact aux;
+
+    while (primero) {
+        aux = primero;
+        primero = primero->siguiente;
+        delete aux;
+    }
+    primero = NULL;
+}
+
+int listComFact::largoLista() {
+    int cont = 0;
+    pnodoComFact aux = primero;
+
+    if (ListaVacia()) {
+        return cont;
+    }
+    else {
+        while (aux != NULL) {
+            aux = aux->siguiente;
+            cont++;
+        }
+        return cont;
+    }
+}
+
+void listComFact::InsertarInicio(string v)
+{
+    if (ListaVacia())
+    {
+        primero = new nodoComFact(v);
+    }
+    else
+    {
+        pnodoComFact nuevo = new nodoComFact(v);
+        nuevo->siguiente = primero;
+        primero = nuevo;
+    }
+}
+
+void listComFact::InsertarFinal(string v)
+{
+    if (ListaVacia())
+        primero = new nodoComFact(v);
+    else
+    {
+        pnodoComFact aux = primero;
+        while (aux->siguiente != NULL)
+            aux = aux->siguiente;
+        pnodoComFact nuevo = new nodoComFact(v);
+        aux->siguiente = nuevo;
+    }
+}
+
+void listComFact::Mostrar()
+{
+    nodoComFact* aux;
+    if (primero == NULL)
+        cout << "No hay elementos AQUI";
+    else
+    {
+        aux = primero;
+        while (aux)
+        {
+            cout << aux->valor << " -> ";
+            aux = aux->siguiente;
+        }
+        cout << endl;
+    }
+}
+
+
 
 
 
@@ -3122,7 +3297,7 @@ public:
     void BorrarPaisPorSeisCodigos();
     void BorrarComprasPorInicio(string valor);
     void MostrarComprasPorInicio(string valor);
-    void facturar();
+    void facturar(listComFact & compraFactura);
     std::pair<int, std::string> CarritoCliente(int codigo);
     
 
@@ -3530,7 +3705,8 @@ bool ListaCOM::Existe(int codigo) {
     }
 }
 
-void ListaCOM::facturar() {
+void ListaCOM::facturar(listComFact & compraFactura) {
+	nodoCOM *aux;
     cout << "facturacion de compra" << endl;
     cout << "Lista de clientes: " << endl;
     MostrarCompra();
@@ -3544,7 +3720,16 @@ void ListaCOM::facturar() {
 		
 		int precioTotal = resultado.first;
 		std::string info = resultado.second;
+		
+		std::stringstream ss31;
+        ss31 << precioTotal;
         
+        std::stringstream ss32;
+        ss32 << cliente;
+        
+        string nuevoValor = ss31.str()+";" + ss32.str(); 
+		compraFactura.InsertarInicio(nuevoValor);
+		
         std::stringstream ss;
 		ss << contadorFacturas;
         string nombre = "Factura"+ss.str()+".txt";
@@ -4074,6 +4259,10 @@ void cola::imprimir()
 
 
 
+
+
+
+
 	
 int main()
 {
@@ -4106,6 +4295,7 @@ int main()
     ListaCOM ListaCompras;
     ListaCompras.MostrarCompra();
 
+   	listComFact compraFactura;
    	
 	bool ejecucion = true;
 	
@@ -4171,7 +4361,7 @@ int main()
 			case 8: 
 				cout<<""<<endl;
 				cout<<"opcion 8 generar factura"<<endl;
-				ListaCompras.facturar();
+				ListaCompras.facturar(compraFactura);
 				break;
 			case 9: 
 				cout<<""<<endl;
@@ -4262,16 +4452,24 @@ int main()
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte10<<endl;
+	string BigFact = compraFactura.ObtenerMayorValor1();
+	archivo<<BigFact<<endl;
 	
 	string reporte11 = "factura mas pequena";
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte11<<endl;
+	string littleFact = compraFactura.ObtenerMenorValor1(); 
+	archivo<<littleFact<<endl;
 	
 	string reporte12 = "precio de un producto";
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte12<<endl;
+	cout<<""<<endl;
+	cout<<""<<endl;
+	cout<<""<<endl;
+	cout<<""<<endl;
 	cout<<"cantidad de un producto, digite el producto"<<endl;
 	cout<<"productos disponibles"<<endl;
 	arbolProducto.MostrarPRO();
@@ -4321,7 +4519,10 @@ int main()
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte14<<endl;
-
+	cout<<""<<endl;
+	cout<<""<<endl;
+	cout<<""<<endl;
+	cout<<""<<endl;
 	cout<<"cantidad de un producto, digite el producto"<<endl;
 	cout<<"productos disponibles"<<endl;
 	arbolProducto.MostrarPRO();
