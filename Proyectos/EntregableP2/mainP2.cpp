@@ -59,6 +59,7 @@ private:
     pnodo primero;
 };
 
+
 string ArbolPais::ObtenerContenidoComoString() {
         std::stringstream ss;
         nodo* aux = primero;
@@ -434,9 +435,34 @@ public:
     void ModificarNombreCIU();
     bool ExisteCIU(string codigo);
     string MostrarArbolCiudadesPorPais();
+    string GuardarArbolCiudades();
 private:
     pnodoCIU primero;
 };
+
+string ArbolCiudad::GuardarArbolCiudades() {
+    string memoria;
+
+    if (ArbolVacio()) {
+        cout << "El árbol de Ciudades está vacío." << endl;
+        return "Arbol vacio";
+    }
+
+    pnodoCIU aux = primero;
+    int i = 0;
+
+    while (i < cantNodos()) {
+        memoria += aux->valor + "->";
+        aux = aux->siguiente;
+        i++;
+    }
+    
+    // Agregar el último elemento (para que no quede un "; //" extra al final)
+    memoria += aux->valor;
+
+    return memoria;
+}
+
 
 string ArbolCiudad::MostrarArbolCiudadesPorPais() {
 	cout<<"digite el codigo de pais a buscar"<<endl;
@@ -2613,7 +2639,7 @@ public:
         siguiente = signodoCl;
     }
 
-    int numCompras; // Agrega un campo para el número de compras.
+    int numCompras; // Agrega un campo para el n?mero de compras.
 
 private:
     string valor;
@@ -2789,16 +2815,16 @@ void ArbolClientes::ArbolClientesCl()
 }
 
 void ArbolClientes::AgregarClienteCl() {
-    cout << "Ingrese la cédula del cliente (parte entera): ";
+    cout << "Ingrese la c?dula del cliente (parte entera): ";
     int codigo;
     cin >> codigo;
-    cin.ignore();  // Limpia el buffer del salto de línea
+    cin.ignore();  // Limpia el buffer del salto de l?nea
 
     cout << "Ingrese el nombre del cliente: ";
     string nombre;
     getline(cin, nombre);
 
-    // Verificar si el código ya existe en la lista
+    // Verificar si el c?digo ya existe en la lista
     bool codigoExistente = false;
     pnodoCl aux = primero;
     while (aux) {
@@ -2809,7 +2835,7 @@ void ArbolClientes::AgregarClienteCl() {
 
             if (codigoEnArbol == codigo) {
                 codigoExistente = true;
-                cout << "Error: Ya existe un cliente con la misma cédula " << codigo << "." << endl;
+                cout << "Error: Ya existe un cliente con la misma c?dula " << codigo << "." << endl;
                 break;
             }
         }
@@ -3109,7 +3135,7 @@ string listComFact::ObtenerMayorValor1()
 {
     if (ListaVacia())
     {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return "";
     }
 
@@ -3139,7 +3165,7 @@ string listComFact::ObtenerMenorValor1()
 {
     if (ListaVacia())
     {
-        cout << "La lista está vacía." << endl;
+        cout << "La lista est? vac?a." << endl;
         return "";
     }
 
@@ -3759,7 +3785,7 @@ void ListaCOM::facturar(listComFact & compraFactura) {
         archivo<<precioCompra<<endl;
         
 
-        // Incrementar el contador de facturas para el próximo archivo
+        // Incrementar el contador de facturas para el pr?ximo archivo
         contadorFacturas++;
 
         return;
@@ -3773,8 +3799,8 @@ void ListaCOM::facturar(listComFact & compraFactura) {
 
 std::pair<int, std::string> ListaCOM::CarritoCliente(int codigo) {
     if (ArbolVacio()) {
-        cout << "La lista está vacía." << endl;
-        return std::make_pair(0, ""); // Devuelve un par (0, "") en caso de lista vacía
+        cout << "La lista est? vac?a." << endl;
+        return std::make_pair(0, ""); // Devuelve un par (0, "") en caso de lista vac?a
     }
     std::string info;
     std::stringstream ss1;
@@ -3854,7 +3880,7 @@ std::pair<int, std::string> ListaCOM::CarritoCliente(int codigo) {
     }
 
     if (!encontrado) {
-        return std::make_pair(0, ""); // Devuelve un par (0, "") si no se encontraron elementos con el código especificado.
+        return std::make_pair(0, ""); // Devuelve un par (0, "") si no se encontraron elementos con el c?digo especificado.
     }
 
     std::stringstream ss2;
@@ -4266,15 +4292,20 @@ void cola::imprimir()
 	
 int main()
 {
-   	ArbolPais arbolPais;
-   	arbolPais.CargarDesdeArchivo();
+   	//ArbolPais arbolPais;
+   	//arbolPais.CargarDesdeArchivo();
+   	//string preOrdenPais = FuncionFer(arbolPais.ObtenerContenidoComoString());
+   	//cout<<preOrdenPais<<endl;
+   	
    	
    	
    	ArbolCiudad arbolCiudad;
    	arbolCiudad.CargarDesdeArchivoCIU();
+   	string preOrdenCiudad = arbolCiudad.GuardarArbolCiudades();
+   	cout<<preOrdenCiudad<<endl;
    	
    	
-   	ArbolRestaurante arbolRestaurante;
+   	/*ArbolRestaurante arbolRestaurante;
    	arbolRestaurante.CargarDesdeArchivoRE();
    	
    	
@@ -4289,7 +4320,7 @@ int main()
    	ArbolClientes arbolClientes;
    	arbolClientes.CargarDesdeArchivoCl();
    	
-	cola ColaCompras;
+	/*cola ColaCompras;
 	
 	
     ListaCOM ListaCompras;
@@ -4560,7 +4591,7 @@ int main()
     string cantidad = arbolProducto.muestraCantidad(codigosBuscados);
     cout<<"cantidad: "<<cantidad<<endl;
     string reporteCantidad = "producto: " + codigosBuscados + " cantidad: " + cantidad;
-    archivo<<reporteCantidad<<endl;
+    archivo<<reporteCantidad<<endl;*/
 	
 	
    cin.get();

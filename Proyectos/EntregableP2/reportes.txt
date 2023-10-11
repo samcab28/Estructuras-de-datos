@@ -36,15 +36,15 @@ Informacion del Menu: 123;345;34;1;HC;0
 
 producto mas comprado
 Reporte de producto mas buscado
-Informacion del Producto: 123;345;34;1;109;BigMac;480;2300;7;3
+Informacion del Producto: 123;345;34;1;109;BigMac;480;2300;5;3
 
 
 factura mas grande
-6693;123456
+11155;123456
 
 
 factura mas pequena
-6693
+11155
 
 
 precio de un producto
@@ -55,4 +55,4 @@ descuento al pagar con tarjeta = 3%
 
 
 cantidad de un producto
-producto: 123;345;2341;12;704 cantidad: 4
+producto: 123;345;34;1;109 cantidad: 5

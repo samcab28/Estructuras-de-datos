@@ -1,0 +1,5 @@
+
+factura numero: 1
+cliente: 123456
+Compra: ||Cantidad: 5, Precio: 2300 descuento 3%
+monto a pagar: 11155
