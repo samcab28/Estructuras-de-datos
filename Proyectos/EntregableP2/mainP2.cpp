@@ -4079,48 +4079,121 @@ int main()
     if (!archivo.is_open()) {
         cerr << "No se pudo abrir el archivo." << endl;
     }
-	archivo<<""<<endl;
+    
 	
 	string reporte1 = "paises preOrden";
+	archivo<<""<<endl;
 	archivo<<reporte1<<endl;
 	
 	string reporte2 = "ciudades preOrden";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
 	archivo<<reporte2<<endl;
 
 	string reporte3 = "restaurantes preOrden";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
 	archivo<<reporte3<<endl;
 	
 	string reporte4 = "cliente preOrden";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
 	archivo<<reporte4<<endl;
+	
+	string reporte5 = "compras de cliente";;
+	archivo<<""<<endl;
+	archivo<<""<<endl;
+	archivo<<reporte5<<endl;
+	cout<<"para compras de cliente, digite la cedula del cliente"<<endl;
+	int cliente;
+	cin >> cliente;
+	
+	
+	string reporte6 = "restaurante mas buscado";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
+	archivo<<reporte6<<endl;
+	
+	string reporte111 = "restaurante preOrden";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
+	archivo<<reporte111<<endl;
+	
+	string reporte112 = "producto preOrden";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
+	archivo<<reporte112<<endl;
+	
+	string reporte7 = "menu mas buscado";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
+	archivo<<reporte7<<endl;
+	
+	string reporte8 = "producto mas comprado";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
+	archivo<<reporte8<<endl;
+	
+	string reporte9 = "producto mas comprado";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
+	archivo<<reporte9<<endl;
+	
+	string reporte10 = "factura mas grande";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
+	archivo<<reporte10<<endl;
+	
+	string reporte11 = "factura mas pequena";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
+	archivo<<reporte11<<endl;
+	
+	string reporte12 = "precio de un producto";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
+	archivo<<reporte12<<endl;
+	cout<<"digite el producto para el reporte de precio:";
+	
+	
+	string reporte13 = "descuento al pagar con tarjeta = 3%";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
+	archivo<<reporte13<<endl;
+	
+	string reporte14 = "cantidad de un producto";
+	archivo<<""<<endl;
+	archivo<<""<<endl;
+	archivo<<reporte14<<endl;
 	
 	
 //hacer reportes 
 /*
-paises preOrden
+paises preOrden 1
 
-ciudades preOrden
+ciudades preOrden 1
 
-restaurantes preOrden
+restaurantes preOrden 1
 
-clientes preOrden
+clientes preOrden 1
 
-compras de un cliente
+compras de un cliente 1
 
-restaurante mas buscado
+restaurante mas buscado 1
 
-menu mas buscado
+menu mas buscado 1
 
-producto mas comprado
+producto mas comprado 1
 
-factura de mayor monto
+factura de mayor monto 1
 
-factura de menor monto
+factura de menor monto 1
 
-consultar precio de producto
+consultar precio de producto 1
 
-imprimir descuento de pagar con tarjeta
+imprimir descuento de pagar con tarjeta 1
 
-consultar cantidad de producto 
+consultar cantidad de producto  1
 
 
 */

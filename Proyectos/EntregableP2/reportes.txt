@@ -1,5 +1,47 @@
 
 paises preOrden
+
+
 ciudades preOrden
+
+
 restaurantes preOrden
+
+
 cliente preOrden
+
+
+compras de cliente
+
+
+restaurante mas buscado
+
+
+restaurante preOrden
+
+
+producto preOrden
+
+
+menu mas buscado
+
+
+producto mas comprado
+
+
+producto mas comprado
+
+
+factura mas grande
+
+
+factura mas pequena
+
+
+precio de un producto
+
+
+descuento al pagar con tarjeta = 3%
+
+
+cantidad de un producto
