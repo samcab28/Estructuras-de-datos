@@ -30,10 +30,13 @@ Informacion del Restaurante: 123;345;34;MacPanama;0
 
 
 
-restaurante preOrden
+menu PreOrden
+123;345;34;1;HC;0 -> 345;987;456;2;Acompañamientos;0 -> 4567;234;876;3;PolloyNuggets;0 -> 12;34;234;230;Acompañamientos;0 -> 123;345;2341;12;HP;0 -> 
 
 
 producto preOrden
+123;345;34;1;109;BigMac;480;2300;10;;;;0 -> 345;987;456;2;78;MacPapasPequeñas;197;1200;20;;;;0 -> 4567;234;876;3;65;McNuggets4;166;3590;5;;;;0 -> 12;34;234;230;543;PapasKids;87;590;12;;;;0 -> 123;345;2341;12;704;CrispyChicken;623;4900;4;;;;0 -> 
+
 
 
 menu mas buscado

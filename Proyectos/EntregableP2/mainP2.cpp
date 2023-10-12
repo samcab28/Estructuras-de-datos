@@ -1781,9 +1781,25 @@ public:
     bool ExisteME(string codigo);
     int stringAEnteroME(const std::string &cadena);
     string EncontrarValorMayorPedido();
+    string MostrarMESTR();
 private:
     pnodoME primero;
 };
+
+std::string ArbolMenu::MostrarMESTR() {
+    pnodoME aux = primero;
+    std::stringstream ss;
+
+    while (aux->siguiente != primero) {
+        ss << aux->valor << " -> ";
+        aux = aux->siguiente;
+    }
+
+    ss << aux->valor << " -> ";
+    
+    return ss.str();
+}
+
 
 string ArbolMenu::EncontrarValorMayorPedido() {
     if (ArbolVacio()) {
@@ -2289,9 +2305,26 @@ public:
     bool ModificarCantidadPro(string codigosBuscados, int resta);
     string getPrecio(string codigosBuscados);
     string getCantProd(string codigosBuscados);
+    string MostrarPROSTR();
 private:
     pnodoPRO primero;
 };
+
+std::string ArbolProducto::MostrarPROSTR() {
+    pnodoPRO aux = primero;
+    std::stringstream ss;
+
+    while (aux->siguiente != primero) {
+        ss << aux->valor << " -> ";
+        aux = aux->siguiente;
+    }
+    
+    ss << aux->valor << " -> ";
+    ss << std::endl;
+
+    return ss.str();
+}
+
 
 string ArbolProducto::EncontrarValorMayorPedido() {
     if (ArbolVacio()) {
@@ -4963,15 +4996,19 @@ int main()
     archivo<<RepRestMas<<endl;
     archivo<<""<<endl;
 	
-	string reporte111 = "restaurante preOrden";
+	string reporte111 = "menu PreOrden";
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte111<<endl;
+	string MenuPreOrden = arbolMenu.MostrarMESTR();
+	archivo<<MenuPreOrden<<endl;
 	
 	string reporte112 = "producto preOrden";
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte112<<endl;
+	string preOrdenPro = arbolProducto.MostrarPROSTR();
+	archivo<<preOrdenPro<<endl;
 	
 	string reporte7 = "menu mas buscado";
 	archivo<<""<<endl;
