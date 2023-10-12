@@ -919,7 +919,7 @@ public:
         int altura;
 
         NodoAVL(int p1, int p2, string nom)
-            : primerCodigo(p1), segundoCodigo(p2), nombre(nom), izquierda(nullptr), derecha(nullptr), altura(1) {}
+            : primerCodigo(p1), segundoCodigo(p2), nombre(nom), izquierda(NULL), derecha(NULL), altura(1) {}
     };
 
     // Función para realizar una rotación simple a la derecha
@@ -952,19 +952,19 @@ public:
 
     // Función para obtener la altura de un nodo
     int altura(NodoAVL* nodo) {
-        if (nodo == nullptr) return 0;
+        if (nodo == NULL) return 0;
         return nodo->altura;
     }
 
     // Función para obtener el factor de equilibrio de un nodo
     int factorEquilibrio(NodoAVL* nodo) {
-        if (nodo == nullptr) return 0;
+        if (nodo == NULL) return 0;
         return altura(nodo->izquierda) - altura(nodo->derecha);
     }
 
     // Función para insertar un nodo en el árbol AVL
     NodoAVL* insertar(NodoAVL* nodo, int p1, int p2, string nombre) {
-        if (nodo == nullptr) return new NodoAVL(p1, p2, nombre);
+        if (nodo == NULL) return new NodoAVL(p1, p2, nombre);
 
         if (p2 < nodo->segundoCodigo)
             nodo->izquierda = insertar(nodo->izquierda, p1, p2, nombre);
@@ -998,17 +998,19 @@ public:
     }
 
     // Función para realizar un recorrido en preorden del árbol AVL
-    void preordenCIU(NodoAVL* nodo) {
-        if (nodo != nullptr) {
-            resultadoPreorden += to_string(nodo->segundoCodigo) + ";" + nodo->nombre + "-";
-            preordenCIU(nodo->izquierda);
-            preordenCIU(nodo->derecha);
-        }
-    }
+	void preordenCIU(NodoAVL* nodo) {
+	    if (nodo != NULL) {
+	        std::ostringstream stream;
+	        stream << nodo->segundoCodigo << ";" << nodo->nombre << "-";
+	        resultadoPreorden += stream.str();
+	        preordenCIU(nodo->izquierda);
+	        preordenCIU(nodo->derecha);
+	    }
+	}
 
     // Función para procesar el árbol de países y devolver el resultado en preorden como string
     string Procesar() {
-        NodoAVL* raiz = nullptr;
+        NodoAVL* raiz = NULL;
 
         stringstream ss(ArbolCiudades_);
         string entrada;
@@ -1602,7 +1604,7 @@ public:
         int altura;
 
         Node(int primer, int segundo, int tercer, const string& n)
-            : primerCodigo(primer), segundoCodigo(segundo), tercerCodigo(tercer), nombre(n), izq(nullptr), der(nullptr), altura(1) {}
+            : primerCodigo(primer), segundoCodigo(segundo), tercerCodigo(tercer), nombre(n), izq(NULL), der(NULL), altura(1) {}
     };
 
     Node* root;
@@ -1612,13 +1614,13 @@ public:
     }
 
     int altura(Node* node) {
-        if (node == nullptr)
+        if (node == NULL)
             return 0;
         return node->altura;
     }
 
     int getBalance(Node* node) {
-        if (node == nullptr)
+        if (node == NULL)
             return 0;
         return altura(node->izq) - altura(node->der);
     }
@@ -1650,7 +1652,7 @@ public:
     }
 
     Node* insert(Node* node, int primer, int segundo, int tercer, const string& nombre) {
-        if (node == nullptr)
+        if (node == NULL)
             return new Node(primer, segundo, tercer, nombre);
 
         if (tercer < node->tercerCodigo)
@@ -1683,18 +1685,21 @@ public:
         return node;
     }
 
-    void preOrdenTranversal(Node* node) {
-        if (node == nullptr) {
-            return;
-        }
 
-        resultPreorden += to_string(node->tercerCodigo) + ";" + node->nombre + "-";
-        preOrdenTranversal(node->izq);
-        preOrdenTranversal(node->der);
-    }
+	void preOrdenTranversal(Node* node) {
+	    if (node == NULL) {
+	        return;
+	    }
+	
+	    std::stringstream ss;
+	    ss << node->tercerCodigo << ";" << node->nombre << "-";
+	    resultPreorden += ss.str();
+	    preOrdenTranversal(node->izq);
+	    preOrdenTranversal(node->der);
+	}
 
     string Procesar() {
-        root = nullptr;
+        root = NULL;
 
         stringstream ss(input_);
         string input;
@@ -3526,13 +3531,13 @@ private:
         NodoArbolB* izquierda;
         NodoArbolB* derecha;
 
-        NodoArbolB(int cod, const string& nom) : codigo(cod), nombre(nom), izquierda(nullptr), derecha(nullptr) {}
+        NodoArbolB(int cod, const string& nom) : codigo(cod), nombre(nom), izquierda(NULL), derecha(NULL) {}
     };
 
     // Clase para el árbol B (simplificado)
     class ArbolB {
     public:
-        ArbolB() : raiz(nullptr) {}
+        ArbolB() : raiz(NULL) {}
 
         void insertar(int codigo, const string& nombre) {
             raiz = insertarRec(raiz, codigo, nombre);
@@ -3546,7 +3551,7 @@ private:
         NodoArbolB* raiz;
 
         NodoArbolB* insertarRec(NodoArbolB* nodo, int codigo, const string& nombre) {
-            if (nodo == nullptr) {
+            if (nodo == NULL) {
                 return new NodoArbolB(codigo, nombre);
             }
 
@@ -3560,17 +3565,19 @@ private:
             return nodo;
         }
 
-        string preordenRec(NodoArbolB* nodo) {
-            if (nodo == nullptr) {
-                return "";
-            }
-
-            string resultado = to_string(nodo->codigo) + ";" + nodo->nombre + "-";
-            resultado += preordenRec(nodo->izquierda);
-            resultado += preordenRec(nodo->derecha);
-
-            return resultado;
-        }
+		string preordenRec(NodoArbolB* nodo) {
+		    if (nodo == NULL) {
+		        return "";
+		    }
+		
+		    stringstream ss;
+		    ss << nodo->codigo << ";" << nodo->nombre << "-";
+		    string resultado = ss.str();
+		    resultado += preordenRec(nodo->izquierda);
+		    resultado += preordenRec(nodo->derecha);
+		
+		    return resultado;
+		}
     };
 };
 
@@ -4782,28 +4789,19 @@ int main()
 {
    	ArbolPais arbolPais;
    	arbolPais.CargarDesdeArchivo();
-   	string arbolPaisesString = arbolPais.ObtenerContenidoComoString();
-   	PaisesPre paisesPre(arbolPaisesString);
-   	string resultadoPaises = paisesPre.Procesar();
-   	cout<<"Resultado en preorden Paises:\n"<<resultadoPaises<<endl;
+
    	
    	
    	
    	ArbolCiudad arbolCiudad;
    	arbolCiudad.CargarDesdeArchivoCIU();
-   	string arbolCiudadesString = arbolCiudad.GuardarArbolCiudades();
-   	CIUPre preordenCIU(arbolCiudadesString);
-   	string resultadoCiudades = preordenCIU.Procesar();
-   	cout<<"Resultado en preorden Ciudades:\n"<<resultadoCiudades<<endl;
+
    	
    	
    	
    	ArbolRestaurante arbolRestaurante;
    	arbolRestaurante.CargarDesdeArchivoRE();
-   	string arbolRestaurantesString = arbolRestaurante.GuardarInformacionRestaurantes();
-   	RestaurantesPre preOrdenTranversal(arbolRestaurantesString);
-   	string resultadoRestaurantes =  preOrdenTranversal.Procesar();
-   	cout<<"Resultado en preorden Restaurantes:\n"<<resultadoRestaurantes<<endl;
+
    	
    	
    	ArbolMenu arbolMenu;
@@ -4816,12 +4814,9 @@ int main()
    	
    	ArbolClientes arbolClientes;
    	arbolClientes.CargarDesdeArchivoCl();
-   	string arbolClientesString = arbolClientes.ObtenerContenidoClientes();
-   	ClientesPre preordenRec(arbolClientesString);
-   	string resultadoClientes =  preordenRec.Procesar();
-   	cout<<"Resultado en preorden Clientes:\n"<<resultadoClientes<<endl;
+
    	
-	/*cola ColaCompras;
+	cola ColaCompras;
 	
 	
     ListaCOM ListaCompras;
@@ -4919,21 +4914,37 @@ int main()
     
 	string reporte1 = "paises preOrden";
 	archivo<<reporte1<<endl;
+	string arbolPaisesString = arbolPais.ObtenerContenidoComoString();
+   	PaisesPre paisesPre(arbolPaisesString);
+   	string resultadoPaises = paisesPre.Procesar();
+   	archivo<<resultadoPaises<<endl;
 	
 	string reporte2 = "ciudades preOrden";
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte2<<endl;
+	string arbolCiudadesString = arbolCiudad.GuardarArbolCiudades();
+   	CIUPre preordenCIU(arbolCiudadesString);
+   	string resultadoCiudades = preordenCIU.Procesar();
+   	archivo<<resultadoCiudades<<endl;
 
 	string reporte3 = "restaurantes preOrden";
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte3<<endl;
+   	string arbolRestaurantesString = arbolRestaurante.GuardarInformacionRestaurantes();
+   	RestaurantesPre preOrdenTranversal(arbolRestaurantesString);
+   	string resultadoRestaurantes =  preOrdenTranversal.Procesar();
+   	archivo<<resultadoRestaurantes<<endl;
 	
 	string reporte4 = "cliente preOrden";
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte4<<endl;
+	string arbolClientesString = arbolClientes.ObtenerContenidoClientes();
+   	ClientesPre preordenRec(arbolClientesString);
+   	string resultadoClientes =  preordenRec.Procesar();
+   	archivo<<resultadoClientes<<endl;
 	
 	string reporte5 = "compras de cliente";;
 	archivo<<""<<endl;
@@ -5092,7 +5103,7 @@ int main()
     string cantidad = arbolProducto.muestraCantidad(codigosBuscados);
     cout<<"cantidad: "<<cantidad<<endl;
     string reporteCantidad = "producto: " + codigosBuscados + " cantidad: " + cantidad;
-    archivo<<reporteCantidad<<endl;*/
+    archivo<<reporteCantidad<<endl;
 	
 	
    cin.get();

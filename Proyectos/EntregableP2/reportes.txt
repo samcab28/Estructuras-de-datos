@@ -1,17 +1,25 @@
 paises preOrden
+123 Panama-
+345 Estados Unidos-
+4567 Mexico-
+4567 
+
 
 
 ciudades preOrden
+345;David--234;Guadalajara--34;Bocas del Toro--987;Orlando--
 
 
 restaurantes preOrden
+456;Disney Springs-34;MacPanama-234;MacBocas-876;Mac-2341;X-
 
 
 cliente preOrden
+123456;Maria Campos-6578;Pedro Perez-40193;Jose Torres-40193;-
 
 
 compras de cliente
-123456;1
+123456;0
 6578;0
 40193;0
 
@@ -36,15 +44,15 @@ Informacion del Menu: 123;345;34;1;HC;0
 
 producto mas comprado
 Reporte de producto mas buscado
-Informacion del Producto: 123;345;34;1;109;BigMac;480;2300;5;3
+Informacion del Producto: 123;345;34;1;109;BigMac;480;2300;10;;;;0
 
 
 factura mas grande
-11155;123456
+
 
 
 factura mas pequena
-11155
+
 
 
 precio de un producto
@@ -55,4 +63,4 @@ descuento al pagar con tarjeta = 3%
 
 
 cantidad de un producto
-producto: 123;345;34;1;109 cantidad: 5
+producto: 123;345;34;1;109 cantidad: 10
