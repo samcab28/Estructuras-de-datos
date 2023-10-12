@@ -375,7 +375,100 @@ bool ArbolPais::Existe(int codigo) {
 }
 
 
+// PREORDEN DE PAISES
+class PaisesPre {
+public:
+    // Constructor
+    PaisesPre(const string& ArbolPaises) : ArbolPaises_(ArbolPaises), resultadoPreorden("") {}
 
+    // Función para procesar la lista de países y devolver el resultado en preorden como string
+    string Procesar() {
+        TreeNode* raiz = NULL;
+
+        // Procesar la lista de países
+        stringstream ss(ArbolPaises_);
+        string pais;
+        while (getline(ss, pais, '>')) { 
+            stringstream ssPais(pais);
+            string codigoStr, nombre;
+            getline(ssPais, codigoStr, ';');
+            getline(ssPais, nombre, ';');
+            if (codigoStr != "NULL") {
+                int codigo;
+                istringstream(codigoStr) >> codigo;
+                raiz = insertar(raiz, codigo, nombre);
+            }
+        }
+
+        // Generar el resultado en preorden como string
+        generarPreorden(raiz);
+
+        // Liberar memoria del árbol
+        liberarArbol(raiz);
+
+        return resultadoPreorden;
+    }
+
+private:
+    // Definición de la estructura de un nodo de un árbol
+    struct TreeNode {
+        int valor;
+        string nombre;
+        TreeNode* izquierda;
+        TreeNode* derecha;
+
+        TreeNode(int val, string nom) : valor(val), nombre(nom), izquierda(NULL), derecha(NULL) {}
+    };
+
+    // Función para insertar un valor en un BST
+    TreeNode* insertar(TreeNode* raiz, int valor, const string& nombre) {
+        if (raiz == NULL) {
+            return new TreeNode(valor, nombre);
+        }
+
+        if (valor < raiz->valor) {
+            raiz->izquierda = insertar(raiz->izquierda, valor, nombre);
+        }
+        else {
+            raiz->derecha = insertar(raiz->derecha, valor, nombre);
+        }
+
+        return raiz;
+    }
+
+    // Función para generar el resultado en preorden como string
+    void generarPreorden(TreeNode* raiz) {
+        if (raiz == NULL) {
+            return;
+        }
+
+        resultadoPreorden += intToString(raiz->valor) + " " + raiz->nombre + "\n";
+        generarPreorden(raiz->izquierda);
+        generarPreorden(raiz->derecha);
+    }
+
+    // Función para liberar la memoria del árbol
+    void liberarArbol(TreeNode* raiz) {
+        if (raiz == NULL) {
+            return;
+        }
+
+        liberarArbol(raiz->izquierda);
+        liberarArbol(raiz->derecha);
+        delete raiz;
+    }
+
+    // Datos de entrada
+    const string ArbolPaises_;
+    string resultadoPreorden;
+
+    // Función para convertir un entero a cadena
+    string intToString(int num) {
+        stringstream ss;
+        ss << num;
+        return ss.str();
+    }
+};
 
 
 
@@ -444,7 +537,7 @@ string ArbolCiudad::GuardarArbolCiudades() {
     string memoria;
 
     if (ArbolVacio()) {
-        cout << "El �rbol de Ciudades est� vac�o." << endl;
+        cout << "El ?rbol de Ciudades est? vac?o." << endl;
         return "Arbol vacio";
     }
 
@@ -457,7 +550,7 @@ string ArbolCiudad::GuardarArbolCiudades() {
         i++;
     }
     
-    // Agregar el �ltimo elemento (para que no quede un "; //" extra al final)
+    // Agregar el ?ltimo elemento (para que no quede un "; //" extra al final)
     memoria += aux->valor;
 
     return memoria;
@@ -4294,8 +4387,10 @@ int main()
 {
    	ArbolPais arbolPais;
    	arbolPais.CargarDesdeArchivo();
-   	string preOrdenPais = FuncionFer(arbolPais.ObtenerContenidoComoString());
-   	cout<<preOrdenPais<<endl;
+   	string arbolPaisesString = arbolPais.ObtenerContenidoComoString();
+   	PaisesPre paisesPre(arbolPaisesString);
+   	string resultado = paisesPre.Procesar();
+   	cout<<"Resultado en preorden:\n"<<resultado<<endl;
    	
    	
    	
