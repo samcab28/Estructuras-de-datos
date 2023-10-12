@@ -383,7 +383,7 @@ public:
 
     // Función para procesar la lista de países y devolver el resultado en preorden como string
     string Procesar() {
-        TreeNode* raiz = NULL;
+        Nodo* raiz = NULL;
 
         // Procesar la lista de países
         stringstream ss(ArbolPaises_);
@@ -411,19 +411,19 @@ public:
 
 private:
     // Definición de la estructura de un nodo de un árbol
-    struct TreeNode {
+    struct Nodo {
         int valor;
         string nombre;
-        TreeNode* izquierda;
-        TreeNode* derecha;
+        Nodo* izquierda;
+        Nodo* derecha;
 
-        TreeNode(int val, string nom) : valor(val), nombre(nom), izquierda(NULL), derecha(NULL) {}
+        Nodo(int val, string nom) : valor(val), nombre(nom), izquierda(NULL), derecha(NULL) {}
     };
 
     // Función para insertar un valor en un BST
-    TreeNode* insertar(TreeNode* raiz, int valor, const string& nombre) {
+    Nodo* insertar(Nodo* raiz, int valor, const string& nombre) {
         if (raiz == NULL) {
-            return new TreeNode(valor, nombre);
+            return new Nodo(valor, nombre);
         }
 
         if (valor < raiz->valor) {
@@ -437,7 +437,7 @@ private:
     }
 
     // Función para generar el resultado en preorden como string
-    void generarPreorden(TreeNode* raiz) {
+    void generarPreorden(Nodo* raiz) {
         if (raiz == NULL) {
             return;
         }
@@ -448,7 +448,7 @@ private:
     }
 
     // Función para liberar la memoria del árbol
-    void liberarArbol(TreeNode* raiz) {
+    void liberarArbol(Nodo* raiz) {
         if (raiz == NULL) {
             return;
         }
@@ -4390,7 +4390,7 @@ int main()
    	string arbolPaisesString = arbolPais.ObtenerContenidoComoString();
    	PaisesPre paisesPre(arbolPaisesString);
    	string resultado = paisesPre.Procesar();
-   	cout<<"Resultado en preorden:\n"<<resultado<<endl;
+   	return resultado;
    	
    	
    	
