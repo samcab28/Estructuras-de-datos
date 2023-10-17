@@ -46,7 +46,7 @@ public:
 
 Arbol::Arbol()
 {
-    raizPtr = nullptr;
+    raizPtr = NULL;
 }
 
 Arbol::~Arbol()
@@ -61,12 +61,12 @@ Nodo*& Arbol::regresaRaiz()
 
 void Arbol::insertarNodo(const string& valor, Nodo*& nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         nodoPtr = new Nodo();
         nodoPtr->dato = valor;
-        nodoPtr->izquierdoPtr = nullptr;
-        nodoPtr->derechoPtr = nullptr;
+        nodoPtr->izquierdoPtr = NULL;
+        nodoPtr->derechoPtr = NULL;
     }
     else if (valor < nodoPtr->dato)
     {
@@ -80,7 +80,7 @@ void Arbol::insertarNodo(const string& valor, Nodo*& nodoPtr)
 
 void Arbol::muestraAcostado(int nivel, Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         return;
     }
@@ -99,7 +99,7 @@ void Arbol::muestraAcostado(int nivel, Nodo* nodoPtr)
 
 void Arbol::inOrden(Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         return;
     }
@@ -111,7 +111,7 @@ void Arbol::inOrden(Nodo* nodoPtr)
 
 void Arbol::preOrden(Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         return;
     }
@@ -123,7 +123,7 @@ void Arbol::preOrden(Nodo* nodoPtr)
 
 void Arbol::postOrden(Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         return;
     }
@@ -135,7 +135,7 @@ void Arbol::postOrden(Nodo* nodoPtr)
 
 void Arbol::busqueda(const string& x, Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         cout << "elemento No encontrado" << endl;
     }
@@ -155,7 +155,7 @@ void Arbol::busqueda(const string& x, Nodo* nodoPtr)
 
 void Arbol::podarArbol(Nodo*& nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         return;
     }
@@ -163,16 +163,16 @@ void Arbol::podarArbol(Nodo*& nodoPtr)
     podarArbol(nodoPtr->izquierdoPtr);
     podarArbol(nodoPtr->derechoPtr);
     delete nodoPtr;
-    nodoPtr = nullptr;
+    nodoPtr = NULL;
 }
 
 Nodo* Arbol::buscaMenor(Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
-        return nullptr;
+        return NULL;
     }
-    else if (nodoPtr->izquierdoPtr == nullptr)
+    else if (nodoPtr->izquierdoPtr == NULL)
     {
         cout << "nodo menor: " << nodoPtr->dato << endl;
         return nodoPtr;
@@ -185,11 +185,11 @@ Nodo* Arbol::buscaMenor(Nodo* nodoPtr)
 
 Nodo* Arbol::buscaMayor(Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
-        return nullptr;
+        return NULL;
     }
-    else if (nodoPtr->derechoPtr == nullptr)
+    else if (nodoPtr->derechoPtr == NULL)
     {
         cout << "nodo mayor: " << nodoPtr->dato << endl;
         return nodoPtr;
@@ -202,7 +202,7 @@ Nodo* Arbol::buscaMayor(Nodo* nodoPtr)
 
 void Arbol::eliminarPredecesor(const string& x, Nodo*& nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         return;
     }
@@ -223,11 +223,11 @@ void Arbol::eliminarPredecesor(const string& x, Nodo*& nodoPtr)
     else
     {
         Nodo* temp = nodoPtr;
-        if (nodoPtr->izquierdoPtr == nullptr)
+        if (nodoPtr->izquierdoPtr == NULL)
         {
             nodoPtr = nodoPtr->derechoPtr;
         }
-        else if (nodoPtr->derechoPtr == nullptr)
+        else if (nodoPtr->derechoPtr == NULL)
         {
             nodoPtr = nodoPtr->izquierdoPtr;
         }
@@ -238,7 +238,7 @@ void Arbol::eliminarPredecesor(const string& x, Nodo*& nodoPtr)
 
 void Arbol::eliminarSucesor(const string& x, Nodo*& nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         return;
     }
@@ -259,11 +259,11 @@ void Arbol::eliminarSucesor(const string& x, Nodo*& nodoPtr)
     else
     {
         Nodo* temp = nodoPtr;
-        if (nodoPtr->izquierdoPtr == nullptr)
+        if (nodoPtr->izquierdoPtr == NULL)
         {
             nodoPtr = nodoPtr->derechoPtr;
         }
-        else if (nodoPtr->derechoPtr == nullptr)
+        else if (nodoPtr->derechoPtr == NULL)
         {
             nodoPtr = nodoPtr->izquierdoPtr;
         }
@@ -274,7 +274,7 @@ void Arbol::eliminarSucesor(const string& x, Nodo*& nodoPtr)
 
 int Arbol::altura(Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         return 0;
     }
@@ -283,11 +283,11 @@ int Arbol::altura(Nodo* nodoPtr)
 
 int Arbol::contarHojas(Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         return 0;
     }
-    if (nodoPtr->derechoPtr == nullptr && nodoPtr->izquierdoPtr == nullptr)
+    if (nodoPtr->derechoPtr == NULL && nodoPtr->izquierdoPtr == NULL)
     {
         return 1;
     }
@@ -299,7 +299,7 @@ int Arbol::contarHojas(Nodo* nodoPtr)
 
 int Arbol::contarNodos(Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         return 0;
     }
@@ -308,7 +308,7 @@ int Arbol::contarNodos(Nodo* nodoPtr)
 
 void Arbol::recorridoNiveles(Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         return;
     }
@@ -337,13 +337,13 @@ void Arbol::recorridoNiveles(Nodo* nodoPtr)
 
 bool Arbol::esLleno(Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         cout << "el arbol si esta lleno" << endl;
         return true;
     }
 
-    if (nodoPtr->derechoPtr == nullptr && nodoPtr->izquierdoPtr == nullptr)
+    if (nodoPtr->derechoPtr == NULL && nodoPtr->izquierdoPtr == NULL)
     {
         cout << "el arbol si esta lleno" << endl;
         return true;
@@ -360,7 +360,7 @@ bool Arbol::esLleno(Nodo* nodoPtr)
 
 bool Arbol::esCompleto(Nodo* nodoPtr)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
     {
         cout << "arbol si esta completo" << endl;
         return true;
@@ -418,7 +418,7 @@ void Arbol::gotoxy(int x, int y)
 
 void Arbol::graficarArbol(Nodo* nodoPtr, int x, int y, int nivel, int distancia)
 {
-    if (nodoPtr == nullptr)
+    if (nodoPtr == NULL)
         return;
 
     int delta_x = 4;
@@ -426,7 +426,7 @@ void Arbol::graficarArbol(Nodo* nodoPtr, int x, int y, int nivel, int distancia)
     gotoxy(x, y);
     cout << nodoPtr->dato;
 
-    if (nodoPtr->izquierdoPtr != nullptr)
+    if (nodoPtr->izquierdoPtr != NULL)
     {
         int hijo_x = x - distancia;
         int hijo_y = y + 2;
@@ -434,7 +434,7 @@ void Arbol::graficarArbol(Nodo* nodoPtr, int x, int y, int nivel, int distancia)
         cout << '/';
         graficarArbol(nodoPtr->izquierdoPtr, hijo_x, hijo_y, nivel + 1, distancia / 2);
     }
-    if (nodoPtr->derechoPtr != nullptr)
+    if (nodoPtr->derechoPtr != NULL)
     {
         int hijo_x = x + distancia;
         int hijo_y = y + 2;
