@@ -1,14 +1,9 @@
-01;Francisco
 02;Jose
 03;Kevin
 04;Mario
 02;Michael
-101;Francisco
 102;Jose
-13;Kevin
-14;Mario
 32;Michael
-01;Francisco
 02;Jose
 03;Kevin
 04;Mario
@@ -47,7 +42,6 @@
 138;Kevin
 144;Mario
 325;Michael
-01;Francisco
 42;Jose
 43;Kevin
 44;Mario
