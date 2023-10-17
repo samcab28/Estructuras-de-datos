@@ -40,7 +40,55 @@ public:
     void insertarNodo(const string& valor, Nodo*& nodoPtr);
     void cargarDesdeArchivo(Nodo*&raizArbolPtr);
     void preOrden(Nodo* nodoPtr);
+    void inOrden(Nodo* nodoPtr);
+    void CacheMemory();
+    string buscarPorCedula(int cedula,Nodo* nodoPtr);
 };
+
+
+
+string Arbol::buscarPorCedula(int cedula, Nodo* nodoPtr) {
+    if (nodoPtr == NULL) {
+        return "Cedula no encontrada en el árbol";
+    }
+
+    // Buscar el segundo número en la cédula almacenada en el nodo
+    size_t pos = nodoPtr->dato.find(';');
+    if (pos != string::npos) {
+        string numStr = nodoPtr->dato.substr(pos + 1);
+        int num;
+        istringstream(numStr) >> num;  // Convierte la parte numérica a entero
+
+        if (cedula == num) {
+            return nodoPtr->dato;  // Devuelve el nodo encontrado en forma de string
+        } else if (cedula < num) {
+            return buscarPorCedula(cedula, nodoPtr->izquierdoPtr);
+        } else {
+            return buscarPorCedula(cedula, nodoPtr->derechoPtr);
+        }
+    } else {
+        return "Formato de cédula incorrecto en el árbol";
+    }
+}
+
+
+
+
+
+
+
+
+void Arbol::inOrden(Nodo* nodoPtr)
+{
+    if (nodoPtr == NULL)
+    {
+        return;
+    }
+
+    inOrden(nodoPtr->izquierdoPtr);
+    cout << nodoPtr->dato << " - ";
+    inOrden(nodoPtr->derechoPtr);
+}
 
 void Arbol::preOrden(Nodo* nodoPtr)
 {
@@ -231,6 +279,10 @@ int main(){
         switch(x){
             case 1:
                 cout<<"1. buscar"<<endl;
+                cout << "Digite el numero de la cedula: ";
+			    int cedula;
+			    cin >> cedula;
+                cout<<miArbol.buscarPorCedula(cedula, raizArbolPtr)<<endl;
                 break;
             case 2: 
                 cout<<"2. eliminar"<<endl;
@@ -246,6 +298,10 @@ int main(){
                 break;
             case 6: 
                 cout<<"6. imprimir"<<endl;
+                cout << "muestra de inOrden" << endl;
+    			miArbol.inOrden(raizArbolPtr);
+    			cout<<""<<endl;
+    			cout<<""<<endl;
                 cout << "muestra de preOrden" << endl;
    				miArbol.preOrden(raizArbolPtr);
    				cout<<""<<endl;
