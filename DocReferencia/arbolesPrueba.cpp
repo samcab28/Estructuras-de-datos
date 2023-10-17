@@ -42,7 +42,59 @@ public:
     bool esLleno(Nodo* nodoPtr);
     bool esCompleto(Nodo* nodoPtr);
     void graficarArbol(Nodo* nodoPtr, int x, int y, int nivel, int distancia);
+    void eliminarNodo(const string& valor, Nodo*& nodoPtr);
 };
+
+void Arbol::eliminarNodo(const string& valor, Nodo*& nodoPtr)
+{
+    if (nodoPtr == NULL)
+    {
+        return;
+    }
+    else if (valor < nodoPtr->dato)
+    {
+        eliminarNodo(valor, nodoPtr->izquierdoPtr);
+    }
+    else if (valor > nodoPtr->dato)
+    {
+        eliminarNodo(valor, nodoPtr->derechoPtr);
+    }
+    else
+    {
+        // Caso 1: El nodo es una hoja (no tiene hijos)
+        if (nodoPtr->izquierdoPtr == NULL && nodoPtr->derechoPtr == NULL)
+        {
+            delete nodoPtr;
+            nodoPtr = NULL;
+        }
+        // Caso 2: El nodo tiene un hijo (izquierdo o derecho)
+        else if (nodoPtr->izquierdoPtr == NULL)
+        {
+            Nodo* temp = nodoPtr;
+            nodoPtr = nodoPtr->derechoPtr;
+            delete temp;
+        }
+        else if (nodoPtr->derechoPtr == NULL)
+        {
+            Nodo* temp = nodoPtr;
+            nodoPtr = nodoPtr->izquierdoPtr;
+            delete temp;
+        }
+        // Caso 3: El nodo tiene dos hijos
+        else
+        {
+            // Encuentra el nodo predecesor o sucesor (puedes usar cualquiera)
+            Nodo* predecesor = buscaMayor(nodoPtr->izquierdoPtr);
+            // Copia el valor del predecesor en el nodo actual
+            nodoPtr->dato = predecesor->dato;
+            // Elimina el predecesor
+            eliminarNodo(predecesor->dato, nodoPtr->izquierdoPtr);
+        }
+    }
+}
+
+
+
 
 Arbol::Arbol()
 {
@@ -446,8 +498,8 @@ void Arbol::graficarArbol(Nodo* nodoPtr, int x, int y, int nivel, int distancia)
 
 int main()
 {
-    Arbol miArbol;
-    Nodo* raizArbolPtr = miArbol.regresaRaiz();
+	Arbol miArbol;
+	Nodo* raizArbolPtr = miArbol.regresaRaiz();
 
     miArbol.insertarNodo("Alice", raizArbolPtr);
     miArbol.insertarNodo("Bob", raizArbolPtr);
@@ -460,7 +512,12 @@ int main()
 
     cout << "" << endl;
     cout << "muestra de acostado" << endl;
+    miArbol.muestraAcostado(0, raizArbolPtr);
     
+    cout<<""<<endl;
+    cout<<"elimina un nodo"<<endl;
+    miArbol.eliminarNodo("Fernando", raizArbolPtr);
+    miArbol.muestraAcostado(0, raizArbolPtr);
     
 
     cout << "" << endl;

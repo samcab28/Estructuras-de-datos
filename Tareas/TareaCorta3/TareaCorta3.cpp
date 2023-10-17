@@ -46,8 +46,10 @@ public:
     string crearCache(int cedula,Nodo* nodoPtr);
     void insertarCliente(Nodo*& nodoPtr);
     string buscarPorCedula(int cedula, Nodo* nodoPtr);
-};
+    void eliminarNodo(Nodo*& nodoPtr, int cedula);
+    Nodo* encontrarSucesor(Nodo* nodoPtr);
 
+};
 
 string Arbol::buscarPorCedula(int cedula, Nodo* nodoPtr) {
     if (nodoPtr == NULL) {
@@ -72,6 +74,58 @@ string Arbol::buscarPorCedula(int cedula, Nodo* nodoPtr) {
         return "Formato de cédula incorrecto en el árbol";
     }
 }
+
+void Arbol::eliminarNodo(Nodo*& nodoPtr, int cedula) {
+	cout<<"entro a eliminar nodo: "<<cedula<<endl;
+    if (nodoPtr == NULL) {
+    	cout<<"nodo NUlo"<<endl;
+        return;
+    }
+
+    if (cedula == nodoPtr->valorNumerico) {
+        cout<<"imprimir nodo a borrar : "<<nodoPtr->valorNumerico<<endl;
+        if (nodoPtr->izquierdoPtr == NULL && nodoPtr->derechoPtr == NULL) {
+            // Caso 1: El nodo es una hoja (no tiene hijos)
+            delete nodoPtr;
+            nodoPtr = NULL;
+        } else if (nodoPtr->izquierdoPtr == NULL) {
+            // Caso 2: El nodo solo tiene un hijo derecho
+            Nodo* temp = nodoPtr;
+            nodoPtr = nodoPtr->derechoPtr;
+            delete temp;
+        } else if (nodoPtr->derechoPtr == NULL) {
+            // Caso 2: El nodo solo tiene un hijo izquierdo
+            Nodo* temp = nodoPtr;
+            nodoPtr = nodoPtr->izquierdoPtr;
+            delete temp;
+        } else {
+            // Caso 3: El nodo tiene dos hijos
+            Nodo* sucesor = encontrarSucesor(nodoPtr->derechoPtr);
+            nodoPtr->dato = sucesor->dato;
+            nodoPtr->valorNumerico = sucesor->valorNumerico;
+            eliminarNodo(nodoPtr->derechoPtr, sucesor->valorNumerico);
+        }
+    } else if (cedula < nodoPtr->valorNumerico) {
+        eliminarNodo(nodoPtr->izquierdoPtr, cedula);
+    } else {
+        eliminarNodo(nodoPtr->derechoPtr, cedula);
+    }
+    
+    cout<<"no se encontro el nodo"<<endl;
+}
+
+
+Nodo* Arbol::encontrarSucesor(Nodo* nodoPtr) {
+    if (nodoPtr->izquierdoPtr == NULL) {
+        return nodoPtr;
+    }
+    return encontrarSucesor(nodoPtr->izquierdoPtr);
+}
+
+
+
+
+
 
 
 
@@ -100,7 +154,7 @@ void Arbol::insertarCliente(Nodo*& nodoPtr){
 
 string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
     if (nodoPtr == NULL) {
-        return "Cedula no encontrada en el árbol";
+        return "Cedula no encontrada en el ?rbol";
     }
 	ofstream archivo("Cache.txt");
 	archivo.close();
@@ -112,7 +166,7 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
     Nodo* primerNodo = nodoPtr;
     Nodo* primerNodoCST = nodoPtr;
 
-    while (true) {  // Usa un bucle infinito para continuar buscando desde el inicio del árbol
+    while (true) {  // Usa un bucle infinito para continuar buscando desde el inicio del ?rbol
         while (actual != NULL) {
             nodosStack.push(actual);
             actual = actual->izquierdoPtr;
@@ -136,7 +190,7 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
             	
                 resultado += "Nodo encontrado: " + actual->dato + "\n";
                 archivoESC<<actual->dato<<endl;
-                Nodo* siguiente = NULL; // Declaración fuera del if y else
+                Nodo* siguiente = NULL; // Declaraci?n fuera del if y else
 
                 if (actual->derechoPtr == NULL) {
                     siguiente = primerNodoCST;
@@ -157,14 +211,14 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
 
                     contador++;
                 }
-                break;  // Termina la búsqueda después de encontrar el nodo
+                break;  // Termina la b?squeda despu?s de encontrar el nodo
             }
         }
 
         actual = actual->derechoPtr;
     }
 
-    return resultado.empty() ? "Cedula no encontrada en el árbol" : resultado;
+    return resultado.empty() ? "Cedula no encontrada en el ?rbol" : resultado;
     
 	//funcion pk
 }
@@ -397,9 +451,13 @@ int main(){
 			    cin >> cedula;
                 cout<<miArbol.buscarPorCedula(cedula, raizArbolPtr)<<endl;
                 break;
-            case 2: 
-                cout<<"2. eliminar"<<endl;
-                break;
+			case 2: 
+			    cout << "2. eliminar" << endl;
+			    cout << "Digite el numero de la cedula: ";
+			    cin >> cedula;
+			    miArbol.eliminarNodo(raizArbolPtr,cedula);
+			    break;
+
             case 3: 
                 cout<<"3. insertar"<<endl;
                 miArbol.insertarCliente(raizArbolPtr);
