@@ -337,15 +337,29 @@ void leerArchivos() {
     	contador++;
     }
 
-    cout << "N?meros repetidos:" << endl;
+    /*cout << "N?meros repetidos:" << endl;
     for (set<string>::iterator it = repeatedNumbers.begin(); it != repeatedNumbers.end(); ++it) {
         cout << *it << endl;
-    }
+    }*/
 
     archivo.close();
 }
 
+void leerCache(){
+    std::ifstream archivo("Cache.txt");
 
+    if (!archivo) {
+        std::cerr << "Error al abrir el archivo." << std::endl;
+    }
+
+    std::string linea;
+
+    while (std::getline(archivo, linea)) {
+        std::cout << linea << " - "; 
+    }
+	cout<<"\n"<<endl;
+    archivo.close();
+}
 
 
 
@@ -363,6 +377,8 @@ int main(){
     miArbol.cargarDesdeArchivo(raizArbolPtr); 
     
     while(programa){
+    	cout<<"-------------------------------------------------"<<endl;
+    	cout<<"menu principal"<<endl;
         cout<<"\n1 para buscar"<<endl;
         cout<<"2 para eliminar"<<endl;
         cout<<"3 para insertar"<<endl;
@@ -405,6 +421,10 @@ int main(){
                 cout << "muestra de preOrden" << endl;
    				miArbol.preOrden(raizArbolPtr);
    				cout<<""<<endl;
+   				cout<<""<<endl;
+                cout << "muestra de Cache" << endl;
+                leerCache();
+   				
                 break;
             case 7: 
                 cout<<"7. cache"<<endl;
