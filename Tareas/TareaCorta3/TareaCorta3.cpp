@@ -43,12 +43,62 @@ public:
     void preOrden(Nodo* nodoPtr);
     void inOrden(Nodo* nodoPtr);
     void CacheMemory();
-    string buscarPorCedula(int cedula,Nodo* nodoPtr);
+    string crearCache(int cedula,Nodo* nodoPtr);
+    void insertarCliente(Nodo*& nodoPtr);
+    string buscarPorCedula(int cedula, Nodo* nodoPtr);
 };
 
 
-
 string Arbol::buscarPorCedula(int cedula, Nodo* nodoPtr) {
+    if (nodoPtr == NULL) {
+        return "Cedula no encontrada en el árbol";
+    }
+
+    // Buscar el segundo número en la cédula almacenada en el nodo
+    size_t pos = nodoPtr->dato.find(';');
+    if (pos != string::npos) {
+        string numStr = nodoPtr->dato.substr(pos + 1);
+        int num;
+        istringstream(numStr) >> num;  // Convierte la parte numérica a entero
+
+        if (cedula == num) {
+            return nodoPtr->dato;  // Devuelve el nodo encontrado en forma de string
+        } else if (cedula < num) {
+            return buscarPorCedula(cedula, nodoPtr->izquierdoPtr);
+        } else {
+            return buscarPorCedula(cedula, nodoPtr->derechoPtr);
+        }
+    } else {
+        return "Formato de cédula incorrecto en el árbol";
+    }
+}
+
+
+
+void Arbol::insertarCliente(Nodo*& nodoPtr){
+	cout<<"agregar cliente"<<endl;
+	string cedula, nombre, nuevoValor;
+	cout<<"digite el valor de la cedula"<<endl;
+	cin >> cedula;
+	
+	cout<<"digite el nombre de la persona"<<endl;
+	cin >> nombre;
+	
+	nuevoValor = cedula+";"+nombre;
+	
+	ofstream archivo_escritura("Clientes.txt", ios::app);
+	
+    if (!archivo_escritura) {
+        cout << "Error al abrir el archivo para escribir" << endl;
+        return;
+    }
+	
+    	
+ 	archivo_escritura << nuevoValor << endl;
+
+}
+
+string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
     if (nodoPtr == NULL) {
         return "Cedula no encontrada en el árbol";
     }
@@ -118,8 +168,6 @@ string Arbol::buscarPorCedula(int cedula, Nodo* nodoPtr) {
     
 	//funcion pk
 }
-
-
 
 
 
@@ -304,6 +352,7 @@ void leerArchivos() {
 int main(){
 	
     bool programa = true;
+	int cedula;
 	
 	leerArchivos();
 	
@@ -311,7 +360,7 @@ int main(){
     Arbol miArbol;
     Nodo* raizArbolPtr = miArbol.regresaRaiz();
     
-    miArbol.cargarDesdeArchivo(raizArbolPtr); // Corrected line
+    miArbol.cargarDesdeArchivo(raizArbolPtr); 
     
     while(programa){
         cout<<"\n1 para buscar"<<endl;
@@ -329,7 +378,6 @@ int main(){
             case 1:
                 cout<<"1. buscar"<<endl;
                 cout << "Digite el numero de la cedula: ";
-			    int cedula;
 			    cin >> cedula;
                 cout<<miArbol.buscarPorCedula(cedula, raizArbolPtr)<<endl;
                 break;
@@ -338,6 +386,9 @@ int main(){
                 break;
             case 3: 
                 cout<<"3. insertar"<<endl;
+                miArbol.insertarCliente(raizArbolPtr);
+                leerArchivos();
+                miArbol.cargarDesdeArchivo(raizArbolPtr); 
                 break;
             case 4: 
                 cout<<"4. purgar"<<endl;
@@ -357,7 +408,11 @@ int main(){
                 break;
             case 7: 
                 cout<<"7. cache"<<endl;
-                break; // You missed the break statement here
+                miArbol.cargarDesdeArchivo(raizArbolPtr);
+                cout << "Digite el numero de la cedula: ";
+			    cin >> cedula;
+                cout<<miArbol.crearCache(cedula, raizArbolPtr)<<endl;
+                break; 
             case 8:
                 cout<<"salir"<<endl;
                 programa = false;
