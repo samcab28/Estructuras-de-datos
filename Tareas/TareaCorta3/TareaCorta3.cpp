@@ -19,6 +19,8 @@ class Nodo
 {
 public:
     string dato;
+    int valorNumerico; 
+
     Nodo* izquierdoPtr;
     Nodo* derechoPtr;
 };
@@ -36,9 +38,21 @@ public:
     Nodo*& regresaRaiz();
     void podarArbol(Nodo*& nodoPtr);
     void insertarNodo(const string& valor, Nodo*& nodoPtr);
-    void muestraAcostado(int nivel, Nodo* nodoPtr);
     void cargarDesdeArchivo(Nodo*&raizArbolPtr);
+    void preOrden(Nodo* nodoPtr);
 };
+
+void Arbol::preOrden(Nodo* nodoPtr)
+{
+    if (nodoPtr == NULL)
+    {
+        return;
+    }
+
+    cout << nodoPtr->dato << " - ";
+    preOrden(nodoPtr->izquierdoPtr);
+    preOrden(nodoPtr->derechoPtr);
+}
 
 void Arbol::cargarDesdeArchivo(Nodo*& raizArbolPtr)
 {
@@ -96,37 +110,39 @@ void Arbol::insertarNodo(const string& valor, Nodo*& nodoPtr)
     {
         nodoPtr = new Nodo();
         nodoPtr->dato = valor;
+        
+        size_t pos = valor.find(';');
+        if (pos != string::npos) {
+            // Obtener la parte después del punto y coma como valor numérico
+            string numStr = valor.substr(pos + 1);
+            nodoPtr->valorNumerico = atoi(numStr.c_str()); // Convierte la cadena a entero
+        }
+        else {
+            // Manejo de error si no se encuentra el punto y coma
+            nodoPtr->valorNumerico = 0; // O asigna un valor por defecto
+        }
+        
         nodoPtr->izquierdoPtr = NULL;
         nodoPtr->derechoPtr = NULL;
     }
-    else if (valor < nodoPtr->dato)
-    {
-        insertarNodo(valor, nodoPtr->izquierdoPtr);
-    }
-    else if (valor > nodoPtr->dato)
-    {
-        insertarNodo(valor, nodoPtr->derechoPtr);
+    else {
+        size_t pos = valor.find(';');
+        if (pos != string::npos) {
+            // Obtener la parte después del punto y coma como valor numérico
+            string numStr = valor.substr(pos + 1);
+            int num = atoi(numStr.c_str());
+            
+            // Continúa el proceso basado en el número después del punto y coma
+            if (num < nodoPtr->valorNumerico) {
+                insertarNodo(valor, nodoPtr->izquierdoPtr);
+            }
+            else if (num > nodoPtr->valorNumerico) {
+                insertarNodo(valor, nodoPtr->derechoPtr);
+            }
+        }
     }
 }
 
-void Arbol::muestraAcostado(int nivel, Nodo* nodoPtr)
-{
-    if (nodoPtr == NULL)
-    {
-        return;
-    }
-
-    muestraAcostado(nivel + 1, nodoPtr->derechoPtr);
-
-    for (int i = 0; i < nivel; i++)
-    {
-        cout << "  ";
-    }
-
-    cout << nodoPtr->dato << endl;
-
-    muestraAcostado(nivel + 1, nodoPtr->izquierdoPtr);
-}
 
 
 
@@ -153,11 +169,12 @@ void leerArchivos() {
             }
         }
     }
+    
+    
 	ofstream archivo2("Indices.txt");
 	archivo2.close();
 	int contador = 1;
     for (set<string>::iterator it = uniqueNumbers.begin(); it != uniqueNumbers.end(); ++it) {
-        //cout << *it << endl;
         ofstream archivo_escritura("Indices.txt", ios::app);
 
 	    if (!archivo_escritura) {
@@ -229,7 +246,9 @@ int main(){
                 break;
             case 6: 
                 cout<<"6. imprimir"<<endl;
-                miArbol.muestraAcostado(0, raizArbolPtr);
+                cout << "muestra de preOrden" << endl;
+   				miArbol.preOrden(raizArbolPtr);
+   				cout<<""<<endl;
                 break;
             case 7: 
                 cout<<"7. cache"<<endl;

@@ -460,7 +460,8 @@ int main()
 
     cout << "" << endl;
     cout << "muestra de acostado" << endl;
-    miArbol.muestraAcostado(0, raizArbolPtr);
+    
+    
 
     cout << "" << endl;
     cout << "muestra de inOrden" << endl;
