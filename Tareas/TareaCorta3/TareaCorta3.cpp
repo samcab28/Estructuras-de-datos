@@ -7,6 +7,7 @@ tarea corta
 #include <windows.h>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <set>
 
@@ -152,10 +153,26 @@ void leerArchivos() {
             }
         }
     }
-
-    cout << "Números no repetidos:" << endl;
+	ofstream archivo2("Indices.txt");
+	archivo2.close();
+	int contador = 1;
     for (set<string>::iterator it = uniqueNumbers.begin(); it != uniqueNumbers.end(); ++it) {
-        cout << *it << endl;
+        //cout << *it << endl;
+        ofstream archivo_escritura("Indices.txt", ios::app);
+
+	    if (!archivo_escritura) {
+	        cout << "Error al abrir el archivo para escribir" << endl;
+	        return;
+	    }
+	
+		std::stringstream ss1;
+    	ss1 << contador;
+    	string num1 = ss1.str();
+    	
+	    archivo_escritura << num1+";"+*it << endl;
+
+    	archivo_escritura.close();
+    	contador++;
     }
 
     cout << "Números repetidos:" << endl;
@@ -165,6 +182,10 @@ void leerArchivos() {
 
     archivo.close();
 }
+
+
+
+
 
 int main(){
 	
