@@ -8,6 +8,8 @@ tarea corta
 #include <string>
 #include <fstream>
 #include <string>
+#include <set>
+
 
 
 using namespace std;
@@ -127,9 +129,49 @@ void Arbol::muestraAcostado(int nivel, Nodo* nodoPtr)
 
 
 
+void leerArchivos() {
+    ifstream archivo("Clientes.txt");
+
+    if (!archivo) {
+        cout << "Error al abrir el archivo" << endl;
+        return;
+    }
+
+    set<string> uniqueNumbers;
+    set<string> repeatedNumbers;
+
+    string linea;
+    while (getline(archivo, linea)) {
+        size_t pos = linea.find(';');
+        if (pos != string::npos) {
+            string numero = linea.substr(0, pos);
+            if (uniqueNumbers.find(numero) != uniqueNumbers.end()) {
+                repeatedNumbers.insert(numero);
+            } else {
+                uniqueNumbers.insert(numero);
+            }
+        }
+    }
+
+    cout << "Números no repetidos:" << endl;
+    for (set<string>::iterator it = uniqueNumbers.begin(); it != uniqueNumbers.end(); ++it) {
+        cout << *it << endl;
+    }
+
+    cout << "Números repetidos:" << endl;
+    for (set<string>::iterator it = repeatedNumbers.begin(); it != repeatedNumbers.end(); ++it) {
+        cout << *it << endl;
+    }
+
+    archivo.close();
+}
+
 int main(){
 	
     bool programa = true;
+	
+	leerArchivos();
+	
 	
     Arbol miArbol;
     Nodo* raizArbolPtr = miArbol.regresaRaiz();
