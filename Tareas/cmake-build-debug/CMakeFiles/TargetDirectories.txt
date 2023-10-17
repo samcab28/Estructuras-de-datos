@@ -1,0 +1,3 @@
+C:/Users/samir/RepoEstructuras/Estructuras-de-datos/Tareas/cmake-build-debug/CMakeFiles/Tareas.dir
+C:/Users/samir/RepoEstructuras/Estructuras-de-datos/Tareas/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/samir/RepoEstructuras/Estructuras-de-datos/Tareas/cmake-build-debug/CMakeFiles/rebuild_cache.dir

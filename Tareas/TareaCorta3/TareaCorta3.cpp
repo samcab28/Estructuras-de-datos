@@ -10,6 +10,7 @@ tarea corta
 #include <sstream>
 #include <string>
 #include <set>
+#include <stack>
 
 
 
@@ -51,25 +52,71 @@ string Arbol::buscarPorCedula(int cedula, Nodo* nodoPtr) {
     if (nodoPtr == NULL) {
         return "Cedula no encontrada en el árbol";
     }
+	ofstream archivo("Cache.txt");
+	archivo.close();
+	
+	
+    string resultado = "";
+    stack<Nodo*> nodosStack;
+    Nodo* actual = nodoPtr;
+    Nodo* primerNodo = nodoPtr;
+    Nodo* primerNodoCST = nodoPtr;
 
-    // Buscar el segundo número en la cédula almacenada en el nodo
-    size_t pos = nodoPtr->dato.find(';');
-    if (pos != string::npos) {
-        string numStr = nodoPtr->dato.substr(pos + 1);
-        int num;
-        istringstream(numStr) >> num;  // Convierte la parte numérica a entero
-
-        if (cedula == num) {
-            return nodoPtr->dato;  // Devuelve el nodo encontrado en forma de string
-        } else if (cedula < num) {
-            return buscarPorCedula(cedula, nodoPtr->izquierdoPtr);
-        } else {
-            return buscarPorCedula(cedula, nodoPtr->derechoPtr);
+    while (true) {  // Usa un bucle infinito para continuar buscando desde el inicio del árbol
+        while (actual != NULL) {
+            nodosStack.push(actual);
+            actual = actual->izquierdoPtr;
         }
-    } else {
-        return "Formato de cédula incorrecto en el árbol";
+
+        if (nodosStack.empty()) {
+            break; // Todos los nodos se han visitado
+        }
+
+        actual = nodosStack.top();
+        nodosStack.pop();
+
+        size_t pos = actual->dato.find(';');
+        if (pos != string::npos) {
+            string numStr = actual->dato.substr(pos + 1);
+            int num;
+            istringstream(numStr) >> num;
+
+            if (cedula == num) {
+            	ofstream archivoESC("Cache.txt",ios::app);
+            	
+                resultado += "Nodo encontrado: " + actual->dato + "\n";
+                archivoESC<<actual->dato<<endl;
+                Nodo* siguiente = NULL; // Declaración fuera del if y else
+
+                if (actual->derechoPtr == NULL) {
+                    siguiente = primerNodoCST;
+                } else {
+                    siguiente = actual->derechoPtr;
+                }
+
+                int contador = 0;
+
+                while (siguiente != NULL && contador < 20) {
+                    resultado += "Nodo siguiente: " + siguiente->dato + "\n";
+                    archivoESC<<siguiente->dato<<endl;
+                    if (siguiente == NULL) {
+                        siguiente = primerNodoCST;
+                    } else {
+                        siguiente = siguiente->derechoPtr;
+                    }
+
+                    contador++;
+                }
+                break;  // Termina la búsqueda después de encontrar el nodo
+            }
+        }
+
+        actual = actual->derechoPtr;
     }
+
+    return resultado.empty() ? "Cedula no encontrada en el árbol" : resultado;
 }
+
 
 
 
@@ -161,7 +208,7 @@ void Arbol::insertarNodo(const string& valor, Nodo*& nodoPtr)
         
         size_t pos = valor.find(';');
         if (pos != string::npos) {
-            // Obtener la parte después del punto y coma como valor numérico
+            // Obtener la parte despu?s del punto y coma como valor num?rico
             string numStr = valor.substr(pos + 1);
             nodoPtr->valorNumerico = atoi(numStr.c_str()); // Convierte la cadena a entero
         }
@@ -176,11 +223,11 @@ void Arbol::insertarNodo(const string& valor, Nodo*& nodoPtr)
     else {
         size_t pos = valor.find(';');
         if (pos != string::npos) {
-            // Obtener la parte después del punto y coma como valor numérico
+            // Obtener la parte despu?s del punto y coma como valor num?rico
             string numStr = valor.substr(pos + 1);
             int num = atoi(numStr.c_str());
             
-            // Continúa el proceso basado en el número después del punto y coma
+            // Contin?a el proceso basado en el n?mero despu?s del punto y coma
             if (num < nodoPtr->valorNumerico) {
                 insertarNodo(valor, nodoPtr->izquierdoPtr);
             }
@@ -240,7 +287,7 @@ void leerArchivos() {
     	contador++;
     }
 
-    cout << "Números repetidos:" << endl;
+    cout << "N?meros repetidos:" << endl;
     for (set<string>::iterator it = repeatedNumbers.begin(); it != repeatedNumbers.end(); ++it) {
         cout << *it << endl;
     }
