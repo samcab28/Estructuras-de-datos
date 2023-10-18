@@ -418,10 +418,8 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
                     archivoESC<<datoGuardar2<<endl;
                     if (siguiente -> derechoPtr == NULL) {
                         siguiente = primerNodo;
-                        cout<<"se usa el primerNodo: "<<siguiente -> dato<<endl;
                     } else {
-                        siguiente = siguiente->derechoPtr;
-                        cout<<"se usa el siguiente nodo: "<<siguiente->dato<<endl;
+                        siguiente = siguiente->derechoPtr;;
                     }
 
                     contador++;
@@ -613,7 +611,7 @@ void leerCache(){
     std::string linea;
 	cout<<"id || cedula || nombre"<<endl;
     while (std::getline(archivo, linea)) {
-        std::cout <<"\n" <<linea << " || "; 
+        std::cout <<"\n" <<linea; 
     }
 	cout<<"\n"<<endl;
     archivo.close();
@@ -723,16 +721,14 @@ int main(){
             	cout<<"\n--------buscar"<<endl;
             	cout<<"cedulas disponibles"<<endl;
             	cout<<miArbol.devuelveCedulasCompleto(raizArbolPtr);
-            	
-            	cout<<"\n\n\n contenido en orden"<<endl;
-            	miArbol.inOrden(raizArbolPtr);
+
                 cout << "\nDigite el numero de la cedula: ";
 			    cin >> cedula;
-                cout<<"contenido de indices: "<<miArbol.buscarPorCedula(cedula, raizArbolPtr)<<endl;
+                cout<<"\ncontenido de indices: "<<miArbol.buscarPorCedula(cedula, raizArbolPtr)<<endl;
                 cout<<"contenido de clientes: "<<buscarContenidoCliente(cedula)<<endl;
                 
                 
-                cout<<"\n"<<miArbol.crearCache(cedula, raizArbolPtr)<<endl;
+                miArbol.crearCache(cedula, raizArbolPtr);
                 break;
 			case 2: 
 				cout<<"\n--------eliminar"<<endl;
@@ -756,6 +752,7 @@ int main(){
                 break;
             case 5: 
         		cout<<"\n--------reindexar"<<endl;
+        		miArbol.cargarDesdeArchivo(raizArbolPtr);
                 cout<<"reindexado correctamente"<<endl;
                 break;
             case 6: 
