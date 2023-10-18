@@ -337,6 +337,30 @@ void Arbol::insertarCliente(Nodo*& nodoPtr){
 
 }
 
+string getNombre(string info) {
+    std::string input = info;
+    int numero2 = 0;  
+
+    // Encontrar la posición del punto y coma
+    size_t pos = input.find(';');
+
+    if (pos != std::string::npos) {
+        // Extraer la parte del string después del punto y coma
+        std::string numero2_str = input.substr(pos + 1);
+
+        // Convertir la parte en un número (entero)
+        numero2 = customAtoi(numero2_str);
+
+        // Imprimir el número2
+        string nombre = obtenerNombrePorNumero(numero2);
+        
+        return nombre;
+    }
+
+	return "";
+}
+
+
 string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
     if (nodoPtr == NULL) {
         return "Cedula no encontrada en el ?rbol";
@@ -344,8 +368,9 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
 	ofstream archivo("Cache.txt");
 	archivo.close();
 	
-	int num2;
+	
     string resultado = "";
+    string datoGuardar2 = "";
     stack<Nodo*> nodosStack;
     Nodo* actual = nodoPtr;
     Nodo* primerNodo = nodoPtr;
@@ -374,38 +399,34 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
             	ofstream archivoESC("Cache.txt",ios::app);
             	
                 resultado += "Nodo encontrado: " + actual->dato + "\n";
-				string nombreEncontrado = obtenerNombrePorNumero(cedula);
-				string datoGuardar = actual->dato + ";"+ nombreEncontrado;
+                cout<<resultado<<endl;
+                string datoGuardar = actual->dato + ";" + getNombre(actual->dato);
                 archivoESC<<datoGuardar<<endl;
                 Nodo* siguiente = NULL; // Declaraci?n fuera del if y else
 
                 if (actual->derechoPtr == NULL) {
-                    siguiente = primerNodoCST;
+                    siguiente = primerNodo;
                 } else {
                     siguiente = actual->derechoPtr;
                 }
 
                 int contador = 0;
-				int num2;
+
                 while (siguiente != NULL && contador < 20) {
-			        size_t pos = siguiente->dato.find(';');
-			        if (pos != string::npos) {
-			            string numStr = siguiente->dato.substr(pos + 1);
-					    istringstream(numStr) >> num2;
-			            cout<<"cedula actual: "<<num2<<endl;
-						string nombreEncontrado = obtenerNombrePorNumero(num2);
-						string datoGuardar = actual->dato + ";"+ nombreEncontrado;
-		                archivoESC<<datoGuardar<<endl;
-	                    if (siguiente == NULL) {
-	                        siguiente = primerNodoCST;
-	                    } else {
-	                        siguiente = siguiente->derechoPtr;
-	                    }
-	
-	                    contador++;
-	            	}
+                    resultado += "Nodo siguiente: " + siguiente->dato + "\n";
+                    datoGuardar2 = siguiente->dato + ";" + getNombre(siguiente->dato);
+                    archivoESC<<datoGuardar2<<endl;
+                    if (siguiente -> derechoPtr == NULL) {
+                        siguiente = primerNodo;
+                        cout<<"se usa el primerNodo: "<<siguiente -> dato<<endl;
+                    } else {
+                        siguiente = siguiente->derechoPtr;
+                        cout<<"se usa el siguiente nodo: "<<siguiente->dato<<endl;
+                    }
+
+                    contador++;
                 }
-                break;   // Termina la b?squeda despu?s de encontrar el nodo
+                break;  // Termina la b?squeda despu?s de encontrar el nodo
             }
         }
 
@@ -413,7 +434,10 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
     }
 
     return resultado.empty() ? "Cedula no encontrada en el ?rbol" : resultado;
+    
+	//funcion pk
 }
+
 
 void Arbol::inOrden(Nodo* nodoPtr)
 {
@@ -665,6 +689,7 @@ string buscarContenidoCliente(int cedula) {
 
 
 
+
 int main(){
 	ofstream archivo("Cache.txt");
 	archivo.close();
@@ -698,10 +723,16 @@ int main(){
             	cout<<"\n--------buscar"<<endl;
             	cout<<"cedulas disponibles"<<endl;
             	cout<<miArbol.devuelveCedulasCompleto(raizArbolPtr);
+            	
+            	cout<<"\n\n\n contenido en orden"<<endl;
+            	miArbol.inOrden(raizArbolPtr);
                 cout << "\nDigite el numero de la cedula: ";
 			    cin >> cedula;
                 cout<<"contenido de indices: "<<miArbol.buscarPorCedula(cedula, raizArbolPtr)<<endl;
                 cout<<"contenido de clientes: "<<buscarContenidoCliente(cedula)<<endl;
+                
+                
+                cout<<"\n"<<miArbol.crearCache(cedula, raizArbolPtr)<<endl;
                 break;
 			case 2: 
 				cout<<"\n--------eliminar"<<endl;
@@ -720,12 +751,12 @@ int main(){
                 break;
             case 4: 
             	cout<<"\n--------purgar"<<endl;
-				cout<<"purgado"<<endl;
+				cout<<"purgado correctamente"<<endl;
                  
                 break;
             case 5: 
         		cout<<"\n--------reindexar"<<endl;
-                cout<<"reindexado"<<endl;
+                cout<<"reindexado correctamente"<<endl;
                 break;
             case 6: 
         		cout<<"\n--------imprimir"<<endl;
