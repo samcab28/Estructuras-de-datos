@@ -1,49 +1,37 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <sstream>
 
-std::string obtenerNombrePorNumero(int numero) {
-    // Abre el archivo de texto
+// Definición de la función que busca el contenido de un cliente por número
+std::string buscarContenidoCliente(const std::string& numeroBuscado) {
     std::ifstream archivo("Clientes.txt");
 
     if (!archivo.is_open()) {
-        // Si no se pudo abrir el archivo, muestra un mensaje de error
-        std::cerr << "Error: No se pudo abrir el archivo." << std::endl;
-        return "";
+        return "Error: No se pudo abrir el archivo.";
     }
 
     std::string linea;
     while (std::getline(archivo, linea)) {
-        // Divide la línea en número y nombre usando el punto y coma como delimitador
-        size_t pos = linea.find(";");
+        size_t pos = linea.find(';');
         if (pos != std::string::npos) {
-            std::istringstream stream(linea.substr(0, pos));
-            int numeroEnArchivo;
-            stream >> numeroEnArchivo;
-
-            if (!stream.fail() && numeroEnArchivo == numero) {
-                std::string nombre = linea.substr(pos + 1);
+            std::string numero = linea.substr(0, pos);
+            std::string nombre = linea.substr(pos + 1);
+            if (numero == numeroBuscado) {
                 archivo.close();
-                return nombre;
+                return numero + ";" + nombre;
             }
         }
     }
 
-    // Si no se encuentra el número, cierra el archivo y devuelve una cadena vacía
     archivo.close();
-    return "";
+    return "Cliente no encontrado.";
 }
 
 int main() {
-    int numeroBuscado = 54; // Reemplaza con el número que desees buscar
-    std::string nombreEncontrado = obtenerNombrePorNumero(numeroBuscado);
+    std::string numeroBuscado = "321"; // Cambia esto al número que desees buscar
 
-    if (!nombreEncontrado.empty()) {
-        std::cout << "Nombre encontrado: " << nombreEncontrado << std::endl;
-    } else {
-        std::cout << "Número no encontrado en el archivo." << std::endl;
-    }
+    std::string resultado = buscarContenidoCliente(numeroBuscado);
+    std::cout << "Resultado: " << resultado << std::endl;
 
     return 0;
 }

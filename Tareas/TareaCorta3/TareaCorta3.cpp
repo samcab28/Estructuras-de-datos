@@ -91,8 +91,6 @@ void borradoIndice(int numeroBorrar){
     if (std::rename(archivoTemporal.c_str(), archivoOriginal.c_str()) != 0) {
         std::cerr << "Error al renombrar el archivo temporal." << std::endl;
     }
-
-    std::cout << "Contenido del archivo modificado con éxito." << std::endl;
 }
 
 void borradoCliente(int primerNumeroBorrar){
@@ -139,7 +137,6 @@ void borradoCliente(int primerNumeroBorrar){
         std::cerr << "Error al renombrar el archivo temporal." << std::endl;
     }
 
-    std::cout << "Contenido del archivo modificado con éxito." << std::endl;
 }
 
 std::string obtenerNombrePorNumero(int numero) {
@@ -206,8 +203,43 @@ public:
     string buscarPorCedula(int cedula, Nodo* nodoPtr);
     void eliminarNodo(Nodo*& nodoPtr, int cedula);
     Nodo* encontrarSucesor(Nodo* nodoPtr);
+	string devuelveCedulas(Nodo* nodoPtr);
+	string devuelveCedulasCompleto(Nodo* nodoPtr);
 	
 };
+
+string Arbol::devuelveCedulas(Nodo* nodoPtr) {
+    string resultado = ""; // Inicializamos el resultado como una cadena vacía
+
+    if (nodoPtr == NULL) {
+        return resultado;
+    }
+
+    // Realizar un recorrido inorden para visitar todos los nodos del árbol
+    resultado += devuelveCedulas(nodoPtr->izquierdoPtr);
+
+    // Procesar el contenido después del punto y coma en cada nodo
+    size_t pos = nodoPtr->dato.find(';');
+    if (pos != string::npos) {
+        string contenido_despues_punto_coma = nodoPtr->dato.substr(pos + 1);
+        cout << contenido_despues_punto_coma + "-";
+        resultado += contenido_despues_punto_coma + "-";
+    }
+
+    resultado += devuelveCedulas(nodoPtr->derechoPtr);
+
+    return resultado; // Devolvemos el resultado acumulado
+}
+
+string Arbol::devuelveCedulasCompleto(Nodo* nodoPtr) {
+    string resultadoCompleto = ""; 
+    resultadoCompleto = devuelveCedulas(nodoPtr); 
+    return resultadoCompleto; 
+}
+
+
+
+
 
 string Arbol::buscarPorCedula(int cedula, Nodo* nodoPtr) {
     if (nodoPtr == NULL) {
@@ -222,8 +254,6 @@ string Arbol::buscarPorCedula(int cedula, Nodo* nodoPtr) {
         istringstream(numStr) >> num;  // Convierte la parte numérica a entero
 
         if (cedula == num) {
-			borradoIndice(cedula);
-			borradoCliente(cedula);
             return nodoPtr->dato;  // Devuelve el nodo encontrado en forma de string
         } else if (cedula < num) {
             return buscarPorCedula(cedula, nodoPtr->izquierdoPtr);
@@ -381,8 +411,6 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
     }
 
     return resultado.empty() ? "Cedula no encontrada en el ?rbol" : resultado;
-    
-	//funcion pk
 }
 
 void Arbol::inOrden(Nodo* nodoPtr)
@@ -565,6 +593,74 @@ void leerCache(){
     archivo.close();
 }
 
+string devuelveCedulas(){
+
+    // Vector para almacenar las cédulas
+    std::vector<std::string> cedulas;
+
+    // Abrir el archivo
+    std::ifstream archivo("Indices.txt");
+    
+    if (!archivo) {
+		return "el archivo no se abrio";
+    }
+
+    std::string linea;
+    while (std::getline(archivo, linea)) {
+        // Buscar el punto y coma en la línea
+        size_t posicionPuntoComa = linea.find(';');
+
+        if (posicionPuntoComa != std::string::npos) {
+            // Extraer la cédula (lo que está después del punto y coma)
+            std::string cedula = linea.substr(posicionPuntoComa + 1);
+            cedulas.push_back(cedula);
+        }
+    }
+
+    // Cerrar el archivo
+    archivo.close();
+
+    // Imprimir las cédulas
+    string coutFinal;
+	for (size_t i = 0; i < cedulas.size(); ++i) {
+		coutFinal += cedulas[i] + "-";
+	}
+	
+	return coutFinal;	
+}
+
+
+string buscarContenidoCliente(int cedula) {
+    std::ifstream archivo("Clientes.txt");
+
+    if (!archivo.is_open()) {
+        return "Error: No se pudo abrir el archivo.";
+    }
+
+    std::ostringstream convertir;
+	convertir << cedula;
+			
+			    // Obtiene la cadena resultante
+	std::string numeroBuscado = convertir.str();
+
+    std::string linea;
+    while (std::getline(archivo, linea)) {
+        size_t pos = linea.find(';');
+        if (pos != std::string::npos) {
+            std::string numero = linea.substr(0, pos);
+            std::string nombre = linea.substr(pos + 1);
+            if (numero == numeroBuscado) {
+                archivo.close();
+                return numero + ";" + nombre;
+            }
+        }
+    }
+
+    archivo.close();
+    return "Cliente no encontrado.";
+}
+
+
 
 
 int main(){
@@ -582,7 +678,7 @@ int main(){
     miArbol.cargarDesdeArchivo(raizArbolPtr); 
     
     while(programa){
-    	cout<<"-------------------------------------------------"<<endl;
+    	cout<<"\n-------------------------------------------------"<<endl;
     	cout<<"menu principal"<<endl;
         cout<<"\n1 para buscar"<<endl;
         cout<<"2 para eliminar"<<endl;
@@ -592,51 +688,55 @@ int main(){
         cout<<"6 para imprimir"<<endl;
         cout<<"7 para cache"<<endl;
         cout<<"8 para salir"<<endl;
-        cout<<"\n digite la opcion: "<<endl;
+        cout<<"\n digite la opcion: ";
         int x;
         cin >> x;
         switch(x){
             case 1:
-                cout<<"1. buscar"<<endl;
-                cout << "Digite el numero de la cedula: ";
+            	cout<<"\n--------buscar"<<endl;
+            	cout<<"cedulas disponibles"<<endl;
+            	cout<<miArbol.devuelveCedulasCompleto(raizArbolPtr);
+                cout << "\nDigite el numero de la cedula: ";
 			    cin >> cedula;
-                cout<<miArbol.buscarPorCedula(cedula, raizArbolPtr)<<endl;
+                cout<<"contenido de indices: "<<miArbol.buscarPorCedula(cedula, raizArbolPtr)<<endl;
+                cout<<"contenido de clientes: "<<buscarContenidoCliente(cedula)<<endl;
                 break;
 			case 2: 
-			    cout << "2. eliminar" << endl;
-			    cout << "Digite el numero de la cedula: ";
+				cout<<"\n--------eliminar"<<endl;
+				cout<<"cedulas disponibles"<<endl;
+            	cout<<miArbol.devuelveCedulasCompleto(raizArbolPtr);
+			    cout << "\nDigite el numero de la cedula: ";
 			    cin >> cedula;
 			    miArbol.eliminarNodo(raizArbolPtr,cedula);
 			    break;
 
             case 3: 
-                cout<<"3. insertar"<<endl;
+            	cout<<"\n--------insertar"<<endl;
                 miArbol.insertarCliente(raizArbolPtr);
                 leerArchivos();
                 miArbol.cargarDesdeArchivo(raizArbolPtr); 
                 break;
             case 4: 
-                cout<<"4. purgar"<<endl;
+            	cout<<"\n--------purgar"<<endl;
+				cout<<"purgado"<<endl;
+                 
                 break;
             case 5: 
-                cout<<"5. reindexar"<<endl;
+        		cout<<"\n--------reindexar"<<endl;
+                cout<<"reindexado"<<endl;
                 break;
             case 6: 
-                cout<<"6. imprimir"<<endl;
-                cout << "muestra de inOrden" << endl;
-    			miArbol.inOrden(raizArbolPtr);
-    			cout<<""<<endl;
-    			cout<<""<<endl;
-                cout << "muestra de preOrden" << endl;
+        		cout<<"\n--------imprimir"<<endl;
+                cout << "\nmuestra de preOrden" << endl;
    				miArbol.preOrden(raizArbolPtr);
    				cout<<""<<endl;
    				cout<<""<<endl;
                 cout << "muestra de Cache" << endl;
                 leerCache();
-   				
+                cout<<""<<endl;
                 break;
             case 7: 
-                cout<<"7. cache"<<endl;
+        		cout<<"\n--------cache"<<endl;
                 miArbol.cargarDesdeArchivo(raizArbolPtr);
                 cout << "Digite el numero de la cedula: ";
 			    cin >> cedula;

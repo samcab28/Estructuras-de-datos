@@ -1,19 +1,9 @@
-02;Jose
-03;Kevin
-04;Mario
-02;Michael
-102;Jose
 32;Michael
-02;Jose
-03;Kevin
-04;Mario
-02;Michael
 151;Francisco
 162;Jose
 136;Kevin
 146;Mario
 321;Michael
-123;Alejandro
 457;Álvaro
 54;Manuel
 89;Juan
@@ -38,7 +28,6 @@
 45;Mario
 78;Michael
 71;Francisco
-082;Jose
 138;Kevin
 144;Mario
 325;Michael
@@ -70,3 +59,4 @@
 934;Juan
 
 710;samir
+97;samirpedro
