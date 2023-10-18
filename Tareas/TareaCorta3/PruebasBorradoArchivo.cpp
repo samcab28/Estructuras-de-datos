@@ -1,141 +1,50 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <cstdlib> // Necesario para la función atoi
+#include <sstream>
 
-// Función para convertir una cadena en un entero
-int customAtoi(const std::string& str) {
-    int result = 0;
-    for (size_t i = 0; i < str.size(); i++) {
-        char c = str[i];
-        if (isdigit(c)) {
-            result = result * 10 + (c - '0');
-        }
-    }
-    return result;
-}
+std::string obtenerNombrePorNumero(int numero) {
+    // Abre el archivo de texto
+    std::ifstream archivo("Clientes.txt");
 
-int customAtoiCliente(const std::string& str) {
-    int result = 0;
-    for (size_t i = 0; i < str.size(); i++) {
-        char c = str[i];
-        if (isdigit(c)) {
-            result = result * 10 + (c - '0');
-        } else if (c == ';') {
-            break; // Detener la conversión al encontrar el primer punto y coma
-        }
-    }
-    return result;
-}
-
-
-void borradoIndice(int numeroBorrar){
-    std::string archivoOriginal = "Indices.txt";
-    std::string archivoTemporal = "temporal.txt";
-    
-    // Valor de numero2 que deseas borrar
-    int numero2ABorrar = numeroBorrar; // Reemplaza con el valor deseado
-
-    std::ifstream entrada(archivoOriginal.c_str());
-    std::ofstream salida(archivoTemporal.c_str());
-
-    if (!entrada.is_open()) {
-        std::cerr << "Error al abrir el archivo de entrada." << std::endl;
-    }
-
-    if (!salida.is_open()) {
-        std::cerr << "Error al abrir el archivo de salida temporal." << std::endl;
+    if (!archivo.is_open()) {
+        // Si no se pudo abrir el archivo, muestra un mensaje de error
+        std::cerr << "Error: No se pudo abrir el archivo." << std::endl;
+        return "";
     }
 
     std::string linea;
-    while (std::getline(entrada, linea)) {
-        size_t pos = linea.find(';');
+    while (std::getline(archivo, linea)) {
+        // Divide la línea en número y nombre usando el punto y coma como delimitador
+        size_t pos = linea.find(";");
         if (pos != std::string::npos) {
-            // Encontrar la parte de la línea que contiene el valor de numero2
-            std::string numero2_str = linea.substr(pos + 1);
-            
-            // Convertir la cadena a un entero utilizando la función personalizada
-            int numero2 = customAtoi(numero2_str);
-            
-            // Si el valor de numero2 coincide con el valor a borrar, omitir la escritura de la línea en el archivo temporal
-            if (numero2 == numero2ABorrar) {
-                continue;
+            std::istringstream stream(linea.substr(0, pos));
+            int numeroEnArchivo;
+            stream >> numeroEnArchivo;
+
+            if (!stream.fail() && numeroEnArchivo == numero) {
+                std::string nombre = linea.substr(pos + 1);
+                archivo.close();
+                return nombre;
             }
         }
-        // Si el valor de numero2 no coincide con el valor a borrar, escribir la línea en el archivo temporal
-        salida << linea << "\n";
     }
 
-    // Cerrar los archivos
-    entrada.close();
-    salida.close();
-
-    // Reemplazar el archivo original con el archivo temporal
-    if (std::remove(archivoOriginal.c_str()) != 0) {
-        std::cerr << "Error al eliminar el archivo original." << std::endl;
-    }
-
-    if (std::rename(archivoTemporal.c_str(), archivoOriginal.c_str()) != 0) {
-        std::cerr << "Error al renombrar el archivo temporal." << std::endl;
-    }
-
-    std::cout << "Contenido del archivo modificado con éxito." << std::endl;
+    // Si no se encuentra el número, cierra el archivo y devuelve una cadena vacía
+    archivo.close();
+    return "";
 }
-
-void borradoCliente(int primerNumeroBorrar){
-    std::string archivoOriginal = "Clientes.txt";
-    std::string archivoTemporal = "temporal.txt";
-    
-    // Valor del primer número que deseas borrar
-    int primerNumeroABorrar = primerNumeroBorrar; // Reemplaza con el valor deseado
-
-    std::ifstream entrada(archivoOriginal.c_str());
-    std::ofstream salida(archivoTemporal.c_str());
-
-    if (!entrada.is_open()) {
-        std::cerr << "Error al abrir el archivo de entrada." << std::endl;
-    }
-
-    if (!salida.is_open()) {
-        std::cerr << "Error al abrir el archivo de salida temporal." << std::endl;
-    }
-
-    std::string linea;
-    while (std::getline(entrada, linea)) {
-        int primerNumero = customAtoiCliente(linea); // Obtener el primer número de la línea
-        
-        // Si el primer número coincide con el valor a borrar, omitir la escritura de la línea en el archivo temporal
-        if (primerNumero == primerNumeroABorrar) {
-            continue;
-        }
-        
-        // Si el primer número no coincide con el valor a borrar, escribir la línea en el archivo temporal
-        salida << linea << "\n";
-    }
-
-    // Cerrar los archivos
-    entrada.close();
-    salida.close();
-
-    // Reemplazar el archivo original con el archivo temporal
-    if (std::remove(archivoOriginal.c_str()) != 0) {
-        std::cerr << "Error al eliminar el archivo original." << std::endl;
-    }
-
-    if (std::rename(archivoTemporal.c_str(), archivoOriginal.c_str()) != 0) {
-        std::cerr << "Error al renombrar el archivo temporal." << std::endl;
-    }
-
-    std::cout << "Contenido del archivo modificado con éxito." << std::endl;
-}
-
-
 
 int main() {
-	
-	borradoIndice(123);
-	borradoCliente(101);
-	
+    int numeroBuscado = 54; // Reemplaza con el número que desees buscar
+    std::string nombreEncontrado = obtenerNombrePorNumero(numeroBuscado);
+
+    if (!nombreEncontrado.empty()) {
+        std::cout << "Nombre encontrado: " << nombreEncontrado << std::endl;
+    } else {
+        std::cout << "Número no encontrado en el archivo." << std::endl;
+    }
+
     return 0;
 }
 

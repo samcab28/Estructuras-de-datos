@@ -142,6 +142,37 @@ void borradoCliente(int primerNumeroBorrar){
     std::cout << "Contenido del archivo modificado con éxito." << std::endl;
 }
 
+std::string obtenerNombrePorNumero(int numero) {
+    // Abre el archivo de texto
+    std::ifstream archivo("Clientes.txt");
+
+    if (!archivo.is_open()) {
+        // Si no se pudo abrir el archivo, muestra un mensaje de error
+        std::cerr << "Error: No se pudo abrir el archivo." << std::endl;
+        return "";
+    }
+
+    std::string linea;
+    while (std::getline(archivo, linea)) {
+        // Divide la línea en número y nombre usando el punto y coma como delimitador
+        size_t pos = linea.find(";");
+        if (pos != std::string::npos) {
+            std::istringstream stream(linea.substr(0, pos));
+            int numeroEnArchivo;
+            stream >> numeroEnArchivo;
+
+            if (!stream.fail() && numeroEnArchivo == numero) {
+                std::string nombre = linea.substr(pos + 1);
+                archivo.close();
+                return nombre;
+            }
+        }
+    }
+
+    // Si no se encuentra el número, cierra el archivo y devuelve una cadena vacía
+    archivo.close();
+    return "";
+}
 
 class Nodo
 {
@@ -251,13 +282,6 @@ Nodo* Arbol::encontrarSucesor(Nodo* nodoPtr) {
     return encontrarSucesor(nodoPtr->izquierdoPtr);
 }
 
-
-
-
-
-
-
-
 void Arbol::insertarCliente(Nodo*& nodoPtr){
 	cout<<"agregar cliente"<<endl;
 	string cedula, nombre, nuevoValor;
@@ -288,7 +312,7 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
 	ofstream archivo("Cache.txt");
 	archivo.close();
 	
-	
+	int num2;
     string resultado = "";
     stack<Nodo*> nodosStack;
     Nodo* actual = nodoPtr;
@@ -318,7 +342,9 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
             	ofstream archivoESC("Cache.txt",ios::app);
             	
                 resultado += "Nodo encontrado: " + actual->dato + "\n";
-                archivoESC<<actual->dato<<endl;
+				string nombreEncontrado = obtenerNombrePorNumero(cedula);
+				string datoGuardar = actual->dato + ";"+ nombreEncontrado;
+                archivoESC<<datoGuardar<<endl;
                 Nodo* siguiente = NULL; // Declaraci?n fuera del if y else
 
                 if (actual->derechoPtr == NULL) {
@@ -340,7 +366,7 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
 
                     contador++;
                 }
-                break;  // Termina la b?squeda despu?s de encontrar el nodo
+                break;   // Termina la b?squeda despu?s de encontrar el nodo
             }
         }
 
@@ -351,12 +377,6 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
     
 	//funcion pk
 }
-
-
-
-
-
-
 
 void Arbol::inOrden(Nodo* nodoPtr)
 {
@@ -400,9 +420,6 @@ void Arbol::cargarDesdeArchivo(Nodo*& raizArbolPtr)
 
     archivo.close();
 }
-
-
-
 
 Arbol::Arbol()
 {
@@ -470,9 +487,6 @@ void Arbol::insertarNodo(const string& valor, Nodo*& nodoPtr)
         }
     }
 }
-
-
-
 
 void leerArchivos() {
     ifstream archivo("Clientes.txt");
