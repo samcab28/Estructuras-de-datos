@@ -273,6 +273,8 @@ void Arbol::eliminarNodo(Nodo*& nodoPtr, int cedula) {
     }
 	cout<<"valor de nodo actual: "<<nodoPtr -> dato<<endl;
     if (buscarPorCedula(cedula, nodoPtr) == nodoPtr->dato) {
+    	borradoIndice(cedula);
+    	borradoCliente(cedula);
         cout<<"imprimir nodo a borrar : "<<nodoPtr->valorNumerico<<endl;
         if (nodoPtr->izquierdoPtr == NULL && nodoPtr->derechoPtr == NULL) {
             // Caso 1: El nodo es una hoja (no tiene hijos)
@@ -585,9 +587,9 @@ void leerCache(){
     }
 
     std::string linea;
-
+	cout<<"id || cedula || nombre"<<endl;
     while (std::getline(archivo, linea)) {
-        std::cout << linea << " - "; 
+        std::cout <<"\n" <<linea << " || "; 
     }
 	cout<<"\n"<<endl;
     archivo.close();
@@ -738,7 +740,9 @@ int main(){
             case 7: 
         		cout<<"\n--------cache"<<endl;
                 miArbol.cargarDesdeArchivo(raizArbolPtr);
-                cout << "Digite el numero de la cedula: ";
+            	cout<<"cedulas disponibles"<<endl;
+            	cout<<miArbol.devuelveCedulasCompleto(raizArbolPtr);
+                cout << "\nDigite el numero de la cedula: ";
 			    cin >> cedula;
                 cout<<miArbol.crearCache(cedula, raizArbolPtr)<<endl;
                 break; 

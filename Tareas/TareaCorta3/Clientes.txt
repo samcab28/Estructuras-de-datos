@@ -1,7 +1,6 @@
 32;Michael
 151;Francisco
 162;Jose
-136;Kevin
 146;Mario
 321;Michael
 457;Álvaro
@@ -28,7 +27,6 @@
 45;Mario
 78;Michael
 71;Francisco
-138;Kevin
 144;Mario
 325;Michael
 42;Jose

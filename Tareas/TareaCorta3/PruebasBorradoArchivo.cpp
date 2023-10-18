@@ -1,37 +1,24 @@
 #include <iostream>
-#include <fstream>
-#include <string>
+#include <vector>
 
-// Definición de la función que busca el contenido de un cliente por número
-std::string buscarContenidoCliente(const std::string& numeroBuscado) {
-    std::ifstream archivo("Clientes.txt");
+int main() {
+    // Declarar una matriz 20x3 utilizando std::vector
+    std::vector<std::vector<int> > matriz(20, std::vector<int>(3));
 
-    if (!archivo.is_open()) {
-        return "Error: No se pudo abrir el archivo.";
-    }
-
-    std::string linea;
-    while (std::getline(archivo, linea)) {
-        size_t pos = linea.find(';');
-        if (pos != std::string::npos) {
-            std::string numero = linea.substr(0, pos);
-            std::string nombre = linea.substr(pos + 1);
-            if (numero == numeroBuscado) {
-                archivo.close();
-                return numero + ";" + nombre;
-            }
+    // Inicializar la matriz (opcional)
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 3; j++) {
+            matriz[i][j] = i * 3 + j; // Puedes usar cualquier valor que desees
         }
     }
 
-    archivo.close();
-    return "Cliente no encontrado.";
-}
-
-int main() {
-    std::string numeroBuscado = "321"; // Cambia esto al número que desees buscar
-
-    std::string resultado = buscarContenidoCliente(numeroBuscado);
-    std::cout << "Resultado: " << resultado << std::endl;
+    // Acceder y mostrar elementos de la matriz (opcional)
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 3; j++) {
+            std::cout << matriz[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
 
     return 0;
 }
