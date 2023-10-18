@@ -354,17 +354,24 @@ string Arbol::crearCache(int cedula, Nodo* nodoPtr) {
                 }
 
                 int contador = 0;
-
+				int num2;
                 while (siguiente != NULL && contador < 20) {
-                    resultado += "Nodo siguiente: " + siguiente->dato + "\n";
-                    archivoESC<<siguiente->dato<<endl;
-                    if (siguiente == NULL) {
-                        siguiente = primerNodoCST;
-                    } else {
-                        siguiente = siguiente->derechoPtr;
-                    }
-
-                    contador++;
+			        size_t pos = siguiente->dato.find(';');
+			        if (pos != string::npos) {
+			            string numStr = siguiente->dato.substr(pos + 1);
+					    istringstream(numStr) >> num2;
+			            cout<<"cedula actual: "<<num2<<endl;
+						string nombreEncontrado = obtenerNombrePorNumero(num2);
+						string datoGuardar = actual->dato + ";"+ nombreEncontrado;
+		                archivoESC<<datoGuardar<<endl;
+	                    if (siguiente == NULL) {
+	                        siguiente = primerNodoCST;
+	                    } else {
+	                        siguiente = siguiente->derechoPtr;
+	                    }
+	
+	                    contador++;
+	            	}
                 }
                 break;   // Termina la b?squeda despu?s de encontrar el nodo
             }
@@ -561,7 +568,8 @@ void leerCache(){
 
 
 int main(){
-	
+	ofstream archivo("Cache.txt");
+	archivo.close();
     bool programa = true;
 	int cedula;
 	
