@@ -1,5 +1,9 @@
 /*
-tarea corta 
+tarea corta 3
+
+estudiantes:
+-samir cabrera
+-fernando abarca
 */
 
 #include <iostream>
