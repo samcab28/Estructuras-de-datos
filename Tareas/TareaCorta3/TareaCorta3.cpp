@@ -290,7 +290,7 @@ public:
     void inOrden(Nodo* nodoPtr);
     void CacheMemory();
     string crearCache(int cedula,Nodo* nodoPtr);
-    void insertarCliente(Nodo*& nodoPtr);
+    int insertarCliente(Nodo*& nodoPtr);
     string buscarPorCedula(int cedula, Nodo* nodoPtr);
     void eliminarNodo(Nodo*& nodoPtr, int cedula);
     Nodo* encontrarSucesor(Nodo* nodoPtr);
@@ -406,7 +406,7 @@ Nodo* Arbol::encontrarSucesor(Nodo* nodoPtr) {
     return encontrarSucesor(nodoPtr->izquierdoPtr);
 }
 
-void Arbol::insertarCliente(Nodo*& nodoPtr){
+int Arbol::insertarCliente(Nodo*& nodoPtr){
 	cout<<"agregar cliente"<<endl;
 	string cedula, nombre, nuevoValor;
 	cout<<"digite el valor de la cedula"<<endl;
@@ -421,11 +421,13 @@ void Arbol::insertarCliente(Nodo*& nodoPtr){
 	
     if (!archivo_escritura) {
         cout << "Error al abrir el archivo para escribir" << endl;
-        return;
+        return 0;
     }
 	
     	
  	archivo_escritura << nuevoValor << endl;
+ 	int devolver = customAtoi(cedula);
+ 	return devolver;
 
 }
 
@@ -785,6 +787,7 @@ int main(){
 	archivo.close();
     bool programa = true;
 	int cedula;
+	int guardar;
 	
 	leerArchivos();
 	
@@ -833,9 +836,11 @@ int main(){
 
             case 3: 
             	cout<<"\n--------insertar"<<endl;
-                miArbol.insertarCliente(raizArbolPtr);
+				guardar = miArbol.insertarCliente(raizArbolPtr);
                 leerArchivos();
-                miArbol.cargarDesdeArchivo(raizArbolPtr); 
+                miArbol.cargarDesdeArchivo(raizArbolPtr);
+                miArbol.crearCache(guardar, raizArbolPtr);
+				 
                 break;
             case 4: 
             	cout<<"\n--------purgar"<<endl;
