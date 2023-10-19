@@ -41,6 +41,97 @@ int customAtoiCliente(const std::string& str) {
     return result;
 }
 
+void modificarCliente(int cedula) {
+    std::string archivoOriginal = "Clientes.txt";
+    std::string archivoTemporal = "temporal.txt";
+
+    std::ifstream entrada(archivoOriginal.c_str());
+    std::ofstream salida(archivoTemporal.c_str());
+
+    if (!entrada.is_open()) {
+        std::cerr << "Error al abrir el archivo de entrada." << std::endl;
+    }
+
+    if (!salida.is_open()) {
+        std::cerr << "Error al abrir el archivo de salida temporal." << std::endl;
+    }
+
+    std::string linea;
+    bool encontrado = false;
+    while (std::getline(entrada, linea)) {
+        int primerNumero = customAtoiCliente(linea); // Obtener el primer número de la línea
+
+        if (primerNumero == cedula) {
+            // Modificar la línea agregando ";1" al final
+            linea += ";1";
+            encontrado = true;
+        }
+
+        // Escribir la línea en el archivo temporal
+        salida << linea << "\n";
+    }
+
+    // Cerrar los archivos
+    entrada.close();
+    salida.close();
+
+    if (!encontrado) {
+        std::cerr << "La cédula no se encontró en el archivo." << std::endl;
+    } else {
+        // Reemplazar el archivo original con el archivo temporal
+        if (std::remove(archivoOriginal.c_str()) != 0) {
+            std::cerr << "Error al eliminar el archivo original." << std::endl;
+        }
+
+        if (std::rename(archivoTemporal.c_str(), archivoOriginal.c_str()) != 0) {
+            std::cerr << "Error al renombrar el archivo temporal." << std::endl;
+        }
+    }
+}
+
+void borradoCliente() {
+    std::string archivoOriginal = "Clientes.txt";
+    std::string archivoTemporal = "temporal.txt";
+
+    std::ifstream entrada(archivoOriginal.c_str());
+    std::ofstream salida(archivoTemporal.c_str());
+
+    if (!entrada.is_open()) {
+        std::cerr << "Error al abrir el archivo de entrada." << std::endl;
+        return;
+    }
+
+    if (!salida.is_open()) {
+        std::cerr << "Error al abrir el archivo de salida temporal." << std::endl;
+        return;
+    }
+
+    std::string linea;
+    while (std::getline(entrada, linea)) {
+        // Verificar si la línea termina con ";1"
+        if (linea.length() >= 2 && linea.substr(linea.length() - 2) == ";1") {
+            // Omitir la escritura de la línea en el archivo temporal
+            continue;
+        }
+
+        // Escribir la línea en el archivo temporal
+        salida << linea << "\n";
+    }
+
+    // Cerrar los archivos
+    entrada.close();
+    salida.close();
+
+    // Reemplazar el archivo original con el archivo temporal
+    if (std::remove(archivoOriginal.c_str()) != 0) {
+        std::cerr << "Error al eliminar el archivo original." << std::endl;
+        return;
+    }
+
+    if (std::rename(archivoTemporal.c_str(), archivoOriginal.c_str()) != 0) {
+        std::cerr << "Error al renombrar el archivo temporal." << std::endl;
+    }
+}
 
 void borradoIndice(int numeroBorrar){
     std::string archivoOriginal = "Indices.txt";
@@ -222,7 +313,7 @@ string Arbol::devuelveCedulas(Nodo* nodoPtr) {
     size_t pos = nodoPtr->dato.find(';');
     if (pos != string::npos) {
         string contenido_despues_punto_coma = nodoPtr->dato.substr(pos + 1);
-        cout << contenido_despues_punto_coma + "-";
+        //cout << contenido_despues_punto_coma + "-";
         resultado += contenido_despues_punto_coma + "-";
     }
 
@@ -273,8 +364,9 @@ void Arbol::eliminarNodo(Nodo*& nodoPtr, int cedula) {
     }
 	cout<<"valor de nodo actual: "<<nodoPtr -> dato<<endl;
     if (buscarPorCedula(cedula, nodoPtr) == nodoPtr->dato) {
-    	borradoIndice(cedula);
-    	borradoCliente(cedula);
+    	//borradoIndice(cedula);
+    	//borradoCliente(cedula);
+    	modificarCliente(cedula);
         cout<<"imprimir nodo a borrar : "<<nodoPtr->valorNumerico<<endl;
         if (nodoPtr->izquierdoPtr == NULL && nodoPtr->derechoPtr == NULL) {
             // Caso 1: El nodo es una hoja (no tiene hijos)
@@ -747,12 +839,14 @@ int main(){
                 break;
             case 4: 
             	cout<<"\n--------purgar"<<endl;
+            	borradoCliente();
+            	leerArchivos();
 				cout<<"purgado correctamente"<<endl;
                  
                 break;
             case 5: 
         		cout<<"\n--------reindexar"<<endl;
-        		miArbol.cargarDesdeArchivo(raizArbolPtr);
+        		leerArchivos();
                 cout<<"reindexado correctamente"<<endl;
                 break;
             case 6: 
