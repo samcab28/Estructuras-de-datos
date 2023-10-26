@@ -366,10 +366,7 @@ void lista:: DOS(lista & valores){
 		if(a < b){
 			contador ++;
 		}
-		else{
-			cout<<"error, la lista viene ordenada"<<endl;
-			return;
-		}
+
 	}
 	
 	contador = 0;
@@ -583,12 +580,12 @@ int main()
 {
     lista L;
     lista valores;
-	cout<< "*****************************"<<endl;
+	/*cout<< "*****************************"<<endl;
 	cout<<"Ejercicio 1:"<<endl;
 	cout<<""<<endl;
 	L.UNO(61257,89102);
 	cout<<""<<endl;
-    cout<< "*****************************"<<endl;
+    cout<< "*****************************"<<endl;*/
 	cout<<"Ejercicio 2:"<<endl;
 	valores.InsertarFinal(1);
 	valores.InsertarFinal(2);
@@ -597,20 +594,28 @@ int main()
 	valores.InsertarFinal(5);
 	valores.InsertarFinal(6);
 	valores.InsertarFinal(7);
+	valores.InsertarFinal(8);
+	valores.InsertarFinal(9);
+	valores.InsertarFinal(19);
+	valores.InsertarFinal(-8);
+	valores.InsertarFinal(-7);
 	valores.InsertarFinal(10);
-	valores.InsertarFinal(11);
-	valores.InsertarFinal(12);
+	valores.InsertarFinal(18);
+	valores.InsertarFinal(27);
+	valores.InsertarFinal(36);
+	valores.InsertarFinal(55);
+	valores.InsertarFinal(-9);
 
 
 	L.DOS(valores);
 	
-	cout<<""<<endl;
+/*	cout<<""<<endl;
     cout<< "*****************************"<<endl;
 	cout<<"Ejercicio 3:"<<endl;
 	L.TRES(6123452,1078952);
 	cout<<""<<endl;
     cout<< "*****************************"<<endl;
 	cout<<"Ejercicio 4:"<<endl;
-	L.CUATRO(61389,26789);
+	L.CUATRO(61389,26789);*/
    return 0;
 }

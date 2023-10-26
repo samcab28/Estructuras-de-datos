@@ -381,11 +381,11 @@ public:
     // Constructor
     PaisesPre(const string& ArbolPaises) : ArbolPaises_(ArbolPaises), resultadoPreorden("") {}
 
-    // FunciÃ³n para procesar la lista de paÃ­ses y devolver el resultado en preorden como string
+    // Función para procesar la lista de países y devolver el resultado en preorden como string
     string Procesar() {
         Nodo* raiz = NULL;
 
-        // Procesar la lista de paÃ­ses
+        // Procesar la lista de países
         stringstream ss(ArbolPaises_);
         string pais;
         while (getline(ss, pais, '>')) { 
@@ -403,14 +403,14 @@ public:
         // Generar el resultado en preorden como string
         generarPreorden(raiz);
 
-        // Liberar memoria del Ã¡rbol
+        // Liberar memoria del árbol
         liberarArbol(raiz);
 
         return resultadoPreorden;
     }
 
 private:
-    // DefiniciÃ³n de la estructura de un nodo de un Ã¡rbol
+    // Definición de la estructura de un nodo de un árbol
     struct Nodo {
         int valor;
         string nombre;
@@ -420,7 +420,7 @@ private:
         Nodo(int val, string nom) : valor(val), nombre(nom), izquierda(NULL), derecha(NULL) {}
     };
 
-    // FunciÃ³n para insertar un valor en un BST
+    // Función para insertar un valor en un BST
     Nodo* insertar(Nodo* raiz, int valor, const string& nombre) {
         if (raiz == NULL) {
             return new Nodo(valor, nombre);
@@ -436,7 +436,7 @@ private:
         return raiz;
     }
 
-    // FunciÃ³n para generar el resultado en preorden como string
+    // Función para generar el resultado en preorden como string
     void generarPreorden(Nodo* raiz) {
         if (raiz == NULL) {
             return;
@@ -447,7 +447,7 @@ private:
         generarPreorden(raiz->derecha);
     }
 
-    // FunciÃ³n para liberar la memoria del Ã¡rbol
+    // Función para liberar la memoria del árbol
     void liberarArbol(Nodo* raiz) {
         if (raiz == NULL) {
             return;
@@ -462,7 +462,7 @@ private:
     const string ArbolPaises_;
     string resultadoPreorden;
 
-    // FunciÃ³n para convertir un entero a cadena
+    // Función para convertir un entero a cadena
     string intToString(int num) {
         stringstream ss;
         ss << num;
@@ -922,7 +922,7 @@ public:
             : primerCodigo(p1), segundoCodigo(p2), nombre(nom), izquierda(NULL), derecha(NULL), altura(1) {}
     };
 
-    // FunciÃ³n para realizar una rotaciÃ³n simple a la derecha
+    // Función para realizar una rotación simple a la derecha
     NodoAVL* rotacionDerecha(NodoAVL* y) {
         NodoAVL* x = y->izquierda;
         NodoAVL* T2 = x->derecha;
@@ -936,7 +936,7 @@ public:
         return x;
     }
 
-    // FunciÃ³n para realizar una rotaciÃ³n simple a la izquierda
+    // Función para realizar una rotación simple a la izquierda
     NodoAVL* rotacionIzquierda(NodoAVL* x) {
         NodoAVL* y = x->derecha;
         NodoAVL* T2 = y->izquierda;
@@ -950,19 +950,19 @@ public:
         return y;
     }
 
-    // FunciÃ³n para obtener la altura de un nodo
+    // Función para obtener la altura de un nodo
     int altura(NodoAVL* nodo) {
         if (nodo == NULL) return 0;
         return nodo->altura;
     }
 
-    // FunciÃ³n para obtener el factor de equilibrio de un nodo
+    // Función para obtener el factor de equilibrio de un nodo
     int factorEquilibrio(NodoAVL* nodo) {
         if (nodo == NULL) return 0;
         return altura(nodo->izquierda) - altura(nodo->derecha);
     }
 
-    // FunciÃ³n para insertar un nodo en el Ã¡rbol AVL
+    // Función para insertar un nodo en el árbol AVL
     NodoAVL* insertar(NodoAVL* nodo, int p1, int p2, string nombre) {
         if (nodo == NULL) return new NodoAVL(p1, p2, nombre);
 
@@ -971,13 +971,13 @@ public:
         else if (p2 > nodo->segundoCodigo)
             nodo->derecha = insertar(nodo->derecha, p1, p2, nombre);
         else
-            return nodo;  // Los nodos con el mismo segundo cÃ³digo no estÃ¡n permitidos
+            return nodo;  // Los nodos con el mismo segundo código no están permitidos
 
         nodo->altura = 1 + max(altura(nodo->izquierda), altura(nodo->derecha));
 
         int equilibrio = factorEquilibrio(nodo);
 
-        // Casos de rotaciÃ³n
+        // Casos de rotación
         if (equilibrio > 1 && p2 < nodo->izquierda->segundoCodigo)
             return rotacionDerecha(nodo);
 
@@ -997,7 +997,7 @@ public:
         return nodo;
     }
 
-    // FunciÃ³n para realizar un recorrido en preorden del Ã¡rbol AVL
+    // Función para realizar un recorrido en preorden del árbol AVL
 	void preordenCIU(NodoAVL* nodo) {
 	    if (nodo != NULL) {
 	        std::ostringstream stream;
@@ -1008,7 +1008,7 @@ public:
 	    }
 	}
 
-    // FunciÃ³n para procesar el Ã¡rbol de paÃ­ses y devolver el resultado en preorden como string
+    // Función para procesar el árbol de países y devolver el resultado en preorden como string
     string Procesar() {
         NodoAVL* raiz = NULL;
 
@@ -1109,8 +1109,8 @@ string ArbolRestaurante::GuardarInformacionRestaurantes() {
     string memoria;
 
     if (ArbolVacio()) {
-        cout << "El Ã¡rbol de Restaurantes estÃ¡ vacÃ­o." << endl;
-        return "Ãrbol vacÃ­o";
+        cout << "El árbol de Restaurantes está vacío." << endl;
+        return "Árbol vacío";
     }
 
     pnodoRE aux = primero;
@@ -1122,7 +1122,7 @@ string ArbolRestaurante::GuardarInformacionRestaurantes() {
         i++;
     }
 
-    // Agregar el Ãºltimo elemento (para que no quede un "; //" extra al final)
+    // Agregar el último elemento (para que no quede un "; //" extra al final)
     memoria += aux->valor;
 
     return memoria;
@@ -1660,7 +1660,7 @@ public:
         else if (tercer > node->tercerCodigo)
             node->der = insert(node->der, primer, segundo, tercer, nombre);
         else
-            return node; // Los nodos con el mismo tercer cÃ³digo no estÃ¡n permitidos
+            return node; // Los nodos con el mismo tercer código no están permitidos
 
         node->altura = 1 + max(altura(node->izq), altura(node->der));
 
@@ -3527,11 +3527,11 @@ class ClientesPre {
 public:
     ClientesPre(const string& ArbolClientes) : ArbolClientes_(ArbolClientes), resultadoPreorden("") {}
 
-    // FunciÃ³n para procesar la lista de paÃ­ses y devolver el resultado en preorden como string
+    // Función para procesar la lista de países y devolver el resultado en preorden como string
     string Procesar() {
         ArbolB arbolB; // Crear un objeto ArbolB
 
-        // Procesar la lista de paÃ­ses
+        // Procesar la lista de países
         stringstream ss(ArbolClientes_);
         string clientes;
         while (getline(ss, clientes, '>')) { 
@@ -3556,7 +3556,7 @@ private:
     const string ArbolClientes_;
     string resultadoPreorden;
 
-    // Clase para representar un nodo en el Ã¡rbol B (simplificado)
+    // Clase para representar un nodo en el árbol B (simplificado)
     class NodoArbolB {
     public:
         int codigo;
@@ -3567,7 +3567,7 @@ private:
         NodoArbolB(int cod, const string& nom) : codigo(cod), nombre(nom), izquierda(NULL), derecha(NULL) {}
     };
 
-    // Clase para el Ã¡rbol B (simplificado)
+    // Clase para el árbol B (simplificado)
     class ArbolB {
     public:
         ArbolB() : raiz(NULL) {}
