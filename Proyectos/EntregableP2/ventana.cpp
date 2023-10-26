@@ -2373,6 +2373,512 @@ bool ArbolRestaurante::ExisteRE(string codigo) {
 
 
 
+
+
+
+
+
+
+
+
+
+//clase ArbolMenu
+class nodoME {
+public:
+    nodoME(const string &v)
+    {
+        valor = v;
+        siguiente = NULL;
+        anterior = NULL;
+    }
+
+    nodoME(const string &v, nodoME *signodoME)
+    {
+        valor = v;
+        siguiente = signodoME;
+    }
+
+private:
+    string valor;
+    nodoME *siguiente;
+    nodoME *anterior;
+
+    friend class ArbolMenu;
+};
+typedef nodoME *pnodoME;
+
+class ArbolMenu {
+public:
+    ArbolMenu() { primero = NULL; }
+    ~ArbolMenu();
+
+    void agregarNodoIn(string v);
+    void agregarNodo(string v);
+    void InsertarPos(string v, int pos);
+    bool ArbolVacio() { return primero == NULL; }
+    void Imprimir();
+    void MostrarME();
+    int cantNodos();
+    void CargarDesdeArchivoME();
+    void ArbolMenusME(ArbolRestaurante & arbolRestaurante);
+    string ComprobacionME(string pais, string ciudad, string restaurante, string menu);
+    void ModificarNombreME(string pais, string ciudad, string restaurante, string menu, string nombre);
+    void AgregarME(ArbolRestaurante & arbolRestaurante, string pais, string ciudad, string restaurante, string menu, string nombre);
+    bool ExisteME(string codigo);
+    int stringAEnteroME(const std::string &cadena);
+    string EncontrarValorMayorPedido();
+    string MostrarMESTR();
+    string ObtenerContenidoComoString();
+    int stringAEnteroCl(const std::string &cadena);
+    void BorrarPorCodigosRE(string pais, string ciudad, string restaurante,string menu);
+    void BorrarInicio();
+    void BorrarFinal();
+private:
+    pnodoME primero;
+};
+
+
+int ArbolMenu::stringAEnteroCl(const std::string &cadena) {
+    int resultado = 0;
+    int multiplicador = 1;
+
+    // Comprueba si la cadena representa un n?mero negativo
+    size_t indice = 0;
+    if (cadena[0] == '-') {
+        multiplicador = -1;
+        indice = 1; // Saltar el signo negativo
+    }
+
+    // Recorre la cadena y construye el n?mero entero
+    for (; indice < cadena.length(); ++indice) {
+        char digito = cadena[indice];
+        if (isdigit(digito)) {
+            int valorDigito = digito - '0';
+            resultado = resultado * 10 + valorDigito;
+        } else {
+            // Manejo de error si la cadena contiene caracteres no num?ricos
+            std::cerr << "Error: La cadena contiene caracteres no num?ricos." << std::endl;
+            return 0;
+        }
+    }
+
+    return resultado * multiplicador;
+}
+
+void ArbolMenu::BorrarPorCodigosRE(string pais, string ciudad, string restaurante,string menu) {
+    if (ArbolVacio()) {
+        cout << "arbol vacio" << endl;
+        return;
+    }
+
+    string codigosBuscados = pais + ";" + ciudad + ";" + restaurante +";" + menu;
+    pnodoME aux = primero;
+    pnodoME nodoAEliminar = NULL;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            nodoAEliminar = aux;
+            break;
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+
+    if (encontrado) {
+        if (nodoAEliminar == primero) {
+            BorrarInicio();
+        } else if (nodoAEliminar->siguiente == primero) {
+            BorrarFinal();
+        } else {
+            nodoAEliminar->anterior->siguiente = nodoAEliminar->siguiente;
+            nodoAEliminar->siguiente->anterior = nodoAEliminar->anterior;
+            delete nodoAEliminar;
+        }
+
+        cout << "nodoRE con los c?digos " << codigosBuscados << " borrado exitosamente." << endl;
+    } else {
+        cout << "No encontrado" << endl;
+    }
+}
+
+
+void ArbolMenu::BorrarFinal()
+{
+    if (ArbolVacio())
+      cout << "No hay elementos en la lista:" << endl;
+    else
+    {
+      if (primero->siguiente == primero)
+      {
+        pnodoME temp= primero;
+        primero= NULL;
+        delete temp;
+      }
+      else 
+      {
+         pnodoME aux = primero; //1
+         while (aux->siguiente->siguiente != primero)
+              aux = aux->siguiente;
+         pnodoME temp = aux->siguiente;//2
+         aux->siguiente= primero;//3
+         primero->anterior=aux;//4
+         delete temp;//5
+      }
+    }
+}
+
+void ArbolMenu::BorrarInicio()
+{
+    if (ArbolVacio())
+      cout << "No hay elementos en la lista:" << endl;
+    else
+    {
+     if (primero->siguiente == primero)
+     {
+        pnodoME temp= primero;
+        primero= NULL;
+        delete temp;
+     }
+     else
+     {
+        pnodoME aux = primero->anterior;//1
+        pnodoME temp= primero;//2
+        aux->siguiente=primero->siguiente;//3
+        primero=primero->siguiente; //4
+        primero->anterior=aux;//5
+        delete temp;//6
+      }
+    }
+}
+
+
+string ArbolMenu::ComprobacionME(string pais, string ciudad, string restaurante, string menu) {
+    if (ArbolVacio()) {
+        cout << "El arbol esta vacio" << endl;
+        return "";
+    }
+
+
+    string codigosBuscados = pais + ";" + ciudad + ";" + restaurante +";" + menu;
+    pnodoME aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            if (posicionUltimoPuntoComa != string::npos) {
+                size_t posicionNumero = posicionUltimoPuntoComa + 1;
+                std::string numeroStr = aux->valor.substr(posicionNumero);
+                int numero = stringAEnteroCl(numeroStr);
+                numero++;
+                
+				std::stringstream ss1;
+    			ss1 << numero;
+
+				string num1 = ss1.str();
+    
+    
+                string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
+                aux->valor = nuevoValor;
+				return aux->valor;
+            } else {
+                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
+            }
+            break;
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los c?digos en el arbol." << endl;
+        return "";
+    }
+}
+
+std::string ArbolMenu::MostrarMESTR() {
+    pnodoME aux = primero;
+    std::stringstream ss;
+
+    while (aux->siguiente != primero) {
+        ss << aux->valor << " -> ";
+        aux = aux->siguiente;
+    }
+
+    ss << aux->valor << " -> ";
+    
+    return ss.str();
+}
+
+string ArbolMenu::ObtenerContenidoComoString() {
+    if (ArbolVacio()) {
+        return "Arbol vacio";
+    }
+
+    std::stringstream ss;
+    pnodoME aux = primero;
+
+    do {
+        ss << aux->valor << " -> ";
+        aux = aux->siguiente;
+    } while (aux != primero);
+
+    return ss.str();
+}
+
+string ArbolMenu::EncontrarValorMayorPedido() {
+    if (ArbolVacio()) {
+        cout << "El arbol de Menu esta vacio." << endl;
+        return "Arbol vacio";
+    }
+
+    pnodoME aux = primero;
+    int valorMayor = -1;  // Inicializamos con un valor menor al m?nimo posible
+    pnodoME nodoMayor = NULL;  // Nodo correspondiente al valor m?s alto
+
+    while (aux->siguiente != primero) {
+        size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+        string pedidoStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
+        int numeroPedido = stringAEnteroME(pedidoStr);
+
+        if (numeroPedido > valorMayor) {
+            valorMayor = numeroPedido;
+            nodoMayor = aux;
+        }
+
+        aux = aux->siguiente;
+    }
+
+    // Comprobar el ?ltimo nodo tambi?n
+    size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+    string pedidoStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
+    int numeroPedido = stringAEnteroME(pedidoStr);
+
+    if (numeroPedido > valorMayor) {
+        valorMayor = numeroPedido;
+        nodoMayor = aux;
+    }
+
+    if (nodoMayor != NULL) {
+        cout << "Informacion del m: " << nodoMayor->valor << endl;
+        return "Informacion del Menu: " + nodoMayor->valor;
+    } else {
+        cout << "No se encontr? ning?n Restaurante con con consultas." << endl;
+    }
+}
+
+int ArbolMenu::stringAEnteroME(const std::string &cadena) {
+    int resultado = 0;
+    int multiplicador = 1;
+
+    // Comprueba si la cadena representa un n?mero negativo
+    size_t indice = 0;
+    if (cadena[0] == '-') {
+        multiplicador = -1;
+        indice = 1; // Saltar el signo negativo
+    }
+
+    // Recorre la cadena y construye el n?mero entero
+    for (; indice < cadena.length(); ++indice) {
+        char digito = cadena[indice];
+        if (isdigit(digito)) {
+            int valorDigito = digito - '0';
+            resultado = resultado * 10 + valorDigito;
+        } else {
+            // Manejo de error si la cadena contiene caracteres no num?ricos
+            std::cerr << "Error: La cadena contiene caracteres no num?ricos." << std::endl;
+            return 0;
+        }
+    }
+
+    return resultado * multiplicador;
+}
+
+void ArbolMenu::AgregarME(ArbolRestaurante & arbolRestaurante, string pais, string ciudad, string restaurante, string menu, string nombre){
+
+
+    string codigosBuscados = pais + ";" + ciudad + ";" + restaurante;
+    
+    
+	if(arbolRestaurante.ExisteRE(codigosBuscados)){
+		string NuevoValor = codigosBuscados + ";"+ menu +";" + nombre +";" + "0";
+		agregarNodo(NuevoValor);
+	
+	}else{
+		cout<<"no existe, No se agrega"<<endl;
+	}
+}
+
+void ArbolMenu::ModificarNombreME(string pais, string ciudad, string restaurante, string menu, string nombre) {
+    string codigosBuscados = pais + ";" + ciudad + ";" + restaurante + ";" + menu;
+    pnodoME aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+			string modificar = codigosBuscados + ";" + nombre + ";" + "0";
+			aux -> valor = modificar;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (encontrado == false) {
+        cout << "No se encontraron los codigos en el arbol" << endl;
+    }
+
+} 
+
+
+void ArbolMenu::CargarDesdeArchivoME() {
+    set<string> numero4_set;  
+
+    ifstream archivo("Menu.txt");
+    if (archivo.is_open())
+    {
+        string linea;
+        while (getline(archivo, linea))
+        {
+            istringstream iss(linea);
+            string numero1, numero2, numero3,numero4, nombre;
+            getline(iss, numero1, ';');
+            getline(iss, numero2, ';');
+            getline(iss, numero3, ';');
+            getline(iss, numero4, ';');
+            getline(iss, nombre);
+
+            // Verificar si NUMERO3 es diferente de los anteriores
+            if (numero4_set.find(numero4) == numero4_set.end())
+            {
+                numero4_set.insert(numero4);  // Agregar a conjunto de NUMERO3
+                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4+ ";" + nombre + ";" + "0";
+                agregarNodo(nuevo_valor);
+            }
+            else
+            {
+                cout << "Advertencia: NUMERO3 debe ser diferente a los otros NUMERO3 anteriores." << endl;
+            }
+        }
+        archivo.close();
+    }
+    else
+    {
+        cout << "No se pudo abrir el archivo." << endl;
+    }
+}
+                
+ArbolMenu::~ArbolMenu()
+{
+   pnodoME aux;
+   pnodoME temp;
+   
+   while(primero) {
+      temp = primero;
+      aux=primero;
+      primero = primero->siguiente;
+      while (aux->siguiente!=primero)
+           aux= aux->siguiente;
+      aux->siguiente=primero;
+      
+      delete temp;
+      primero=NULL;
+   }
+   primero= NULL;
+}
+                           
+int ArbolMenu::cantNodos() 
+{
+    int cont=0;
+
+    pnodoME aux = primero->siguiente;
+    if(ArbolVacio())
+    {
+        return cont;
+    }
+    else
+    {   cont=cont+1;
+        while(aux!=primero)
+        {
+          aux=aux->siguiente;
+          cont++;
+        }
+    return cont;
+    }
+    
+}
+
+void ArbolMenu::agregarNodo(string v)
+{
+   if (ArbolVacio())
+     {
+     primero = new nodoME(v);
+     primero->anterior=primero;
+     primero->siguiente=primero;
+   }  
+   else
+   { 
+     pnodoME nuevo = new nodoME(v);//1
+     nuevo->anterior = primero->anterior;//2
+     /*nuevo->siguiente=primero->anterior->siguiente;opcion para intruccion 3*/
+	 nuevo->siguiente=primero;// coloca alguna de la dos 3
+     primero->anterior->siguiente=nuevo;//4
+     primero->anterior=nuevo;//5
+    }    
+}
+
+void ArbolMenu::MostrarME()
+{
+   pnodoME aux=primero;
+   while(aux->siguiente!=primero)
+     {
+                                
+      cout << aux->valor << "-> ";
+      aux = aux->siguiente;
+     }
+     cout<<aux->valor<<"->";
+}   
+
+bool ArbolMenu::ExisteME(string codigo) {
+    if (ArbolVacio()) {
+        cout << "El arbol esta vacio" << endl;
+        return false;
+    }
+    
+    pnodoME aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= cantNodos()) {
+        if (aux->valor.find(codigo) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+            return true;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (!encontrado) {
+        return false;
+    }
+}
+
+
+
+
+
+
+
 	
 	int main(){
 		//clientes ok 
@@ -2381,6 +2887,7 @@ bool ArbolRestaurante::ExisteRE(string codigo) {
 		administrador ad;
 		ArbolCiudad aCiu;
 		ArbolRestaurante are;
+		ArbolMenu ame;
 		
 		ap.CargarDesdeArchivo();
 		
@@ -2389,6 +2896,10 @@ bool ArbolRestaurante::ExisteRE(string codigo) {
 		ad.CargarDesdeArchivoAd();
 		
 		aCiu.CargarDesdeArchivoCIU();
+		
+		are.CargarDesdeArchivoRE();
+				
+		ame.CargarDesdeArchivoME();
 		
 		/*
 		//clientes
@@ -2438,17 +2949,26 @@ bool ArbolRestaurante::ExisteRE(string codigo) {
 		cout<<aCiu.ComprobacionCIU("1","34")<<endl;
 		aCiu.ModificarNombreCIU("1","34","perez zeledon");
 		aCiu.BorrarPorCodigosCIU("3","89");
-		cout<<aCiu.ObtenerContenidoComoString()<<endl;*/
+		cout<<aCiu.ObtenerContenidoComoString()<<endl;
 		
-		
-		are.CargarDesdeArchivoRE();
+		//restaurantes
 		cout<<are.ObtenerContenidoComoString()<<endl;
 		are.agregarRE(aCiu,"2","35","777","emilio");
 		are.ModificarNombreRE("1","22","125","munchu");
 		cout<<are.ObtenerContenidoComoString()<<endl;
 		cout<<are.ComprobacionRE("1","22","125")<<endl;
 		are.BorrarPorCodigosRE("1","22","125");
-		cout<<are.ObtenerContenidoComoString()<<endl;
+		cout<<are.ObtenerContenidoComoString()<<endl;*/
+		
+		cout<<ame.ObtenerContenidoComoString()<<endl;
+		ame.AgregarME(are,"1","19","112","345","Pizza");
+		cout<<ame.ObtenerContenidoComoString()<<endl;
+		ame.AgregarME(are,"1","19","112","345","teta");
+		cout<<ame.ObtenerContenidoComoString()<<endl;
+		cout<<ame.ComprobacionME("1","19","112","345")<<endl;
+		ame.BorrarPorCodigosRE("2","35","130","246");
+		cout<<ame.ObtenerContenidoComoString()<<endl;
+
 		
 		
 		
