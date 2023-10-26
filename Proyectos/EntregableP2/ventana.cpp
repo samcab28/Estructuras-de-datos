@@ -1822,11 +1822,19 @@ bool ArbolCiudad::ExisteCIU(string codigo) {
 		ArbolPais ap;
 		administrador ad;
 		ArbolCiudad aCiu;
+		
 		ap.CargarDesdeArchivo();
 		
-		/*ac.CargarDesdeArchivoCl();
+		ac.CargarDesdeArchivoCl();
 		
 		ac.MostrarCl();
+		
+		if(ac.ExisteCl("23242")){
+			cout<<"si esta en la lista"<<endl;
+		}
+		else{
+			cout<<"no esta en la lista"<<endl;
+		}
 		
 		ac.AgregarClienteCl("12345","Samir Cabrera");
 		
@@ -1834,7 +1842,7 @@ bool ArbolCiudad::ExisteCIU(string codigo) {
 		
 		cout<<ac.ConsultarClientePorCodigoCl("12345")<<endl;
 		
-		ac.BorrarPorCodigoCl("402630815");
+		ac.BorrarPorCodigoCl("eqweq");
 		cout<<ac.ObtenerContenidoComoString()<<endl;
 		
 		ac.ModificarNombreCL("12345","pamela");
@@ -1865,7 +1873,7 @@ bool ArbolCiudad::ExisteCIU(string codigo) {
 		cout<<ad.ObtenerContenidoComoString()<<endl;
 		cout<<ad.ConsultarAdministradorPorCodigoAd("123456")<<endl;
 		ad.BorrarPorCodigoAd("657");
-		cout<<ad.ObtenerContenidoComoString()<<endl;*/
+		cout<<ad.ObtenerContenidoComoString()<<endl;
 		
 		aCiu.CargarDesdeArchivoCIU();
 	
