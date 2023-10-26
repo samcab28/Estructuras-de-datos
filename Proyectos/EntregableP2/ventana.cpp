@@ -1326,14 +1326,505 @@ bool ArbolPais::Existe(int codigo) {
 
 	
 
+
+// CIUDADES
+class nodoCIU {
+public:
+    nodoCIU(const string &v)
+    {
+        valor = v;
+        siguiente = NULL;
+        anterior = NULL;
+    }
+
+    nodoCIU(const string &v, nodoCIU *signodoCIU)
+    {
+        valor = v;
+        siguiente = signodoCIU;
+    }
+
+private:
+    string valor;
+    nodoCIU *siguiente;
+    nodoCIU *anterior;
+
+    friend class ArbolCiudad;
+};
+typedef nodoCIU *pnodoCIU;
+
+class ArbolCiudad {
+public:
+    ArbolCiudad() { primero = NULL; }
+    ~ArbolCiudad();
+
+    void agregarNodoIn(string v);
+    void agregarNodo(string v);
+    void InsertarPos(string v, int pos);
+    bool ArbolVacio() { return primero == NULL; }
+    void Imprimir();
+    void MostrarCIU();
+    int cantNodos();
+    void CargarDesdeArchivoCIU();
+    string ComprobacionCIU(string pais, string ciudad);
+    void AgregarCIU(ArbolPais & arbolPais, string pais, string ciudad, string nombre);
+    void ModificarNombreCIU(string pais, string ciudad, string nombre);
+    bool ExisteCIU(string codigo);
+    string MostrarArbolCiudadesPorPais();
+    string GuardarArbolCiudades();
+    string ObtenerContenidoComoString();
+    int stringAEnteroCl(const std::string &cadena);
+    void BorrarPorCodigosCIU(string pais, string ciudad);
+    void BorrarFinal();
+    void BorrarInicio();
+private:
+    pnodoCIU primero;
+};
+
+int ArbolCiudad::stringAEnteroCl(const std::string &cadena) {
+    int resultado = 0;
+    int multiplicador = 1;
+
+    // Comprueba si la cadena representa un n?mero negativo
+    size_t indice = 0;
+    if (cadena[0] == '-') {
+        multiplicador = -1;
+        indice = 1; // Saltar el signo negativo
+    }
+
+    // Recorre la cadena y construye el n?mero entero
+    for (; indice < cadena.length(); ++indice) {
+        char digito = cadena[indice];
+        if (isdigit(digito)) {
+            int valorDigito = digito - '0';
+            resultado = resultado * 10 + valorDigito;
+        } else {
+            // Manejo de error si la cadena contiene caracteres no num?ricos
+            std::cerr << "Error: La cadena contiene caracteres no num?ricos." << std::endl;
+            return 0;
+        }
+    }
+
+    return resultado * multiplicador;
+}
+
+void ArbolCiudad::BorrarPorCodigosCIU(string pais, string ciudad) {
+    if (ArbolVacio()) {
+        cout << "La lista esta vac?a." << endl;
+        return;
+    }
+    
+    int codigo1 =stringAEnteroCl(pais);
+    int codigo2 = stringAEnteroCl(ciudad);
+    
+    std::stringstream ss1, ss2;
+    ss1 << codigo1;
+    ss2 << codigo2;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+ 
+
+    string codigosBuscados = num1 + ";" + num2;
+    pnodoCIU aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+
+            if (aux == primero) {
+                BorrarInicio();
+            } else if (aux->siguiente == primero) {
+                BorrarFinal();
+            } else {
+                pnodoCIU temp = aux;
+                aux->anterior->siguiente = aux->siguiente;
+                aux->siguiente->anterior = aux->anterior;
+                aux = aux->siguiente;
+                delete temp;
+            }
+
+            cout << "nodoCIU con los codigos " << codigosBuscados << " borrado exitosamente." << endl;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los codigos en la lista." << endl;
+    }
+}
+
+void ArbolCiudad::BorrarFinal()
+{
+    if (ArbolVacio())
+      cout << "No hay elementos en la lista:" << endl;
+    else
+    {
+      if (primero->siguiente == primero)
+      {
+        pnodoCIU temp= primero;
+        primero= NULL;
+        delete temp;
+      }
+      else 
+      {
+         pnodoCIU aux = primero; //1
+         while (aux->siguiente->siguiente != primero)
+              aux = aux->siguiente;
+         pnodoCIU temp = aux->siguiente;//2
+         aux->siguiente= primero;//3
+         primero->anterior=aux;//4
+         delete temp;//5
+      }
+    }
+}
+
+void ArbolCiudad::BorrarInicio()
+{
+    if (ArbolVacio())
+      cout << "No hay elementos en la lista:" << endl;
+    else
+    {
+     if (primero->siguiente == primero)
+     {
+        pnodoCIU temp= primero;
+        primero= NULL;
+        delete temp;
+     }
+     else
+     {
+        pnodoCIU aux = primero->anterior;//1
+        pnodoCIU temp= primero;//2
+        aux->siguiente=primero->siguiente;//3
+        primero=primero->siguiente; //4
+        primero->anterior=aux;//5
+        delete temp;//6
+      }
+    }
+}
+
+
+string ArbolCiudad::ObtenerContenidoComoString() {
+    if (ArbolVacio()) {
+        return "Arbol vacio";
+    }
+
+    std::stringstream ss;
+    pnodoCIU aux = primero;
+
+    do {
+        ss << aux->valor << " -> ";
+        aux = aux->siguiente;
+    } while (aux != primero);
+
+    return ss.str();
+}
+
+string ArbolCiudad::GuardarArbolCiudades() {
+    string memoria;
+
+    if (ArbolVacio()) {
+        cout << "El arbol de Ciudades esta vacio." << endl;
+        return "Arbol vacio";
+    }
+
+    pnodoCIU aux = primero;
+    int i = 0;
+
+    while (i < cantNodos()) {
+        memoria += aux->valor + "->";
+        aux = aux->siguiente;
+        i++;
+    }
+    
+    // Agregar el ?ltimo elemento (para que no quede un "; //" extra al final)
+    memoria += aux->valor;
+
+    return memoria;
+}
+
+
+string ArbolCiudad::MostrarArbolCiudadesPorPais() {
+	cout<<"digite el codigo de pais a buscar"<<endl;
+	string codigoPais;
+	cin >> codigoPais;
+	string memoria;
+    if (ArbolVacio()) {
+        cout << "El arbol de Ciudades esta vacio." << endl;
+        return "Arbol vacio";
+    }
+
+    pnodoCIU aux = primero;
+    int i = 0;
+
+    while (i <= cantNodos()) {
+        if (aux->valor.find(codigoPais) != string::npos) {
+            cout << aux->valor << endl;
+            memoria += aux -> valor + "; // ";
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+    
+    return memoria;
+}
+
+
+void ArbolCiudad::ModificarNombreCIU(string pais, string ciudad, string nombre) {
+    if (ArbolVacio()) {
+        cout << "El arbol AVL esta vacio" << endl;
+        return;
+    }
+
+    int codigo1 = stringAEnteroCl(pais);
+    int codigo2 = stringAEnteroCl(ciudad);
+
+    std::stringstream ss1, ss2;
+    ss1 << codigo1;
+    ss2 << codigo2;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+
+    string codigosBuscados = num1 + ";" + num2;
+    pnodoCIU aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+			string newName = nombre;
+			
+			string modificar = codigosBuscados + ";" + newName;
+			aux -> valor = modificar;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (encontrado == false) {
+        cout << "No se encontraron los codigos en el arbol" << endl;
+    }
+
+}
+
+void ArbolCiudad::AgregarCIU(ArbolPais & arbolPais, string pais, string ciudad, string nombre){
+	int NumPais = stringAEnteroCl(pais);
+	if(arbolPais.Existe(NumPais)){
+		int codigoArbolCiudad = stringAEnteroCl(ciudad);
+		
+	    std::stringstream ss1,ss2;
+	    ss1 << NumPais;
+	    ss2 << codigoArbolCiudad;
+	    string num1 = ss1.str();
+	    string num2 = ss2.str();
+	    
+		string NombreNuevo = nombre;
+	
+		string NuevoValor = num1 + ";" + num2 + ";" + NombreNuevo;
+		agregarNodo(NuevoValor);
+	
+	}else{
+		cout<<"el pais no existe, No se agrega"<<endl;
+	}
+}
+
+
+string ArbolCiudad::ComprobacionCIU(string pais, string ciudad) {
+    if (ArbolVacio()) {
+        cout << "El arbol AVL esta vacio" << endl;
+        return "";
+    }
+
+    int codigo1 = stringAEnteroCl(pais);
+    int codigo2 = stringAEnteroCl(ciudad);
+
+    std::stringstream ss1, ss2;
+    ss1 << codigo1;
+    ss2 << codigo2;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+
+    string codigosBuscados = num1 + ";" + num2;
+    pnodoCIU aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+			return aux->valor;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (encontrado == false) {
+        cout << "No se encontraron los codigos en el arbol." << endl;
+        return "";
+    }
+}
+
+
+void ArbolCiudad::CargarDesdeArchivoCIU() {
+    set<string> numero2_set;  
+
+    ifstream archivo("Ciudades.txt");
+    if (archivo.is_open())
+    {
+        string linea;
+        while (getline(archivo, linea))
+        {
+            istringstream iss(linea);
+            string numero1, numero2, nombre;
+            getline(iss, numero1, ';');
+            getline(iss, numero2, ';');
+            getline(iss, nombre);
+
+            // Verificar si NUMERO3 es diferente de los anteriores
+            if (numero2_set.find(numero2) == numero2_set.end())
+            {
+                numero2_set.insert(numero2);  // Agregar a conjunto de NUMERO3
+                string nuevo_valor = numero1 + ";" + numero2 +  ";" + nombre;
+                agregarNodo(nuevo_valor);
+            }
+            else
+            {
+                cout << "Advertencia: NUMERO debe ser diferente a los otros NUMERO anteriores." << endl;
+            }
+        }
+        archivo.close();
+    }
+    else
+    {
+        cout << "No se pudo abrir el archivo." << endl;
+    }
+}
+                
+ArbolCiudad::~ArbolCiudad()
+{
+   pnodoCIU aux;
+   pnodoCIU temp;
+   
+   while(primero) {
+      temp = primero;
+      aux=primero;
+      primero = primero->siguiente;
+      while (aux->siguiente!=primero)
+           aux= aux->siguiente;
+      aux->siguiente=primero;
+      
+      delete temp;
+      primero=NULL;
+   }
+   primero= NULL;
+}
+                        
+int ArbolCiudad::cantNodos() 
+{
+    int cont=0;
+
+    pnodoCIU aux = primero->siguiente;
+    if(ArbolVacio())
+    {
+        return cont;
+    }
+    else
+    {   cont=cont+1;
+        while(aux!=primero)
+        {
+          aux=aux->siguiente;
+          cont++;
+        }
+    return cont;
+    }
+    
+}
+
+void ArbolCiudad::agregarNodo(string v)
+{
+   if (ArbolVacio())
+     {
+     primero = new nodoCIU(v);
+     primero->anterior=primero;
+     primero->siguiente=primero;
+   }  
+   else
+   { 
+     pnodoCIU nuevo = new nodoCIU(v);//1
+     nuevo->anterior = primero->anterior;//2
+	 nuevo->siguiente=primero;// coloca alguna de la dos 3
+     primero->anterior->siguiente=nuevo;//4
+     primero->anterior=nuevo;//5
+    }    
+}
+ 
+void ArbolCiudad::MostrarCIU()
+{
+   pnodoCIU aux=primero;
+   while(aux->siguiente!=primero)
+     {
+                                
+      cout << aux->valor << "-> ";
+      aux = aux->siguiente;
+     }
+     cout<<aux->valor<<"->";
+     cout<<endl;
+} 
+
+bool ArbolCiudad::ExisteCIU(string codigo) {
+    if (ArbolVacio()) {
+        cout << "El arbol esta vacio" << endl;
+        return false;
+    }
+    
+    pnodoCIU aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= cantNodos()) {
+        if (aux->valor.find(codigo) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+            return true;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (encontrado == false) {
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
 	
 	int main(){
 		//clientes ok 
 		cliente ac;
 		ArbolPais ap;
 		administrador ad;
+		ArbolCiudad aCiu;
+		ap.CargarDesdeArchivo();
 		
-		ac.CargarDesdeArchivoCl();
+		/*ac.CargarDesdeArchivoCl();
 		
 		ac.MostrarCl();
 		
@@ -1349,7 +1840,7 @@ bool ArbolPais::Existe(int codigo) {
 		ac.ModificarNombreCL("12345","pamela");
 		cout<<ac.ObtenerContenidoComoString()<<endl;
 		
-		ap.CargarDesdeArchivo();
+		
 		cout<<ap.ObtenerContenidoComoString()<<endl;
 		
 		ap.AgregarPais("12345","Samir Cabrera");
@@ -1374,7 +1865,27 @@ bool ArbolPais::Existe(int codigo) {
 		cout<<ad.ObtenerContenidoComoString()<<endl;
 		cout<<ad.ConsultarAdministradorPorCodigoAd("123456")<<endl;
 		ad.BorrarPorCodigoAd("657");
-		cout<<ad.ObtenerContenidoComoString()<<endl;
+		cout<<ad.ObtenerContenidoComoString()<<endl;*/
+		
+		aCiu.CargarDesdeArchivoCIU();
+	
+		
+		cout<<aCiu.ObtenerContenidoComoString()<<endl;
+		
+		aCiu.AgregarCIU(ap, "1", "34", "tokyo");
+		
+		cout<<aCiu.ObtenerContenidoComoString()<<endl;
+		
+		cout<<aCiu.ComprobacionCIU("1","34")<<endl;
+		
+		aCiu.ModificarNombreCIU("1","34","perez zeledon");
+		
+		aCiu.BorrarPorCodigosCIU("3","89");
+		
+		cout<<aCiu.ObtenerContenidoComoString()<<endl;
+		
+		
+		
 		
 		return 0;
 	}
@@ -1398,6 +1909,32 @@ bool ArbolPais::Existe(int codigo) {
 	-modificar ||
 	-eliminar ||
 	-consultar ||
+	
+	ciudad
+	-agregar ||
+	-modificar ||
+	-eliminar ||
+	-consultar ||
+	
+	restaurante
+	-agregar 
+	-modificar 
+	-eliminar 
+	-consultar 
+	
+	menu
+	-agregar 
+	-modificar 
+	-eliminar 
+	-consultar 
+	
+	producto
+	-agregar 
+	-modificar 
+	-eliminar 
+	-consultar 
+	
+	
 	*/
 	
 
