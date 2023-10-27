@@ -2874,6 +2874,653 @@ bool ArbolMenu::ExisteME(string codigo) {
 }
 
 
+   
+
+
+class nodoPRO {
+public:
+    nodoPRO(const string &v)
+    {
+        valor = v;
+        siguiente = NULL;
+        anterior = NULL;
+    }
+
+    nodoPRO(const string &v, nodoPRO *signodoPRO)
+    {
+        valor = v;
+        siguiente = signodoPRO;
+    }
+
+private:
+    string valor;
+    nodoPRO *siguiente;
+    nodoPRO *anterior;
+
+    friend class ArbolProducto;
+};
+typedef nodoPRO *pnodoPRO;
+
+class ArbolProducto {
+public:
+    ArbolProducto() { primero = NULL; }
+    ~ArbolProducto();
+
+    void agregarNodoIn(string v);
+    void agregarNodo(string v);
+    void InsertarPos(string v, int pos);
+    bool ArbolVacio() { return primero == NULL; }
+    void Imprimir();
+    void MostrarPRO();
+    int cantNodos();
+    void CargarDesdeArchivoPRO();
+    void ComprobacionPRO();
+    void AgregarPRO(ArbolMenu & arbolMenu, string pais, string ciudad, string restaurante, string menu, string producto, string nombre, string calorias, string precio);
+    void ModificarNombrePRO(string pais, string ciudad, string restaurante, string menu, string producto, string nombre, string calorias, string precio, string cantidad);
+    bool ExistePRO(string codigo);
+    int stringAEnteroPRO(const std::string &cadena);
+    string EncontrarValorMayorPedido();
+    string muestraCantidad(string codigo);
+    bool ModificarCantidadPro(string codigosBuscados, int resta);
+    string getPrecio(string codigosBuscados);
+    string getCantProd(string codigosBuscados);
+    string MostrarPROSTR();
+    string ObtenerContenidoComoString();
+private:
+    pnodoPRO primero;
+};
+
+
+string ArbolProducto::ObtenerContenidoComoString() {
+    if (ArbolVacio()) {
+        return "Arbol vacio";
+    }
+
+    std::stringstream ss;
+    pnodoPRO aux = primero;
+
+    do {
+        ss << aux->valor << " -> ";
+        aux = aux->siguiente;
+    } while (aux != primero);
+
+    return ss.str();
+}
+
+
+std::string ArbolProducto::MostrarPROSTR() {
+    pnodoPRO aux = primero;
+    std::stringstream ss;
+
+    while (aux->siguiente != primero) {
+        ss << aux->valor << " -> ";
+        aux = aux->siguiente;
+    }
+    
+    ss << aux->valor << " -> ";
+    ss << std::endl;
+
+    return ss.str();
+}
+
+
+string ArbolProducto::EncontrarValorMayorPedido() {
+    if (ArbolVacio()) {
+        cout << "El arbol de Menu esta vacio." << endl;
+        return "arbol vacio";
+    }
+
+    pnodoPRO aux = primero;
+    int valorMayor = -1;  // Inicializamos con un valor menor al m?nimo posible
+    pnodoPRO nodoMayor = NULL;  // Nodo correspondiente al valor m?s alto
+
+    while (aux->siguiente != primero) {
+        size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+        string pedidoStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
+        int numeroPedido = stringAEnteroPRO(pedidoStr);
+
+        if (numeroPedido > valorMayor) {
+            valorMayor = numeroPedido;
+            nodoMayor = aux;
+        }
+
+        aux = aux->siguiente;
+    }
+
+    // Comprobar el ?ltimo nodo tambi?n
+    size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+    string pedidoStr = aux->valor.substr(posicionUltimoPuntoComa + 1);
+    int numeroPedido = stringAEnteroPRO(pedidoStr);
+
+    if (numeroPedido > valorMayor) {
+        valorMayor = numeroPedido;
+        nodoMayor = aux;
+    }
+
+    if (nodoMayor != NULL) {
+        cout << "Informacion del m: " << nodoMayor->valor << endl;
+        return "Informacion del Producto: " + nodoMayor->valor;
+    } else {
+        cout << "No se encontr? ning?n Restaurante con con consultas." << endl;
+    }
+}
+
+int ArbolProducto::stringAEnteroPRO(const std::string &cadena) {
+    int resultado = 0;
+    int multiplicador = 1;
+
+    // Comprueba si la cadena representa un n?mero negativo
+    size_t indice = 0;
+    if (cadena[0] == '-') {
+        multiplicador = -1;
+        indice = 1; // Saltar el signo negativo
+    }
+
+    // Recorre la cadena y construye el n?mero entero
+    for (; indice < cadena.length(); ++indice) {
+        char digito = cadena[indice];
+        if (isdigit(digito)) {
+            int valorDigito = digito - '0';
+            resultado = resultado * 10 + valorDigito;
+        } else {
+            // Manejo de error si la cadena contiene caracteres no num?ricos
+            std::cerr << "Error: La cadena contiene caracteres no num?ricos." << std::endl;
+            return 0;
+        }
+    }
+
+    return resultado * multiplicador;
+}
+
+void ArbolProducto::ModificarNombrePRO(string pais, string ciudad, string restaurante, string menu, string producto, string nombre, string calorias, string precio, string cantidad){
+    if (ArbolVacio()) {
+        cout << "El arbol esta vacio" << endl;
+        return;
+    }
+
+    string codigosBuscados = pais+ ";" + ciudad + ";" + restaurante + ";" + menu + ";" + producto;
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+ 
+			string modificar = codigosBuscados + ";" + nombre + ";" + calorias + ";" + precio + ";" + cantidad;
+			aux -> valor = modificar;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (encontrado == false) {
+        cout << "No se encontraron los codigos en el arbol." << endl;
+    }
+
+}
+
+void ArbolProducto::AgregarPRO(ArbolMenu & arbolMenu, string pais, string ciudad, string restaurante, string menu, string producto, string nombre, string calorias, string precio){
+
+    string codigosBuscados = pais+ ";" + ciudad + ";" + restaurante + ";" + menu;
+    
+	if(arbolMenu.ExisteME(codigosBuscados)){
+	
+		string NuevoValor = codigosBuscados + ";" + producto + ";" + nombre + ";" + calorias + ";" + precio + ";" + "20" + ";" + "0";
+		agregarNodo(NuevoValor);
+	
+	}else{
+		cout<<"no existe, No se agrega"<<endl;
+	}
+}
+
+
+void ArbolProducto::ComprobacionPRO() {
+    if (ArbolVacio()) {
+        cout << "El arbol esta vacio" << endl;
+        return;
+    }
+
+    int codigo1, codigo2, codigo3,codigo4,codigo5;
+    cout << "Ingrese el primer codigo: " << endl;
+    cin >> codigo1;
+
+    cout << "Ingrese el segundo codigo: " << endl;
+    cin >> codigo2;
+
+    cout << "Ingrese el tercer codigo: " << endl;
+    cin >> codigo3;
+    
+    cout << "Ingrese el cuarto codigo: " << endl;
+    cin >> codigo4;
+    
+    cout << "Ingrese el quinto codigo: " << endl;
+    cin >> codigo5;
+
+    std::stringstream ss1, ss2, ss3,ss4,ss5;
+    ss1 << codigo1;
+    ss2 << codigo2;
+    ss3 << codigo3;
+    ss4 << codigo4;
+    ss5 << codigo5;
+
+    string num1 = ss1.str();
+    string num2 = ss2.str();
+    string num3 = ss3.str();
+    string num4 = ss4.str();
+    string num5 = ss5.str();
+
+    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+	while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            if (posicionUltimoPuntoComa != string::npos) {
+                size_t posicionNumero = posicionUltimoPuntoComa + 1;
+                std::string numeroStr = aux->valor.substr(posicionNumero);
+                int numero = stringAEnteroPRO(numeroStr);
+                numero++;
+                
+				std::stringstream ss1;
+    			ss1 << numero;
+
+				string num1 = ss1.str();
+    
+    
+                
+                string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
+                aux->valor = nuevoValor;
+
+                cout << "Codigos encontrados en el arbol: " << codigosBuscados << endl;
+                cout << "Nuevo valor asociado: " << nuevoValor << endl;
+			    std::string cadena = aux -> valor ;
+			    std::istringstream stream(cadena);
+			    std::string dato;
+				int j = 0;
+				while (std::getline(stream, dato, ';')) {
+						        if (!dato.empty()) {
+						        	
+						        	if(j == 5){
+						        		cout<<"pruducto: "<<dato<<endl;
+									}
+						        	if(j == 6){
+						        		cout<<"calorias: "<<dato<<endl;
+									}
+						        	if(j == 7){
+						        		cout<<"precio: "<<dato<<endl;
+									}
+									if(j==8){
+										cout<<"cantidad de productos: "<<dato<<endl;
+									}
+									if(j==9){
+										cout<<"cantidad de busquedas: "<<dato<<endl;
+									}
+						            j++;
+						        }
+						    }
+				            break;
+            } else {
+                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
+            }
+            break;
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los c?digos en el arbol." << endl;
+    }
+}
+
+
+void ArbolProducto::CargarDesdeArchivoPRO() {
+    set<string> numero4_set;  
+
+    ifstream archivo("Productos.txt");
+    if (archivo.is_open())
+    {
+        string linea;
+        while (getline(archivo, linea))
+        {
+            istringstream iss(linea);
+            string numero1, numero2, numero3, numero4, numero5, nombre, numero6, numero7, numero8;
+            getline(iss, numero1, ';');
+            getline(iss, numero2, ';');
+            getline(iss, numero3, ';');
+            getline(iss, numero4, ';');
+            getline(iss, numero5, ';');
+            getline(iss, nombre, ';');
+            getline(iss, numero6, ';');
+            getline(iss, numero7, ';');
+            getline(iss, numero8);
+
+            // Verificar si NUPRORO3 es diferente de los anteriores
+            if (numero4_set.find(numero4) == numero4_set.end())
+            {
+                numero4_set.insert(numero4);  // Agregar a conjunto de NUPRORO3
+                string nuevo_valor = numero1 + ";" + numero2 + ";" + numero3 + ";" + numero4 + ";" + numero5 + ";" + nombre + ";" + numero6 + ";" + numero7 + ";" + numero8;
+                agregarNodo(nuevo_valor + ";0");
+            }
+            else
+            {
+                cout << "Advertencia: NUPRORO3 debe ser diferente a los otros NUPRORO3 anteriores." << endl;
+            }
+        }
+        archivo.close();
+    }
+    else
+    {
+        cout << "No se pudo abrir el archivo." << endl;
+    }
+}
+
+                
+ArbolProducto::~ArbolProducto()
+{
+   pnodoPRO aux;
+   pnodoPRO temp;
+   
+   while(primero) {
+      temp = primero;
+      aux=primero;
+      primero = primero->siguiente;
+      while (aux->siguiente!=primero)
+           aux= aux->siguiente;
+      aux->siguiente=primero;
+      
+      delete temp;
+      primero=NULL;
+   }
+   primero= NULL;
+}
+                          
+int ArbolProducto::cantNodos() 
+{
+    int cont=0;
+
+    pnodoPRO aux = primero->siguiente;
+    if(ArbolVacio())
+    {
+        return cont;
+    }
+    else
+    {   cont=cont+1;
+        while(aux!=primero)
+        {
+          aux=aux->siguiente;
+          cont++;
+        }
+    return cont;
+    }
+    
+}
+
+void ArbolProducto::agregarNodo(string v)
+{
+   if (ArbolVacio())
+     {
+     primero = new nodoPRO(v);
+     primero->anterior=primero;
+     primero->siguiente=primero;
+   }  
+   else
+   { 
+     pnodoPRO nuevo = new nodoPRO(v);//1
+     nuevo->anterior = primero->anterior;//2
+	 nuevo->siguiente=primero;// coloca alguna de la dos 3
+     primero->anterior->siguiente=nuevo;//4
+     primero->anterior=nuevo;//5
+    }    
+}
+  
+void ArbolProducto::MostrarPRO()
+{
+   pnodoPRO aux=primero;
+   while(aux->siguiente!=primero)
+     {
+                                
+      cout << aux->valor << "-> ";
+      aux = aux->siguiente;
+     }
+     cout<<aux->valor<<"->";
+     cout<<endl;
+}
+
+bool ArbolProducto::ExistePRO(string codigo) {
+    if (ArbolVacio()) {
+        cout << "El arbol esta vacio" << endl;
+        return false;
+    }
+    
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= cantNodos()) {
+        if (aux->valor.find(codigo) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            string nombre = aux->valor.substr(posicionUltimoPuntoComa + 1);
+            return true;
+            break;
+        }
+        aux = aux->siguiente;
+        i ++;
+    }
+
+    if (!encontrado) {
+        return false;
+    }
+}
+
+string ArbolProducto::muestraCantidad(string codigosBuscados) {
+    if (ArbolVacio()) {
+        cout << "El arbol esta vacio" << endl;
+        return "ARBOL VACIO";
+    }
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+	while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            if (posicionUltimoPuntoComa != string::npos) {
+                size_t posicionNumero = posicionUltimoPuntoComa + 1;
+                std::string numeroStr = aux->valor.substr(posicionNumero);
+                int numero = stringAEnteroPRO(numeroStr);
+                numero++;
+                
+				std::stringstream ss1;
+    			ss1 << numero;
+
+				string num1 = ss1.str();
+    
+    
+                
+                string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
+                aux->valor = nuevoValor;
+			    std::string cadena = aux -> valor ;
+			    std::istringstream stream(cadena);
+			    std::string dato;
+				int j = 0;
+				while (std::getline(stream, dato, ';')) {
+						        if (!dato.empty()) {
+									if(j==8){
+										return dato;
+									}
+						            j++;
+						        }
+						    }
+				            break;
+            } else {
+                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
+            }
+            break;
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+
+    if (!encontrado) {
+        return "no se encontro codigo en el arbol";
+    }
+}
+
+bool ArbolProducto::ModificarCantidadPro(string codigosBuscados, int resta){
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
+	string nuevo;
+	while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            if (posicionUltimoPuntoComa != string::npos) {
+                size_t posicionNumero = posicionUltimoPuntoComa + 1;
+                std::string numeroStr = aux->valor.substr(posicionNumero);
+                int numero = stringAEnteroPRO(numeroStr);
+                numero++;
+                
+				std::stringstream ss1;
+    			ss1 << numero;
+
+				string num1 = ss1.str();
+                string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
+                aux->valor = nuevoValor;
+			    std::string cadena = aux -> valor ;
+			    std::istringstream stream(cadena);
+			    std::string dato;
+				int j = 0;
+				string producto, caloria, precio, busquedas, StrnuevaCantidad ;
+				while (std::getline(stream, dato, ';')) {
+						        if (!dato.empty()) {
+						        	
+						        	if(j == 5){
+						        		producto = dato;
+									}
+						        	if(j == 6){
+						        		caloria = dato;
+									}
+						        	if(j == 7){
+						        		precio = dato;
+									}
+									if(j==8){
+										int valor = stringAEnteroPRO(dato);
+										cout<<"cantidad: "<<valor<<endl;
+										cout<<"a restar: "<<resta<<endl;
+										if(resta > valor){
+											cout<<"error la cantidad de compra es mayor que la disponible"<<endl;
+											return false;
+										}
+										int nuevaCantidad = valor - resta;
+										std::stringstream ss1;
+										ss1 << nuevaCantidad;
+										StrnuevaCantidad = ss1.str();
+									}
+									if(j==9){
+										busquedas = dato;
+									}
+						            j++;
+						        }
+						    }
+						    nuevo = codigosBuscados + ";" + producto + ";" + caloria + ";" + precio + ";" + StrnuevaCantidad + ";" + busquedas;
+						    cout<<nuevo<<endl;
+						    aux -> valor = nuevo;
+						    return true;
+				            break;	            
+            } else {
+                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
+                return false;
+            }
+            break;
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los c?digos en el arbol." << endl;
+        return false;
+    }
+}
+
+string ArbolProducto::getPrecio(string codigosBuscados){
+    pnodoPRO aux = primero;
+    bool encontrado = false;
+    int i = 0;
+
+	while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
+            if (posicionUltimoPuntoComa != string::npos) {
+                size_t posicionNumero = posicionUltimoPuntoComa + 1;
+                std::string numeroStr = aux->valor.substr(posicionNumero);
+                int numero = stringAEnteroPRO(numeroStr);
+                numero++;
+                
+				std::stringstream ss1;
+    			ss1 << numero;
+
+				string num1 = ss1.str();
+    
+    
+                
+                string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
+                aux->valor = nuevoValor;
+
+                cout << "Codigos encontrados en el arbol: " << codigosBuscados << endl;
+                cout << "Nuevo valor asociado: " << nuevoValor << endl;
+			    std::string cadena = aux -> valor ;
+			    std::istringstream stream(cadena);
+			    std::string dato;
+				int j = 0;
+				while (std::getline(stream, dato, ';')) {
+						        if (!dato.empty()) {
+						        	
+						        	if(j == 5){
+						     		cout<<"pruducto: "<<dato<<endl;
+									}
+						        	if(j == 6){
+						        		cout<<"calorias: "<<dato<<endl;
+									}
+						        	if(j == 7){
+						        		cout<<"precio: "<<dato<<endl;
+						        		return dato;
+									}
+									if(j==8){
+										cout<<"cantidad de productos: "<<dato<<endl;
+									}
+									if(j==9){
+										cout<<"cantidad de busquedas: "<<dato<<endl;
+									}
+						            j++;
+						        }
+						    }
+				            break;
+            } else {
+                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
+            }
+            break;
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron los c?digos en el arbol." << endl;
+    }
+}
+
+
+
 
 
 
@@ -2888,6 +3535,7 @@ bool ArbolMenu::ExisteME(string codigo) {
 		ArbolCiudad aCiu;
 		ArbolRestaurante are;
 		ArbolMenu ame;
+		ArbolProducto apro;
 		
 		ap.CargarDesdeArchivo();
 		
@@ -2900,6 +3548,8 @@ bool ArbolMenu::ExisteME(string codigo) {
 		are.CargarDesdeArchivoRE();
 				
 		ame.CargarDesdeArchivoME();
+		
+		apro.CargarDesdeArchivoPRO();
 		
 		/*
 		//clientes
@@ -2960,17 +3610,22 @@ bool ArbolMenu::ExisteME(string codigo) {
 		are.BorrarPorCodigosRE("1","22","125");
 		cout<<are.ObtenerContenidoComoString()<<endl;*/
 		
-		cout<<ame.ObtenerContenidoComoString()<<endl;
+		//menu
+		/*cout<<ame.ObtenerContenidoComoString()<<endl;
 		ame.AgregarME(are,"1","19","112","345","Pizza");
 		cout<<ame.ObtenerContenidoComoString()<<endl;
 		ame.AgregarME(are,"1","19","112","345","teta");
 		cout<<ame.ObtenerContenidoComoString()<<endl;
 		cout<<ame.ComprobacionME("1","19","112","345")<<endl;
 		ame.BorrarPorCodigosRE("2","35","130","246");
-		cout<<ame.ObtenerContenidoComoString()<<endl;
+		cout<<ame.ObtenerContenidoComoString()<<endl;*/
 
-		
-		
+		//producto
+		cout<<apro.ObtenerContenidoComoString()<<endl;
+		apro.AgregarPRO(ame, "1","19","112","227","777","pingavenosa", "1300","2500");
+		cout<<apro.ObtenerContenidoComoString()<<endl;
+		apro.ModificarNombrePRO("1","19","112","227","777","la hello kity", "5400","7500","30");
+		cout<<apro.ObtenerContenidoComoString()<<endl;
 		
 		
 		return 0;
@@ -3009,14 +3664,14 @@ bool ArbolMenu::ExisteME(string codigo) {
 	-consultar ||
 	
 	menu
-	-agregar 
-	-modificar 
-	-eliminar 
-	-consultar 
+	-agregar ||
+	-modificar ||
+	-eliminar ||
+	-consultar ||
 	
 	producto
-	-agregar 
-	-modificar 
+	-agregar ||
+	-modificar ||
 	-eliminar 
 	-consultar 
 	
