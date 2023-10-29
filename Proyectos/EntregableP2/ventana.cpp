@@ -2914,7 +2914,7 @@ public:
     void MostrarPRO();
     int cantNodos();
     void CargarDesdeArchivoPRO();
-    void ComprobacionPRO();
+    string ComprobacionPRO(string pais, string ciudad, string restaurante, string menu, string producto);
     void AgregarPRO(ArbolMenu & arbolMenu, string pais, string ciudad, string restaurante, string menu, string producto, string nombre, string calorias, string precio);
     void ModificarNombrePRO(string pais, string ciudad, string restaurante, string menu, string producto, string nombre, string calorias, string precio, string cantidad);
     bool ExistePRO(string codigo);
@@ -2926,6 +2926,9 @@ public:
     string getCantProd(string codigosBuscados);
     string MostrarPROSTR();
     string ObtenerContenidoComoString();
+    void BorrarPorCodigosRE(string pais, string ciudad, string restaurante,string menu,string producto);
+    void BorrarFinal();
+    void BorrarInicio();
 private:
     pnodoPRO primero;
 };
@@ -2947,6 +2950,95 @@ string ArbolProducto::ObtenerContenidoComoString() {
     return ss.str();
 }
 
+
+void ArbolProducto::BorrarFinal()
+{
+    if (ArbolVacio())
+      cout << "No hay elementos en la lista:" << endl;
+    else
+    {
+      if (primero->siguiente == primero)
+      {
+        pnodoPRO temp= primero;
+        primero= NULL;
+        delete temp;
+      }
+      else 
+      {
+         pnodoPRO aux = primero; //1
+         while (aux->siguiente->siguiente != primero)
+         aux = aux->siguiente;
+         pnodoPRO temp = aux->siguiente;//2
+         aux->siguiente= primero;//3
+         primero->anterior=aux;//4
+         delete temp;//5
+      }
+    }
+}
+
+void ArbolProducto::BorrarInicio()
+{
+    if (ArbolVacio())
+      cout << "No hay elementos en la lista:" << endl;
+    else
+    {
+     if (primero->siguiente == primero)
+     {
+        pnodoPRO temp= primero;
+        primero= NULL;
+        delete temp;
+     }
+     else
+     {
+        pnodoPRO aux = primero->anterior;//1
+        pnodoPRO temp= primero;//2
+        aux->siguiente=primero->siguiente;//3
+        primero=primero->siguiente; //4
+        primero->anterior=aux;//5
+        delete temp;//6
+      }
+    }
+}
+
+
+void ArbolProducto::BorrarPorCodigosRE(string pais, string ciudad, string restaurante,string menu,string producto) {
+    if (ArbolVacio()) {
+        cout << "arbol vacio" << endl;
+        return;
+    }
+
+    string codigosBuscados = pais + ";" + ciudad + ";" + restaurante +";" + menu +";" + producto;
+    pnodoPRO aux = primero;
+    pnodoPRO nodoAEliminar = NULL;
+    bool encontrado = false;
+    int i = 0;
+
+    while (i <= cantNodos()) {
+        if (aux->valor.find(codigosBuscados) != string::npos) {
+            encontrado = true;
+            nodoAEliminar = aux;
+            break;
+        }
+        aux = aux->siguiente;
+        i++;
+    }
+
+    if (encontrado) {
+        if (nodoAEliminar == primero) {
+            BorrarInicio();
+        } else if (nodoAEliminar->siguiente == primero) {
+            BorrarFinal();
+        } else {
+            nodoAEliminar->anterior->siguiente = nodoAEliminar->siguiente;
+            nodoAEliminar->siguiente->anterior = nodoAEliminar->anterior;
+            delete nodoAEliminar;
+        }
+
+        cout << "nodoRE con los c?digos " << codigosBuscados << " borrado exitosamente." << endl;
+    } else {
+        cout << "No encontrado" << endl;
+    }
+}
 
 std::string ArbolProducto::MostrarPROSTR() {
     pnodoPRO aux = primero;
@@ -3075,106 +3167,46 @@ void ArbolProducto::AgregarPRO(ArbolMenu & arbolMenu, string pais, string ciudad
 }
 
 
-void ArbolProducto::ComprobacionPRO() {
+string ArbolProducto::ComprobacionPRO(string pais, string ciudad, string restaurante, string menu, string producto) {
     if (ArbolVacio()) {
-        cout << "El arbol esta vacio" << endl;
-        return;
+        cout << "El arbol está vacío" << endl;
+        return "";
     }
 
-    int codigo1, codigo2, codigo3,codigo4,codigo5;
-    cout << "Ingrese el primer codigo: " << endl;
-    cin >> codigo1;
-
-    cout << "Ingrese el segundo codigo: " << endl;
-    cin >> codigo2;
-
-    cout << "Ingrese el tercer codigo: " << endl;
-    cin >> codigo3;
-    
-    cout << "Ingrese el cuarto codigo: " << endl;
-    cin >> codigo4;
-    
-    cout << "Ingrese el quinto codigo: " << endl;
-    cin >> codigo5;
-
-    std::stringstream ss1, ss2, ss3,ss4,ss5;
-    ss1 << codigo1;
-    ss2 << codigo2;
-    ss3 << codigo3;
-    ss4 << codigo4;
-    ss5 << codigo5;
-
-    string num1 = ss1.str();
-    string num2 = ss2.str();
-    string num3 = ss3.str();
-    string num4 = ss4.str();
-    string num5 = ss5.str();
-
-    string codigosBuscados = num1 + ";" + num2 + ";" + num3 + ";" + num4 + ";" + num5;
+    string codigosBuscados = pais + ";" + ciudad + ";" + restaurante + ";" + menu + ";" + producto;
     pnodoPRO aux = primero;
     bool encontrado = false;
-    int i = 0;
 
-	while (i <= cantNodos()) {
-        if (aux->valor.find(codigosBuscados) != string::npos) {
+    while (aux != NULL) {
+        size_t found = aux->valor.find(codigosBuscados);
+        if (found != string::npos) {
             encontrado = true;
-            size_t posicionUltimoPuntoComa = aux->valor.find_last_of(';');
-            if (posicionUltimoPuntoComa != string::npos) {
-                size_t posicionNumero = posicionUltimoPuntoComa + 1;
-                std::string numeroStr = aux->valor.substr(posicionNumero);
+            size_t lastSemicolon = aux->valor.find_last_of(';');
+            if (lastSemicolon != string::npos) {
+                size_t numberStart = lastSemicolon + 1;
+                string numeroStr = aux->valor.substr(numberStart);
                 int numero = stringAEnteroPRO(numeroStr);
                 numero++;
-                
-				std::stringstream ss1;
-    			ss1 << numero;
 
-				string num1 = ss1.str();
-    
-    
-                
-                string nuevoValor = aux->valor.substr(0, posicionNumero) + num1;
+                std::stringstream ss1;
+                ss1 << numero;
+                string num1 = ss1.str();
+
+                string nuevoValor = aux->valor.substr(0, numberStart) + num1;
                 aux->valor = nuevoValor;
-
-                cout << "Codigos encontrados en el arbol: " << codigosBuscados << endl;
-                cout << "Nuevo valor asociado: " << nuevoValor << endl;
-			    std::string cadena = aux -> valor ;
-			    std::istringstream stream(cadena);
-			    std::string dato;
-				int j = 0;
-				while (std::getline(stream, dato, ';')) {
-						        if (!dato.empty()) {
-						        	
-						        	if(j == 5){
-						        		cout<<"pruducto: "<<dato<<endl;
-									}
-						        	if(j == 6){
-						        		cout<<"calorias: "<<dato<<endl;
-									}
-						        	if(j == 7){
-						        		cout<<"precio: "<<dato<<endl;
-									}
-									if(j==8){
-										cout<<"cantidad de productos: "<<dato<<endl;
-									}
-									if(j==9){
-										cout<<"cantidad de busquedas: "<<dato<<endl;
-									}
-						            j++;
-						        }
-						    }
-				            break;
+                return aux->valor;
             } else {
-                cout << "No se encontr? el ?ltimo punto y coma en el valor." << endl;
+                cout << "No se encontró el último punto y coma en el valor." << endl;
             }
-            break;
         }
         aux = aux->siguiente;
-        i++;
     }
 
     if (!encontrado) {
-        cout << "No se encontraron los c?digos en el arbol." << endl;
+        cout << "No se encontraron los códigos en el árbol." << endl;
     }
+
+    return "";
 }
 
 
@@ -3624,8 +3656,14 @@ string ArbolProducto::getPrecio(string codigosBuscados){
 		cout<<apro.ObtenerContenidoComoString()<<endl;
 		apro.AgregarPRO(ame, "1","19","112","227","777","pingavenosa", "1300","2500");
 		cout<<apro.ObtenerContenidoComoString()<<endl;
+		cout<<apro.ComprobacionPRO("1","19","112","227","777")<<endl;
+		cout<<apro.ComprobacionPRO("1","19","112","227","777")<<endl;
+		cout<<apro.ComprobacionPRO("1","19","112","227","777")<<endl;
 		apro.ModificarNombrePRO("1","19","112","227","777","la hello kity", "5400","7500","30");
 		cout<<apro.ObtenerContenidoComoString()<<endl;
+		apro.BorrarPorCodigosRE("1","19","112","227","777");
+		cout<<apro.ObtenerContenidoComoString()<<endl;
+
 		
 		
 		return 0;
@@ -3673,7 +3711,7 @@ string ArbolProducto::getPrecio(string codigosBuscados){
 	-agregar ||
 	-modificar ||
 	-eliminar 
-	-consultar 
+	-consultar ||
 	
 	
 	*/
