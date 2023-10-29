@@ -3619,28 +3619,28 @@ private:
 
 
 
-class nodoComFact {
+class fila {
 public:
-    nodoComFact(string v)
+    fila(string v)
     {
         valor = v;
         siguiente = NULL;
     }
 
-    nodoComFact(string v, nodoComFact* signodoComFact)
+    fila(string v, fila* sigfila)
     {
         valor = v;
-        siguiente = signodoComFact;
+        siguiente = sigfila;
     }
 
 private:
     string valor;
-    nodoComFact* siguiente;
+    fila* siguiente;
 
     friend class listComFact;
 };
 
-typedef nodoComFact* pnodoComFact; // Alias
+typedef fila* pfila; // Alias
 
 class listComFact {
 public:
@@ -3656,7 +3656,7 @@ public:
     string ObtenerMenorValor1();
 
 private:
-    pnodoComFact primero;
+    pfila primero;
 };
 
 string listComFact::ObtenerMayorValor1()
@@ -3667,7 +3667,7 @@ string listComFact::ObtenerMayorValor1()
         return "";
     }
 
-    pnodoComFact aux = primero;
+    pfila aux = primero;
     string mayorValor1 = aux->valor;
 
     while (aux != NULL)
@@ -3697,7 +3697,7 @@ string listComFact::ObtenerMenorValor1()
         return "";
     }
 
-    pnodoComFact aux = primero;
+    pfila aux = primero;
     string mayorValor1 = aux->valor;
 
     while (aux != NULL)
@@ -3721,7 +3721,7 @@ string listComFact::ObtenerMenorValor1()
 
 listComFact::~listComFact()
 {
-    pnodoComFact aux;
+    pfila aux;
 
     while (primero) {
         aux = primero;
@@ -3733,7 +3733,7 @@ listComFact::~listComFact()
 
 int listComFact::largoLista() {
     int cont = 0;
-    pnodoComFact aux = primero;
+    pfila aux = primero;
 
     if (ListaVacia()) {
         return cont;
@@ -3751,11 +3751,11 @@ void listComFact::InsertarInicio(string v)
 {
     if (ListaVacia())
     {
-        primero = new nodoComFact(v);
+        primero = new fila(v);
     }
     else
     {
-        pnodoComFact nuevo = new nodoComFact(v);
+        pfila nuevo = new fila(v);
         nuevo->siguiente = primero;
         primero = nuevo;
     }
@@ -3764,20 +3764,20 @@ void listComFact::InsertarInicio(string v)
 void listComFact::InsertarFinal(string v)
 {
     if (ListaVacia())
-        primero = new nodoComFact(v);
+        primero = new fila(v);
     else
     {
-        pnodoComFact aux = primero;
+        pfila aux = primero;
         while (aux->siguiente != NULL)
             aux = aux->siguiente;
-        pnodoComFact nuevo = new nodoComFact(v);
+        pfila nuevo = new fila(v);
         aux->siguiente = nuevo;
     }
 }
 
 void listComFact::Mostrar()
 {
-    nodoComFact* aux;
+    fila* aux;
     if (primero == NULL)
         cout << "No hay elementos AQUI";
     else

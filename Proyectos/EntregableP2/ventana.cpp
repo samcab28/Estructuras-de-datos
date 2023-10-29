@@ -3696,11 +3696,29 @@ public:
     int largoLista();
     string ObtenerMayorValor1();
     string ObtenerMenorValor1();
+    string ObtenerContenidoComoString();
 
 private:
     pfila primero;
 };
 
+string listComFact::ObtenerContenidoComoString() {
+    std::string contenidoString;
+    pfila aux = primero;
+
+    while (aux != NULL) {
+        contenidoString += aux->valor;
+
+        if (aux->siguiente != NULL) {
+            contenidoString += " -> ";
+        }
+
+        aux = aux->siguiente;
+    }
+
+    return contenidoString;
+}
+    
 string listComFact::ObtenerMayorValor1()
 {
     if (ListaVacia())
@@ -3893,15 +3911,42 @@ public:
     void BorrarPaisPorSeisCodigos();
     void BorrarComprasPorInicio(FilaCL & FICL,string valor);
     void MostrarComprasPorInicio(string valor);
-    void facturar(listComFact & compraFactura);
+    void facturar(listComFact & compraFactura, string valor);
     std::pair<int, std::string> CarritoCliente(int codigo);
     string ObtenerContenidoComoString();
+    int stringAEnteroCl(const std::string &cadena);
 
 
 private:
     pnodoCOM primero;
 };
 
+int ListaCOM::stringAEnteroCl(const std::string &cadena) {
+    int resultado = 0;
+    int multiplicador = 1;
+
+    // Comprueba si la cadena representa un n?mero negativo
+    size_t indice = 0;
+    if (cadena[0] == '-') {
+        multiplicador = -1;
+        indice = 1; // Saltar el signo negativo
+    }
+
+    // Recorre la cadena y construye el n?mero entero
+    for (; indice < cadena.length(); ++indice) {
+        char digito = cadena[indice];
+        if (isdigit(digito)) {
+            int valorDigito = digito - '0';
+            resultado = resultado * 10 + valorDigito;
+        } else {
+            // Manejo de error si la cadena contiene caracteres no num?ricos
+            std::cerr << "Error: La cadena contiene caracteres no num?ricos." << std::endl;
+            return 0;
+        }
+    }
+
+    return resultado * multiplicador;
+}
 
 string ListaCOM::ObtenerContenidoComoString() {
     nodoCOM *aux = primero;
@@ -4295,14 +4340,9 @@ bool ListaCOM::Existe(int codigo) {
     }
 }
 
-void ListaCOM::facturar(listComFact & compraFactura) {
+void ListaCOM::facturar(listComFact & compraFactura, string valor) {
 	nodoCOM *aux;
-    cout << "facturacion de compra" << endl;
-    cout << "Lista de clientes: " << endl;
-    MostrarCompra();
-    cout << "seleccione el cliente a facturar" << endl;
-    int cliente;
-    cin >> cliente;
+    int cliente = stringAEnteroCl(valor);
     
     if (Existe(cliente)) {
         cout << "cliente encontrado" << endl;
@@ -4468,6 +4508,7 @@ std::pair<int, std::string> ListaCOM::CarritoCliente(int codigo) {
 		ArbolProducto apro;
 		ListaCOM Com;
 		FilaCL fcl;
+		listComFact lfc;
 		
 		ap.CargarDesdeArchivo();
 		
@@ -4570,10 +4611,15 @@ std::pair<int, std::string> ListaCOM::CarritoCliente(int codigo) {
 		Com.AgregarCompra(fcl,apro,"504500571",ac,"1","19","112","227","336","44","2");
 		cout<<"fila: "<< fcl.ObtenerContenido()<<endl;
 		cout<<"\n\n\n\n"<<Com.ObtenerContenidoComoString()<<endl;
-		Com.BorrarComprasPorInicio(fcl,"402630815");
+		//Com.BorrarComprasPorInicio(fcl,"402630815");
 		cout<<"\n\n\n\n"<<Com.ObtenerContenidoComoString()<<endl;
 		cout<<"fila: "<< fcl.ObtenerContenido()<<endl;
 		
+		Com.facturar(lfc, "504500571");
+		Com.facturar(lfc, "402630815");
+		
+		
+		cout<<lfc.ObtenerContenidoComoString()<<endl;
 		
 		
 		
