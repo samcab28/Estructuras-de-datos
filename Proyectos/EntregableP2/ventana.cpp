@@ -3570,33 +3570,119 @@ string ArbolProducto::getPrecio(string codigosBuscados){
 
 
 
-
-
-
-
-
-class nodoComFact {
+class FilaCL {
 public:
-    nodoComFact(string v)
+    FilaCL() { primero = NULL; }
+    ~FilaCL();
+
+    void InsertarFinal(const std::string& v);
+    bool ListaVacia() { return primero == NULL; }
+    std::string ObtenerContenido() const;
+    void BorrarComprasPorInicio(const std::string& valor);
+
+private:
+    struct nodoFilaCl {
+        std::string valor;
+        nodoFilaCl* siguiente;
+
+        nodoFilaCl(const std::string& v) : valor(v), siguiente(NULL) {}
+    };
+
+    nodoFilaCl* primero;
+};
+
+FilaCL::~FilaCL() {
+    while (primero) {
+        nodoFilaCl* aux = primero;
+        primero = primero->siguiente;
+        delete aux;
+    }
+}
+
+void FilaCL::InsertarFinal(const std::string& v) {
+    // Verificar si el valor ya existe en la fila
+    nodoFilaCl* aux = primero;
+    while (aux) {
+        if (aux->valor == v) {
+            // El valor ya existe, no lo agregamos de nuevo
+            return;
+        }
+        aux = aux->siguiente;
+    }
+
+    // Si llegamos aquí, el valor no existe en la fila, lo agregamos
+    if (ListaVacia())
+        primero = new nodoFilaCl(v);
+    else {
+        aux = primero;
+        while (aux->siguiente != NULL)
+            aux = aux->siguiente;
+        aux->siguiente = new nodoFilaCl(v);
+    }
+}
+
+
+std::string FilaCL::ObtenerContenido() const {
+    std::string contenido;
+    nodoFilaCl* aux = primero;
+    while (aux) {
+        contenido += aux->valor;
+        if (aux->siguiente != NULL)
+            contenido += " -> ";
+        aux = aux->siguiente;
+    }
+    return contenido;
+}
+
+void FilaCL::BorrarComprasPorInicio(const std::string& valor) {
+    while (primero && primero->valor.find(valor) == 0) {
+        nodoFilaCl* temp = primero;
+        primero = primero->siguiente;
+        delete temp;
+    }
+
+    if (!primero)
+        return;
+
+    nodoFilaCl* aux = primero;
+    while (aux->siguiente) {
+        if (aux->siguiente->valor.find(valor) == 0) {
+            nodoFilaCl* temp = aux->siguiente;
+            aux->siguiente = temp->siguiente;
+            delete temp;
+        } else {
+            aux = aux->siguiente;
+        }
+    }
+}
+
+
+
+
+
+
+class fila {
+public:
+    fila(string v)
     {
         valor = v;
         siguiente = NULL;
     }
 
-    nodoComFact(string v, nodoComFact* signodoComFact)
+    fila(string v, fila* sigfila)
     {
         valor = v;
-        siguiente = signodoComFact;
+        siguiente = sigfila;
     }
 
 private:
     string valor;
-    nodoComFact* siguiente;
+    fila* siguiente;
 
     friend class listComFact;
 };
 
-typedef nodoComFact* pnodoComFact; // Alias
+typedef fila* pfila; // Alias
 
 class listComFact {
 public:
@@ -3612,7 +3698,7 @@ public:
     string ObtenerMenorValor1();
 
 private:
-    pnodoComFact primero;
+    pfila primero;
 };
 
 string listComFact::ObtenerMayorValor1()
@@ -3623,7 +3709,7 @@ string listComFact::ObtenerMayorValor1()
         return "";
     }
 
-    pnodoComFact aux = primero;
+    pfila aux = primero;
     string mayorValor1 = aux->valor;
 
     while (aux != NULL)
@@ -3653,7 +3739,7 @@ string listComFact::ObtenerMenorValor1()
         return "";
     }
 
-    pnodoComFact aux = primero;
+    pfila aux = primero;
     string mayorValor1 = aux->valor;
 
     while (aux != NULL)
@@ -3677,7 +3763,7 @@ string listComFact::ObtenerMenorValor1()
 
 listComFact::~listComFact()
 {
-    pnodoComFact aux;
+    pfila aux;
 
     while (primero) {
         aux = primero;
@@ -3689,7 +3775,7 @@ listComFact::~listComFact()
 
 int listComFact::largoLista() {
     int cont = 0;
-    pnodoComFact aux = primero;
+    pfila aux = primero;
 
     if (ListaVacia()) {
         return cont;
@@ -3707,11 +3793,11 @@ void listComFact::InsertarInicio(string v)
 {
     if (ListaVacia())
     {
-        primero = new nodoComFact(v);
+        primero = new fila(v);
     }
     else
     {
-        pnodoComFact nuevo = new nodoComFact(v);
+        pfila nuevo = new fila(v);
         nuevo->siguiente = primero;
         primero = nuevo;
     }
@@ -3720,20 +3806,20 @@ void listComFact::InsertarInicio(string v)
 void listComFact::InsertarFinal(string v)
 {
     if (ListaVacia())
-        primero = new nodoComFact(v);
+        primero = new fila(v);
     else
     {
-        pnodoComFact aux = primero;
+        pfila aux = primero;
         while (aux->siguiente != NULL)
             aux = aux->siguiente;
-        pnodoComFact nuevo = new nodoComFact(v);
+        pfila nuevo = new fila(v);
         aux->siguiente = nuevo;
     }
 }
 
 void listComFact::Mostrar()
 {
-    nodoComFact* aux;
+    fila* aux;
     if (primero == NULL)
         cout << "No hay elementos AQUI";
     else
@@ -3799,13 +3885,13 @@ public:
     void MostrarCompra();
     int largoLista();
     void Paises();
-    void AgregarCompra(ArbolProducto & arbolProducto, string valor, cliente & arbolClientes, string pais, string ciudad, string restaurante, string menu, string producto, string cantidad2, string ubi);
+    void AgregarCompra(FilaCL & FICL,ArbolProducto & arbolProducto, string valor, cliente & arbolClientes, string pais, string ciudad, string restaurante, string menu, string producto, string cantidad2, string ubi);
     void ConsultarPaisPorCodigo();
     void BorrarPaisPorCodigo(int codigo);
     void ModificarNombre();
     bool Existe(int codigo);
     void BorrarPaisPorSeisCodigos();
-    void BorrarComprasPorInicio(string valor);
+    void BorrarComprasPorInicio(FilaCL & FICL,string valor);
     void MostrarComprasPorInicio(string valor);
     void facturar(listComFact & compraFactura);
     std::pair<int, std::string> CarritoCliente(int codigo);
@@ -3843,7 +3929,7 @@ void ListaCOM::MostrarComprasPorInicio(string valor) {
 }
 
 
-void ListaCOM::BorrarComprasPorInicio(string valor) {
+void ListaCOM::BorrarComprasPorInicio(FilaCL & FICL,string valor) {
     pnodoCOM aux = primero;
 
     while (aux) {
@@ -3853,6 +3939,7 @@ void ListaCOM::BorrarComprasPorInicio(string valor) {
             aux = aux->siguiente;
 
             if (temp == primero) {
+            	FICL.BorrarComprasPorInicio(valor);
                 BorrarInicio();
             } else if (temp->siguiente == NULL) {
                 BorrarFinal();
@@ -4032,7 +4119,7 @@ void ListaCOM::BorrarPaisPorSeisCodigos() {
 }
 
 
-void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor, cliente & arbolClientes, string pais, string ciudad, string restaurante, string menu, string producto, string cantidad2, string ubi2) {
+void ListaCOM::AgregarCompra(FilaCL & FICL,ArbolProducto &arbolProducto, string valor, cliente & arbolClientes, string pais, string ciudad, string restaurante, string menu, string producto, string cantidad2, string ubi2) {
     int cantidad = arbolClientes.stringAEnteroCl(cantidad2);
     string ubi = ubi2;
     string cantidadStr = cantidad2;
@@ -4052,7 +4139,7 @@ void ListaCOM::AgregarCompra(ArbolProducto &arbolProducto, string valor, cliente
 			        InsertarFinal(entrada2);
 			        cout<<"\n\n\n\esta es la entrada del valor: "<<entrada2<<endl;
 			        cout<<ObtenerContenidoComoString()<<endl;
-			        //MostrarCompra();
+			        FICL.InsertarFinal(valor);
 			        arbolClientes.agregarComprar(valor);
 				}
 				else{
@@ -4380,6 +4467,7 @@ std::pair<int, std::string> ListaCOM::CarritoCliente(int codigo) {
 		ArbolMenu ame;
 		ArbolProducto apro;
 		ListaCOM Com;
+		FilaCL fcl;
 		
 		ap.CargarDesdeArchivo();
 		
@@ -4474,14 +4562,20 @@ std::pair<int, std::string> ListaCOM::CarritoCliente(int codigo) {
 		apro.ModificarNombrePRO("1","19","112","227","777","la hello kity", "5400","7500","30");
 		cout<<apro.ObtenerContenidoComoString()<<endl;
 		apro.BorrarPorCodigosRE("1","19","112","227","777");*/
-		cout<<apro.ObtenerContenidoComoString()<<endl;
-		cout<<apro.ExistePRO("1;19;112;223;310")<<endl;
-		Com.AgregarCompra(apro,"402630815",ac,"1","19","112","223","310","25","2");
-		Com.AgregarCompra(apro,"402630815",ac,"1","19","112","223","315","13","1");
-		Com.AgregarCompra(apro,"402630815",ac,"1","19","112","227","336","44","2");
+
+
+		//compras
+		Com.AgregarCompra(fcl,apro,"402630815",ac,"1","19","112","223","310","25","2");
+		Com.AgregarCompra(fcl,apro,"402630815",ac,"1","19","112","223","315","13","1");
+		Com.AgregarCompra(fcl,apro,"504500571",ac,"1","19","112","227","336","44","2");
+		cout<<"fila: "<< fcl.ObtenerContenido()<<endl;
 		cout<<"\n\n\n\n"<<Com.ObtenerContenidoComoString()<<endl;
-		Com.BorrarComprasPorInicio("402630815");
+		Com.BorrarComprasPorInicio(fcl,"402630815");
 		cout<<"\n\n\n\n"<<Com.ObtenerContenidoComoString()<<endl;
+		cout<<"fila: "<< fcl.ObtenerContenido()<<endl;
+		
+		
+		
 		
 		return 0;
 	}

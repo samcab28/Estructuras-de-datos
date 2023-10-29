@@ -464,8 +464,7 @@ int main() {
     ListaCOM ListaCompras;
 
     cout << "***************************************************************************************" << endl;
-    ListaCompras.CargarDesdeArchivo();
-    ListaCompras.Mostrar();
+    ListaCompras.
 
 
     cin.get();
