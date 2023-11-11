@@ -265,29 +265,29 @@
 	}
 	
 	
-	string administrador::ConsultarAdministradorPorCodigoAd(string codigo2) {
-    if (ArbolVacio()) {
-        cout << "El arbol esta vacio" << endl;
-        return ""; 
-    }
-    int codigo = stringAEnteroAd(codigo2);
-    pnodoAd aux = primero;
-
-    while (aux) {
-        size_t pos = aux->valor.find(';');
-        if (pos != string::npos) {
-            int codigoEnArbol;
-            istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
-
-            if (codigoEnArbol == codigo) {
-                return aux->valor; 
-            }
-        }
-        aux = aux->siguiente;
-    }
-
-    
-    return "No se encontró un administrador con el código " + codigo2;
+string administrador::ConsultarAdministradorPorCodigoAd(string codigo2) {
+	if (ArbolVacio()) {
+	    cout << "El arbol esta vacio" << endl;
+	    return ""; 
+	}
+	int codigo = stringAEnteroAd(codigo2);
+	pnodoAd aux = primero;
+	
+	while (aux) {
+	    size_t pos = aux->valor.find(';');
+	    if (pos != string::npos) {
+	        int codigoEnArbol;
+	        istringstream(aux->valor.substr(0, pos)) >> codigoEnArbol;
+	
+	        if (codigoEnArbol == codigo) {
+	            return aux->valor; 
+	        }
+	    }
+	    aux = aux->siguiente;
+	}
+	
+	
+	return "No se encontró un administrador con el código " + codigo2;
 }
 
 	
@@ -3910,16 +3910,33 @@ public:
     bool Existe(int codigo);
     void BorrarPaisPorSeisCodigos();
     void BorrarComprasPorInicio(FilaCL & FICL,string valor);
-    void MostrarComprasPorInicio(string valor);
+    string MostrarComprasPorInicio(string valor);
     void facturar(listComFact & compraFactura, string valor);
     std::pair<int, std::string> CarritoCliente(int codigo);
     string ObtenerContenidoComoString();
     int stringAEnteroCl(const std::string &cadena);
+    string ObtenerNodosQueContienenValor(const std::string &valor);
 
 
 private:
     pnodoCOM primero;
 };
+
+std::string ListaCOM::ObtenerNodosQueContienenValor(const std::string &valor) {
+    std::string nodosEncontrados;
+    pnodoCOM aux = primero;
+
+    while (aux) {
+        if (aux->valor.find(valor) != std::string::npos) {
+            // El valor del nodo contiene el valor especificado, lo agregamos a la cadena de texto.
+            nodosEncontrados += aux->valor + "\n";
+        }
+        aux = aux->siguiente;
+    }
+
+    return nodosEncontrados;
+}
+
 
 int ListaCOM::stringAEnteroCl(const std::string &cadena) {
     int resultado = 0;
@@ -3961,16 +3978,18 @@ string ListaCOM::ObtenerContenidoComoString() {
 }
 
 
-void ListaCOM::MostrarComprasPorInicio(string valor) {
+string ListaCOM::MostrarComprasPorInicio(string valor) {
     pnodoCOM aux = primero;
 
     while (aux) {
         if (aux->valor.find(valor) == 0) {
             // El valor del nodo empieza con el valor proporcionado, lo imprimimos.
-            cout << aux->valor << endl;
+            return aux->valor;
         }
         aux = aux->siguiente;
     }
+    
+    return "no encontrado";
 }
 
 
@@ -4621,7 +4640,7 @@ std::pair<int, std::string> ListaCOM::CarritoCliente(int codigo) {
 		
 		cout<<lfc.ObtenerContenidoComoString()<<endl;
 		
-		
+		cout<<"\n\n\n\ncliente: 402630815   "<<Com.ObtenerNodosQueContienenValor("402630815")<<endl;
 		
 		return 0;
 	}

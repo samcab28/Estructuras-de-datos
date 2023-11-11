@@ -5046,7 +5046,7 @@ int main()
 	archivo<<""<<endl;
 	archivo<<""<<endl;
 	archivo<<reporte12<<endl;
-	cout<<""<<endl;
+	cout<<""<<endl;	
 	cout<<""<<endl;
 	cout<<""<<endl;
 	cout<<""<<endl;

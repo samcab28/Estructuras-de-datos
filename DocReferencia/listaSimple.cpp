@@ -1,352 +1,349 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
-class nodo { // Constructores
-   public:
-   	
-   	
-nodo(int v)//3
-    {
-       valor = v;
-       siguiente = NULL;
-    }
-
-nodo(int v, nodo  *signodo)
-    {
-       valor = v;
-       siguiente = signodo;
-    }
-
-
-   private:
-    int valor=0;
-    nodo *siguiente;// Clase Autoreferencia
-    
-        
-   friend class lista;
+// Clase nodo para país
+class nodoPa {
+public:
+    nodoPa(string v) : pais(v), siguiente(NULL) {}
+private:
+    string pais;
+    nodoPa* siguiente;
+    friend class listaPa;
 };
 
-typedef nodo *pnodo; //Alias
+// Clase lista para país
+class listaPa {
+public:
+    listaPa() { primero = NULL; }
+    ~listaPa();
+    void InsertarPais(string v);
+    string obtenerPaises();
+    bool ListaVacia() { return primero == NULL; }
 
-//void no retorna nada
-//bool retorna False o True
-//int retorna entero
-
-class lista {
-   public:
-    lista() { primero =  NULL; }//constructor
-    ~lista();//destructor
-    
-    void InsertarInicio(int v);//No retornan nada
-    void InsertarFinal(int v);
-    void InsertarPos (int v, int pos);
-    bool ListaVacia() { return primero == NULL; } //retorna True o False
-    void Mostrar();//imprimir
-    void BorrarFinal();
-    void BorrarInicio();
-    void borrarPosicion(int pos);
-    void Sumanum(int num);
-    int largoLista();// retorno un valor numerico
-    
-   private:
-    pnodo primero;
-   
+private:
+    nodoPa* primero;
 };
 
-lista::~lista()
+listaPa::~listaPa()
 {
-   pnodo aux;
-   
-   while(primero) {
-      aux = primero;
-      primero = primero->siguiente;
-      delete aux;
-   }
-   primero= NULL;
-}
+    nodoPa* aux;
 
-int lista::largoLista(){
-    int cont=0;
-
-    pnodo aux= primero;
-    if(ListaVacia()){
-        return cont;
-    }else{
-        while(aux!=NULL){
-        aux=aux->siguiente;
-        cont++;
+    while (primero) {
+        aux = primero;
+        primero = primero->siguiente;
+        delete aux;
     }
-    return cont;
-    cout<< endl;
+    primero = NULL;
+}
+
+void listaPa::InsertarPais(string v)
+{
+    if (ListaVacia())
+        primero = new nodoPa(v);
+    else
+    {
+        nodoPa* aux = primero;
+        while (aux->siguiente != NULL)
+            aux = aux->siguiente;
+        nodoPa* nuevo = new nodoPa(v);
+        aux->siguiente = nuevo;
     }
-    
 }
 
-void lista::InsertarInicio(int v)//3 10 265
+string listaPa::obtenerPaises()
 {
-   if (ListaVacia())
-   {
-   
-     primero = new nodo(v);//6
-     
-   }
-   else
-   {
-     //primera forma
- //  primero=new nodo (v,primero);
-    //segunda forma
-    pnodo nuevo=new nodo(v);
-    nuevo->siguiente=primero;
-    primero=nuevo;
-     
-    
-    
-     
-   }
+    string result = "";
+    nodoPa* aux = primero;
+    while (aux) {
+        result += aux->pais + " -> ";
+        aux = aux->siguiente;
+    }
+    return result;
 }
- 
-void lista::InsertarFinal(int v)//76
+
+// Clase nodo para ciudad
+class nodoCiu {
+public:
+    nodoCiu(string v) : ciudad(v), siguiente(NULL) {}
+private:
+    string ciudad;
+    nodoCiu* siguiente;
+    friend class listaCiu;
+};
+
+// Clase lista para ciudad
+class listaCiu {
+public:
+    listaCiu() { primero = NULL; }
+    ~listaCiu();
+    void InsertarCiudad(string v);
+    string obtenerCiudades();
+    bool ListaVacia() { return primero == NULL; }
+
+private:
+    nodoCiu* primero;
+};
+
+listaCiu::~listaCiu()
 {
-   if (ListaVacia())
-     primero = new nodo(v);
-   else
-      { 
-      //primera forma
-	    //pnodo aux = primero;
-      //  while ( aux->siguiente != NULL)
-      //   aux= aux->siguiente;
-      //  aux->siguiente=new nodo(v);
-       
-       //segunda forma 
-       pnodo aux = primero;
-        while ( aux->siguiente != NULL)
-         aux= aux->siguiente;
-        pnodo nuevo=new nodo(v);
-        aux->siguiente=nuevo;
-      }    
+    nodoCiu* aux;
+
+    while (primero) {
+        aux = primero;
+        primero = primero->siguiente;
+        delete aux;
+    }
+    primero = NULL;
 }
 
-
-void lista::InsertarPos(int v,int pos)
+void listaCiu::InsertarCiudad(string v)
 {
-   if (ListaVacia())
-     primero = new nodo(v);
-   else{
-        if(pos <=1)
-		{
-        	//OPcion1
-          pnodo nuevo = new nodo(v);
-          nuevo->siguiente= primero;
-          primero= nuevo;     
-          //OPcion 2
-          //InsertarInicio(v);
-        }      
-        else{
-             nodo *aux= primero;
-             int i =2;
-             while((i != pos )&&(aux->siguiente!= NULL)){
-                   i++;
-                   aux=aux->siguiente;
-             }
-             pnodo nuevo= new nodo(v);
-             nuevo->siguiente=aux->siguiente;
-             aux->siguiente=nuevo;
-             
-        }
-        }
+    if (ListaVacia())
+        primero = new nodoCiu(v);
+    else
+    {
+        nodoCiu* aux = primero;
+        while (aux->siguiente != NULL)
+            aux = aux->siguiente;
+        nodoCiu* nuevo = new nodoCiu(v);
+        aux->siguiente = nuevo;
+    }
 }
-      
-void lista::BorrarFinal()
+
+string listaCiu::obtenerCiudades()
 {
-    if (ListaVacia()){
-     cout << "No hay elementos en la lista:" << endl;
-    
-   }else{
-        
-        if (primero->siguiente == NULL) 
-		{   pnodo temp=primero;
-		    primero= NULL;
-		    delete temp;;
-            }
-			 else {
-
-                pnodo aux = primero;
-                while (aux->siguiente->siguiente != NULL) {
-                    aux = aux->siguiente;
-
-                }
-                
-              pnodo temp = aux->siguiente;
-              aux->siguiente= NULL;
-
-                
-                delete temp;
-            }
-        }
+    string result = "";
+    nodoCiu* aux = primero;
+    while (aux) {
+        result += aux->ciudad + " -> ";
+        aux = aux->siguiente;
+    }
+    return result;
 }
 
-void lista::BorrarInicio()
+class nodoRes {
+public:
+    nodoRes(string v) : restaurante(v), siguiente(NULL) {}
+private:
+    string restaurante;
+    nodoRes* siguiente;
+    friend class listaRes;
+};
+
+// Clase lista para restaurante
+class listaRes {
+public:
+    listaRes() { primero = NULL; }
+    ~listaRes();
+    void InsertarRestaurante(string v);
+    string obtenerRestaurantes();
+    bool ListaVacia() { return primero == NULL; }
+
+private:
+    nodoRes* primero;
+};
+
+listaRes::~listaRes()
 {
-    if (ListaVacia()){
-     cout << "No hay elementos en la lista:" << endl;
-    
-   }else{
-        if (primero->siguiente == NULL) 
-		{   pnodo temp=primero;
-		    primero= NULL;
-		    delete temp;
-        } 
-		else 
-		{
+    nodoRes* aux;
 
-                pnodo aux = primero;
-                primero=primero->siguiente;                
-                delete aux;
-        }
-        }
+    while (primero) {
+        aux = primero;
+        primero = primero->siguiente;
+        delete aux;
+    }
+    primero = NULL;
 }
 
-
-
-void lista:: borrarPosicion(int pos){
-     if(ListaVacia()){
-              cout << "Lista vacia" <<endl;
-    }else{
-         if((pos>largoLista())||(pos<0)){
-        cout << "Error en posicion" << endl;
-        }else{
-        if(pos==1)
-		{
-        	pnodo temp=primero;
-        	primero=primero->siguiente;
-        	delete temp; //BorrarInicio();
-        }
-		else{
-          int cont=2;
-            pnodo aux=  primero;
-            while(cont<pos){
-             aux=aux->siguiente;
-             cont++;
-            }
-            pnodo temp=aux->siguiente;
-            aux->siguiente=aux->siguiente->siguiente;
-            delete temp;
-            }
-        }
-     }
-
-}
- 
-
-void lista::Mostrar()
+void listaRes::InsertarRestaurante(string v)
 {
-   nodo *aux;
-   if (primero== NULL)
-       cout << "No hay elementos AQUI";  
-   else
-   {
-   
-       
-   		aux = primero;
-		while(aux) 
-		{
-		    cout << aux->valor << "-> ";
-		    aux = aux->siguiente;
-		}
-		cout << endl;
-   }
+    if (ListaVacia())
+        primero = new nodoRes(v);
+    else
+    {
+        nodoRes* aux = primero;
+        while (aux->siguiente != NULL)
+            aux = aux->siguiente;
+        nodoRes* nuevo = new nodoRes(v);
+        aux->siguiente = nuevo;
+    }
 }
 
-
- void lista::Sumanum(int num)//23456
+string listaRes::obtenerRestaurantes()
 {
-   if (num == 0)
-      cout << "Suma igual a 0";
-   else
-   {
-   
-       while (num!=0)
-       {
-	   
-	     int temp=num%10;
-		 InsertarInicio(temp);
-		 num=num/10;
-       }
-      int suma=0;
-      pnodo aux=primero; 
-      while(aux !=NULL)
-      {
-      	suma=suma+aux->valor;
-      	aux=aux->siguiente;
-	  }
-	  cout<<suma<<endl;
-   }
-	
+    string result = "";
+    nodoRes* aux = primero;
+    while (aux) {
+        result += aux->restaurante + " -> ";
+        aux = aux->siguiente;
+    }
+    return result;
 }
+
+// Clase nodo para menú
+class nodoMe {
+public:
+    nodoMe(string v) : menu(v), siguiente(NULL) {}
+private:
+    string menu;
+    nodoMe* siguiente;
+    friend class listaMe;
+};
+
+// Clase lista para menú
+class listaMe {
+public:
+    listaMe() { primero = NULL; }
+    ~listaMe();
+    void InsertarMenu(string v);
+    string obtenerMenus();
+    bool ListaVacia() { return primero == NULL; }
+
+private:
+    nodoMe* primero;
+};
+
+listaMe::~listaMe()
+{
+    nodoMe* aux;
+
+    while (primero) {
+        aux = primero;
+        primero = primero->siguiente;
+        delete aux;
+    }
+    primero = NULL;
+}
+
+void listaMe::InsertarMenu(string v)
+{
+    if (ListaVacia())
+        primero = new nodoMe(v);
+    else
+    {
+        nodoMe* aux = primero;
+        while (aux->siguiente != NULL)
+            aux = aux->siguiente;
+        nodoMe* nuevo = new nodoMe(v);
+        aux->siguiente = nuevo;
+    }
+}
+
+string listaMe::obtenerMenus()
+{
+    string result = "";
+    nodoMe* aux = primero;
+    while (aux) {
+        result += aux->menu + " -> ";
+        aux = aux->siguiente;
+    }
+    return result;
+}
+
+// Clase nodo para producto
+class nodoPro {
+public:
+    nodoPro(string v) : producto(v), siguiente(NULL) {}
+private:
+    string producto;
+    nodoPro* siguiente;
+    friend class listaPro;
+};
+
+// Clase lista para producto
+class listaPro {
+public:
+    listaPro() { primero = NULL; }
+    ~listaPro();
+    void InsertarProducto(string v);
+    string obtenerProductos();
+    bool ListaVacia() { return primero == NULL; }
+
+private:
+    nodoPro* primero;
+};
+
+listaPro::~listaPro()
+{
+    nodoPro* aux;
+
+    while (primero) {
+        aux = primero;
+        primero = primero->siguiente;
+        delete aux;
+    }
+    primero = NULL;
+}
+
+void listaPro::InsertarProducto(string v)
+{
+    if (ListaVacia())
+        primero = new nodoPro(v);
+    else
+    {
+        nodoPro* aux = primero;
+        while (aux->siguiente != NULL)
+            aux = aux->siguiente;
+        nodoPro* nuevo = new nodoPro(v);
+        aux->siguiente = nuevo;
+    }
+}
+
+string listaPro::obtenerProductos()
+{
+    string result = "";
+    nodoPro* aux = primero;
+    while (aux) {
+        result += aux->producto + " -> ";
+        aux = aux->siguiente;
+    }
+    return result;
+}
+
 
 int main()
 {
-   lista L1;//instancia null
-   
-    
- 
-   cout<< "***************************************************************************************"<<endl;
-   L1.InsertarInicio(3);
- //  Lista.InsertarInicio(2);
- //  Lista.InsertarFinal(10);
-    L1.Mostrar();
-   cout<<endl;
-   cout<<endl;
-   L1.InsertarInicio(10);
-   L1.Mostrar();
-   L1.InsertarInicio(1265);
-   L1.Mostrar();
-   L1.InsertarFinal(176);
-   L1.Mostrar();
-   L1.InsertarFinal(24);
-   L1.Mostrar();
-   L1.InsertarPos(1479,1);
-   L1.Mostrar();
-   L1.BorrarInicio();
-   L1.Mostrar();
-   L1.BorrarFinal();
-   L1.Mostrar();
-  // cout << Lista.largoLista();
-   
- /*  Lista.InsertarFinal(11);
-   Lista.InsertarPos(5, 1);
-   Lista.InsertarPos(6, 4);*/
+    // Pruebas para la lista de países
+    listaPa paises;
+    paises.InsertarPais("México");
+    paises.InsertarPais("Estados Unidos");
+    paises.InsertarPais("Canadá");
 
-   /*Lista.InsertarInicio(30);
-   Lista.InsertarInicio(1);   
-   Lista.InsertarFinal(5);
-   Lista.InsertarPos(1, 3);*/
-//   Lista.Mostrar();
- //  Lista.borrarPosicion(4);
-  // Lista.Mostrar();
- /*  Lista.BorrarInicio();
-      Lista.Mostrar();
-   Lista.BorrarFinal();
-      Lista.Mostrar();
-   Lista.borrarPosicion(3);
-   Lista.Mostrar();
-  
+    cout << "Países: " << paises.obtenerPaises() << endl;
 
-   cout << "Lista de elementos:" << endl;
-   Lista.Primero();
-   Lista.Primero();
-   Lista.Ultimo();
-  
-   Lista.BorrarFinal();
-   //Lista.Borrar(15);
-  // Lista.Borrar(45);
-   //Lista.Borrar(30);
-   //Lista.Borrar(40);
-   
-   Lista.Mostrar();
-   Lista.~lista();
-   Lista.Mostrar();*/
- //  Lista.~lista();
-   cin.get();
-   return 0;
+    // Pruebas para la lista de ciudades
+    listaCiu ciudades;
+    ciudades.InsertarCiudad("Ciudad de México");
+    ciudades.InsertarCiudad("Los Angeles");
+    ciudades.InsertarCiudad("Toronto");
+
+    cout << "Ciudades: " << ciudades.obtenerCiudades() << endl;
+
+    // Pruebas para la lista de restaurantes
+    listaRes restaurantes;
+    restaurantes.InsertarRestaurante("Restaurante A");
+    restaurantes.InsertarRestaurante("Restaurante B");
+    restaurantes.InsertarRestaurante("Restaurante C");
+
+    cout << "Restaurantes: " << restaurantes.obtenerRestaurantes() << endl;
+
+    // Pruebas para la lista de menús
+    listaMe menus;
+    menus.InsertarMenu("Menú 1");
+    menus.InsertarMenu("Menú 2");
+    menus.InsertarMenu("Menú 3");
+
+    cout << "Menús: " << menus.obtenerMenus() << endl;
+
+    // Pruebas para la lista de productos
+    listaPro productos;
+    productos.InsertarProducto("Producto X");
+    productos.InsertarProducto("Producto Y");
+    productos.InsertarProducto("Producto Z");
+
+    cout << "Productos: " << productos.obtenerProductos() << endl;
+
+    return 0;
 }
+

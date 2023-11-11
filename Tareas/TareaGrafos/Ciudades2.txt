@@ -1,0 +1,4 @@
+A;VetTibas
+B;VetCartago
+C;VetLimon
+D;VetTurrialba
